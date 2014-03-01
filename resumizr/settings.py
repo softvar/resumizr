@@ -235,7 +235,10 @@ SOCIAL_AUTH_SESSION_EXPIRATION = False
 if not DEBUG:
 
     
+<<<<<<< HEAD
 
+=======
+>>>>>>> social_auth
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
