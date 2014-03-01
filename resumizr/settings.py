@@ -11,7 +11,13 @@ PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 
-DEBUG = True
+
+if os.environ.get('DEVELOPMENT', None) == 'YES':
+    DEBUG= True
+else :
+    DEBUG = False
+
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -214,6 +220,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 ''' subject to change, refer : http://django-social-auth.readthedocs.org/en/latest/configuration.html '''
 SOCIAL_AUTH_SESSION_EXPIRATION = False
+
+
+
 
 
 #####################
