@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+    url(r'^login/','api.views.login', name='login'),
     url(r'', include('social_auth.urls')),
 )
 

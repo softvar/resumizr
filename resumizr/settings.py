@@ -119,7 +119,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'server.urls'
+ROOT_URLCONF = 'resumizr.urls'
 
 
 
