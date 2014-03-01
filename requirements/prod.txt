@@ -1,0 +1,21 @@
+Django==1.6.2
+argparse
+dj-database-url==0.2.2
+dj-static==0.0.5
+django-toolbelt==0.0.1
+gunicorn==18.0
+psycopg2==2.5.2
+pystache==0.5.3
+static==1.0.2
+wsgiref==0.1.2
+
+# for django social-auth
+python-openid
+python-oauth2
+django-social-auth
+
+# for django-mongo-engine
+git+https://github.com/django-nonrel/django@nonrel-1.5
+git+https://github.com/django-nonrel/djangotoolbox
+git+https://github.com/django-nonrel/mongodb-engine
+
