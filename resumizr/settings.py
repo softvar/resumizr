@@ -127,6 +127,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'resumizr.urls'
 
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'resumizr.wsgi.application'
+
+
 
 
 TEMPLATE_DIRS = (
@@ -224,16 +228,13 @@ SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 
 
-
 #####################
 ## Heroku settings ##
 #####################
 
 if not DEBUG:
 
-    # Python dotted path to the WSGI application used by Django's runserver.
-    WSGI_APPLICATION = 'server.wsgi.application'
-
+    
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
