@@ -4,10 +4,14 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
+from django.shortcuts import render
 import datetime
 
-def login(request):
-    now = datetime.datetime.now()
-    t = get_template('index.html')
-    html = t.render(Context({'user': 'varun','current_date': now}))
-    return HttpResponse(html)
+
+def test_login(request):
+    #now = datetime.datetime.now()
+    return render(request,'index.html',{'user': 'varun','current_date': datetime.datetime.now()})
+
+
+def social_auth_login(request):
+	return render(request,'social_auth.html')

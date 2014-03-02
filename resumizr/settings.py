@@ -208,6 +208,8 @@ LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/logged-in/'
 LOGIN_ERROR_URL    = '/login-error/'
 
+#SOCIAL_AUTH_LOGIN_URL = '/social-authent/'
+
 SOCIAL_AUTH_BACKEND_ERROR_URL = '/oauth-error/'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
@@ -223,9 +225,16 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 ''' subject to change, refer : http://django-social-auth.readthedocs.org/en/latest/configuration.html '''
-SOCIAL_AUTH_SESSION_EXPIRATION = False
+#SOCIAL_AUTH_SESSION_EXPIRATION = False
 
+FACEBOOK_EXTENDED_PERMISSIONS = ['email','user_birthday']
 
+SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
+SOCIAL_AUTH_UID_LENGTH = 16
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 16
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 16
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 16
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 16
 
 
 #####################
