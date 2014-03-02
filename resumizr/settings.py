@@ -244,6 +244,10 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 16
 if not DEBUG:
 
     
+<<<<<<< HEAD
+
+=======
+>>>>>>> social_auth
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
