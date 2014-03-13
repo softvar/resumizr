@@ -16,9 +16,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^test-login-1/','api.views.test_login', name='login'),
-    url(r'^social-auth/','api.views.social_auth_login', name='social-auth'),
-    url(r'', include('social_auth.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^login1/','api.views.test_login', name='login'),
+    url(r'^login/$','api.views.social_auth_login', name='social-auth'),
+    
 )
 
 #development media server

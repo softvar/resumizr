@@ -1,12 +1,14 @@
 <html>
 	<head>
 		<title>
-			Varun Malhhotra
+			Social auth test
 		</title>
 	</head>
 	<body>
-		<a href="{% url 'socialauth_begin' 'facebook' %}">Login with Facebook</a>
-		<a href="{% url 'socialauth_begin' 'twitter' %}">Login with Twitter</a>
+		<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+		<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+		<a href="{% url 'social:begin' 'google-oauth2' %}">Login with google</a>
+		<a href="{% url 'social:begin' 'github' %}">Login with github</a>
 
 	</body>
 </html>

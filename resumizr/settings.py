@@ -147,9 +147,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
     'django_mongodb_engine',
-    'social_auth',
+    'api',
+    'social.apps.django_app.default'
+
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -191,18 +192,32 @@ LOGGING = {
 ###############################
 
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    #'social_auth.backends.google.GoogleOAuth2Backend',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.github.GithubOAuth2',
     #'social_auth.backends.contrib.linkedin.LinkedinBackend',
     #'social_auth.backends.contrib.github.GithubBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-TWITTER_CONSUMER_KEY         = '0nUGi1QvgKsUXS2CS3deA'
-TWITTER_CONSUMER_SECRET      = 'PGq6R3hyvrdwdrOP6bfOpWW0NoI71rQDLE182xqjgg'
-FACEBOOK_APP_ID              = '629731057103975'
-FACEBOOK_API_SECRET          = 'aa2c8cb1a0fc78ee95997317efbb8261'
+SOCIAL_AUTH_TWITTER_KEY         = os.environ.get('TWITTER_KEY', None)
+SOCIAL_AUTH_TWITTER_SECRET      = os.environ.get('TWITTER_SECRET', None)
+SOCIAL_AUTH_FACEBOOK_KEY        = os.environ.get('FACEBOOK_KEY', None)
+SOCIAL_AUTH_FACEBOOK_SECRET     = os.environ.get('FACEBOOK_SECRET', None)
+
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get('GITHUB_KEY', None)
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('GITHUB_SECRET', None)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('GOOGLE_KEY', None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_SECRET', None)
+
+SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
+SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
 
 LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/logged-in/'
@@ -218,16 +233,21 @@ SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_SANITIZE_REDIRECTS = False
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'social_auth.context_processors.social_auth_by_name_backends',
-    'social_auth.context_processors.social_auth_backends',
-    'social_auth.context_processors.social_auth_by_type_backends',
-    'social_auth.context_processors.social_auth_login_redirect',
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 ''' subject to change, refer : http://django-social-auth.readthedocs.org/en/latest/configuration.html '''
 #SOCIAL_AUTH_SESSION_EXPIRATION = False
 
-FACEBOOK_EXTENDED_PERMISSIONS = ['email','user_birthday']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday']
+SOCIAL_AUTH_GITHUB_SCOPE = ['user']
+
 
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 SOCIAL_AUTH_UID_LENGTH = 16
@@ -243,14 +263,23 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 16
 
 if not DEBUG:
 
-    
-<<<<<<< HEAD
-
-=======
->>>>>>> social_auth
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
+    #DATABASES['default'] =  dj_database_url.config()
+
+
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django_mongodb_engine', 
+        'NAME': 'resumizr',                      
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'mongodb://resumizr:bholavarun@troup.mongohq.com:10071/resumizr', 
+        'PORT': '',                      # Set to empty string for default.
+    }
+    }
+
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
