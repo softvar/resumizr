@@ -201,15 +201,16 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
 SOCIAL_AUTH_TWITTER_KEY         = os.environ.get('TWITTER_KEY', None)
 SOCIAL_AUTH_TWITTER_SECRET      = os.environ.get('TWITTER_SECRET', None)
 SOCIAL_AUTH_FACEBOOK_KEY        = os.environ.get('FACEBOOK_KEY', None)
 SOCIAL_AUTH_FACEBOOK_SECRET     = os.environ.get('FACEBOOK_SECRET', None)
 
-SOCIAL_AUTH_GITHUB_KEY = os.environ.get('GITHUB_KEY', None)
-SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('GITHUB_SECRET', None)
+SOCIAL_AUTH_GITHUB_KEY          = os.environ.get('GITHUB_KEY', None)
+SOCIAL_AUTH_GITHUB_SECRET       = os.environ.get('GITHUB_SECRET', None)
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('GOOGLE_KEY', None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY   = os.environ.get('GOOGLE_KEY', None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_SECRET', None)
 
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
@@ -220,8 +221,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
 ]
 
 LOGIN_URL          = '/login/'
-LOGIN_REDIRECT_URL = '/logged-in/'
+LOGIN_REDIRECT_URL = '/app/'
 LOGIN_ERROR_URL    = '/login-error/'
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/app/'
 
 #SOCIAL_AUTH_LOGIN_URL = '/social-authent/'
 
