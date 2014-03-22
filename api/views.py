@@ -11,7 +11,6 @@ from django.contrib.auth import logout as auth_logout
 import datetime
 
 
-
 def home(request):
     '''Home view, displays login mechanism'''
     if request.user.is_authenticated():

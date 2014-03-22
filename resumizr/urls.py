@@ -2,9 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^login/$','api.views.login', name='login'),
     url(r'^logout/$','api.views.logout', name='logout'),
     url(r'^app/$','api.views.app',name='app'),
+    url(r'^admin/', include(admin.site.urls)),
     
 )
 

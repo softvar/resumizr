@@ -10,7 +10,7 @@ PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-
+LIB_PATH = os.path.join(PROJECT_PATH,'lib')
 
 if os.environ.get('DEVELOPMENT', None) == 'YES':
     DEBUG= True
@@ -24,7 +24,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-SITE_ID=u'53122d9b0638c70ed097a9a5'
+
 
 
 MANAGERS = ADMINS
@@ -55,7 +55,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID=u'53122d9b0638c70ed097a9a5'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -148,11 +148,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mongodb_engine',
+    'django.contrib.admin',
     'api',
     'social.apps.django_app.default'
-
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+   
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -191,11 +190,26 @@ LOGGING = {
 ## Social Auth configuration ##
 ###############################
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',  # association by email enabled
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
+
 AUTHENTICATION_BACKENDS = (
     'social.backends.twitter.TwitterOAuth',
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.google.GoogleOAuth2',
     'social.backends.github.GithubOAuth2',
+    'social.backends.username.UsernameAuth',
     #'social_auth.backends.contrib.linkedin.LinkedinBackend',
     #'social_auth.backends.contrib.github.GithubBackend',
     'django.contrib.auth.backends.ModelBackend',
