@@ -147,6 +147,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangotoolbox',
     'django_mongodb_engine',
     'django.contrib.admin',
     'api',
@@ -210,8 +211,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.github.GithubOAuth2',
     'social.backends.username.UsernameAuth',
-    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    #'social_auth.backends.contrib.github.GithubBackend',
+    'social.backends.linkedin.LinkedinOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -226,6 +226,9 @@ SOCIAL_AUTH_GITHUB_SECRET       = os.environ.get('GITHUB_SECRET', None)
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY   = os.environ.get('GOOGLE_KEY', None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_SECRET', None)
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = os.environ.get('LINKEDIN_KEY', None)
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = os.environ.get('LINKEDIN_SECRET', None)
 
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
@@ -263,6 +266,19 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday']
 SOCIAL_AUTH_GITHUB_SCOPE = ['user']
+
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry','picture-url']
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
+                                   ('firstName', 'first_name'),
+                                   ('lastName', 'last_name'),
+                                   ('emailAddress', 'email_address'),
+                                   ('headline', 'headline'),
+                                   ('profile-picture', 'picture-url'),
+                                   ('industry', 'industry')]
+
+
 
 
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
