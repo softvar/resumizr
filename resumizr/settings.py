@@ -24,7 +24,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-
+SITE_ID=u'53122d9b0638c70ed097a9a5'
 
 
 MANAGERS = ADMINS
@@ -55,7 +55,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID=u'53122d9b0638c70ed097a9a5'
+
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.

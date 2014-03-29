@@ -30,6 +30,6 @@ def logout(request):
 @login_required
 def app(request):
     """Login complete view, displays user data"""
-    print dir(request.user.social_auth)
+    #print dir(request.user.social_auth)
 
     return render(request,'app.html',{'user': request.user})
