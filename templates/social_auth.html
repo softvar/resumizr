@@ -1,3 +1,4 @@
+{% load mysplit %}
 <html>
 	<head>
 		<title>
@@ -5,11 +6,8 @@
 		</title>
 	</head>
 	<body>
-		<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-		<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
-		<a href="{% url 'social:begin' 'google-oauth2' %}">Login with google</a>
-		<a href="{% url 'social:begin' 'github' %}">Login with github</a>
-		<a href="{% url 'social:begin' 'linkedin-oauth2' %}">Login with linkedin</a>
-
+		{% for provider in backends  %}
+		Login with <a href={{ backends.provider }}>{{ provider|mysplit:"-"|first|capfirst}}</a> </br>
+		{% endfor %}
 	</body>
 </html>
