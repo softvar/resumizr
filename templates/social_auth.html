@@ -6,8 +6,10 @@
 		</title>
 	</head>
 	<body>
-		{% for provider in backends  %}
-		Login with <a href={{ backends.provider }}>{{ provider|mysplit:"-"|first|capfirst}}</a> </br>
+		
+		{% for provider in oauth_providers  %}
+		Login with <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:'-'|first|capfirst}}</a> </br>
 		{% endfor %}
+		
 	</body>
 </html>
