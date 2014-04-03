@@ -1,12 +1,76 @@
 <html>
+{% load staticfiles %}
 	<head>
 		<title>
 			Resumizr registration form 
 		</title>
+		<script src="{% static 'resumizr/js/jquery.js' %}"> </script>
+		<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+		<script type="text/javascript">
+
+		$(document).ready(function(){
+
+		$("#username").keyup(function (e) { //user types username on inputfiled
+            
+            if($(this).val() != '')
+            {	
+
+            $("#available").html('checking ....');
+            var username = $(this).val(); //get the string typed by user
+            $.get('/usernames/'+username+'/',  function(data) { 
+            $("#available").html(data.available.toString()); 
+         	 });
+        	}
+
+        	});
+
+			
+
+		});
+
+		 $(function() {
+		$("#signup-form").validate({
+    
+        // Specify the validation rules
+        rules: {
+            username: "required",
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 5
+            },
+            
+        },
+        
+        // Specify the validation error messages
+        messages: {
+            username: "Please enter your first name",
+            password: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long"
+            },
+            email: "Please enter a valid email address",
+        },
+        
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
+
+  });
+  
+
+
+
+
+		</script>
 	</head>
 	<body>
 		
-		<form method="post" action="/register/">
+		<form method="post" action="/signup/username/" id="signup-form">
 		{% csrf_token %}
 		{{ form.non_field_errors }}
 
@@ -17,7 +81,9 @@
 
 		    <div class="fieldWrapper">
 		       <label for="id_username">username</label>
-		        {{ form.username }} {{ form.username.errors }}
+		        <div id="available"></div>
+		        {{ form.username }} 
+		        {{ form.username.errors }}
 		    </div>
 
 		    <div class="fieldWrapper">

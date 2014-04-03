@@ -1,23 +1,23 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.conf.urls.static import static
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import RedirectView
 
 from django.contrib import admin
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'server.views.home', name='home'),
-    # url(r'^server/', include('server.foo.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^$', 'api.views.home', name='home'),
-    url(r'^register/$', 'api.views.register', name='register'),
+    
+    # username verifier : used by ajax
+    url(r'^usernames/(?P<username>\w+)/$','api.views.username_availability',name='username_availability'),
+
+    url(r'^$', 'api.views.home',name='home'),
+    url(r'^signup/(?P<backend>[^/]+)/$', 'api.views.signup', name='signup'),
+    url(r'^signup/$' , RedirectView.as_view(url='/signup/username/')),
     url(r'^login/$','api.views.login', name='login'),
     url(r'^logout/$','api.views.logout', name='logout'),
     url(r'^app/$','api.views.app',name='app'),

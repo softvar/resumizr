@@ -191,6 +191,8 @@ LOGGING = {
 ## Social Auth configuration ##
 ###############################
 
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/app/'
+
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -199,9 +201,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.get_username',
     'social.pipeline.social_auth.associate_by_email',  # association by email enabled
     'social.pipeline.user.create_user',
+    'api.pipeline.validate_password',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
+    
 )
 
 
