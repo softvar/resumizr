@@ -1,7 +1,7 @@
 # for django social-auth
 python-openid
 python-oauth2
-django-social-auth
+python-social-auth
 
 # for django-mongo-engine
 git+https://github.com/django-nonrel/django@nonrel-1.5
