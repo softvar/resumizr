@@ -39,5 +39,5 @@ nosetests.xml
 
 local/
 include/
-
+tmp/
 
