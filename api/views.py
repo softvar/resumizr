@@ -38,7 +38,9 @@ def home(request):
 @strategy('social:complete')
 def signup(request, backend, *args, **kwargs):
     ''' registeration form '''
-    redirect_loggedin_users(request)
+    if request.user.is_authenticated():
+        return redirect('app')
+    
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
 
@@ -59,6 +61,14 @@ def signup(request, backend, *args, **kwargs):
     })
 
 
+def validation_sent(request):
+    return render(request,'validation_sent.html', {
+        'email': request.session.get('email_validation_address')
+    })
+
+
+
+
 def login(request):
     ''' login mechanism '''
     if request.user.is_authenticated():
@@ -70,7 +80,9 @@ def login(request):
 @strategy('social:complete')
 def username_login(request, backend, *args, **kwargs):
     ''' login form processing'''
-    redirect_loggedin_users(request)   
+    if request.user.is_authenticated():
+        return redirect('app')   
+    
     if request.method == 'POST':
         form = LoginForm(request.POST)
 
@@ -86,7 +98,7 @@ def username_login(request, backend, *args, **kwargs):
 
         form = LoginForm()  # An unbound form
 
-    return render(request, 'social_auth.html', {'oauth_providers': backends , 'form' : form})
+    return render(request, 'social_auth.html', {'form' : form})
 
 
 
@@ -119,10 +131,7 @@ def app(request):
 
 # helper functions
 
-def redirect_loggedin_users(request):
-    ''' redirects the logged in user to home page '''
-    if request.user.is_authenticated():
-        return redirect('app')
+
 
 
 

@@ -187,6 +187,25 @@ LOGGING = {
 }
 
 
+############################
+## Test specific settings ##
+############################
+
+if DEBUG :
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = os.path.join(PROJECT_PATH, 'tmp')
+
+    EMAIL_HOST=''
+    EMAIL_HOST_PASSWORD=''
+    EMAIL_HOST_USER=''
+    EMAIL_PORT = 25
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = ''
+    SERVER_EMAIL = ''
+
+
+
+
 ###############################
 ## Social Auth configuration ##
 ###############################
@@ -202,6 +221,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_by_email',  # association by email enabled
     'social.pipeline.user.create_user',
     'api.pipeline.validate_password',
+    'social.pipeline.mail.mail_validation',   # email vaildation for username auth
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
@@ -220,6 +240,11 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
+
+SOCIAL_AUTH_USERNAME_FORCE_EMAIL_VALIDATION = True
+
+# keys and secrets of social authentication services
+
 SOCIAL_AUTH_TWITTER_KEY         = os.environ.get('TWITTER_KEY', None)
 SOCIAL_AUTH_TWITTER_SECRET      = os.environ.get('TWITTER_SECRET', None)
 SOCIAL_AUTH_FACEBOOK_KEY        = os.environ.get('FACEBOOK_KEY', None)
@@ -234,19 +259,21 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_SECRET', None)
 SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = os.environ.get('LINKEDIN_KEY', None)
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = os.environ.get('LINKEDIN_SECRET', None)
 
+
+
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
-SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
+
 
 LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/app/'
 LOGIN_ERROR_URL    = '/login-error/'
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/app/'
 
-#SOCIAL_AUTH_LOGIN_URL = '/social-authent/'
+SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'api.mail.send_validation'
+SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
+
+
 
 SOCIAL_AUTH_BACKEND_ERROR_URL = '/oauth-error/'
 
@@ -266,7 +293,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 ''' subject to change, refer : http://django-social-auth.readthedocs.org/en/latest/configuration.html '''
-#SOCIAL_AUTH_SESSION_EXPIRATION = False
+
+
+# oauth scopes
+
+SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday']
 SOCIAL_AUTH_GITHUB_SCOPE = ['user']

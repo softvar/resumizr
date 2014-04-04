@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^$', 'api.views.home',name='home'),
     url(r'^signup/(?P<backend>[^/]+)/$', 'api.views.signup', name='signup'),
     url(r'^signup/$' , RedirectView.as_view(url='/signup/username/')),
+    url(r'^email-sent/', 'api.views.validation_sent'),
 
     url(r'^resumizr-login/(?P<backend>[^/]+)/$', 'api.views.username_login', name='username_login'),
     
