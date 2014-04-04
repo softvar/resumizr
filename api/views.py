@@ -5,11 +5,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import logout as auth_logout , login as auth_login, REDIRECT_FIELD_NAME
+from django.contrib.auth import logout as auth_logout, login as auth_login, REDIRECT_FIELD_NAME
 from django.conf import settings
 from social.apps.django_app.utils import strategy
 from social.actions import do_complete
 from social.backends import username
+from social import exceptions
 
 
 import json
@@ -39,15 +40,18 @@ def signup_redirect(request):
 
 
 @strategy('social:complete')
-def signup(request,backend,*args, **kwargs):
+def signup(request, backend, *args, **kwargs):
     ''' registeration form '''
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
-        if form.is_valid():
-            return do_complete(request.social_strategy,lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user) 
 
-            if request.user.is_authenticated() :
-                redirect('app')
+        if form.is_valid():
+
+            try:
+                return do_complete(request.social_strategy, lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user)
+
+            except exceptions.AuthException:
+                form.errors['__all__'] = 'you have entered wrong username/password'
 
     else:
         form = RegisterationForm()  # An unbound form
@@ -94,12 +98,8 @@ def app(request):
 def username_availability(request, username):
     # available username
     users = User.objects.filter(username=username).count()
-    if users == 0 :
+    if users == 0:
         available = True
-    else :
+    else:
         available = False
-    return HttpResponse(json.dumps({'available' : available}), content_type="application/json")
-
-
-
-
+    return HttpResponse(json.dumps({'available': available}), content_type="application/json")
