@@ -33,5 +33,5 @@
 
 
 {% for provider in oauth_providers  %}
-		Login with <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:"-"|first|capfirst}}</a> </br>
+		Connect <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:"-"|first|capfirst}}</a> </br>
 {% endfor %}

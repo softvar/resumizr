@@ -1,15 +1,79 @@
 {% load mysplit %}
+{% load staticfiles %}
 <html>
 	<head>
 		<title>
 			Social auth test
 		</title>
+
+		<script src="{% static 'resumizr/js/jquery.js' %}"> </script>
+		<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+		<script type="text/javascript">
+
+		 $(function() {
+		$("#login-form").validate({
+    
+        // Specify the validation rules
+        rules: {
+            username: "required",
+            password: {
+                required: true,
+            },
+            
+        },
+        
+        // Specify the validation error messages
+        messages: {
+            username: "Please enter your first name",
+            password: {
+                required: "Please provide a password",
+            },
+        },
+        
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
+
+  });
+  
+
+
+
+
+		</script>
+
+
+
 	</head>
 	<body>
 		
 		{% for provider in oauth_providers  %}
 		Login with <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:'-'|first|capfirst}}</a> </br>
 		{% endfor %}
+
+		</br>
+		or Login with Resumizr  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <a href="/signup/username/">Signup with resumizr</a>
+
+		<form method="post" action="/resumizr-login/username/" id="login-form">
+		{% csrf_token %}
+		{{ form.non_field_errors }}
+
+   			 <div class="fieldWrapper">
+		       <label for="username">username</label>		   
+		        {{ form.username }} 
+		        {{ form.username.errors }}
+		    </div>
+
+		    <div class="fieldWrapper">
+		      <label for="password">password</label>
+		        {{ form.password }}  {{ form.password.errors }}
+		    </div>
+
+    		<p><input type="submit" value="Login"/></p>
+
+
+		</form>
 		
 	</body>
 </html>

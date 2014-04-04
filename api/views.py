@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import logout as auth_logout, login as auth_login, REDIRECT_FIELD_NAME
+from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.conf import settings
 from social.apps.django_app.utils import strategy
 from social.actions import do_complete
@@ -17,7 +17,7 @@ import json
 
 sys.path.append('../..')
 
-from lib.forms import RegisterationForm
+from lib.forms import RegisterationForm , LoginForm
 
 import datetime
 
@@ -35,13 +35,10 @@ def home(request):
         return redirect('login')
 
 
-def signup_redirect(request):
-    return redirect('signup')
-
-
 @strategy('social:complete')
 def signup(request, backend, *args, **kwargs):
     ''' registeration form '''
+    redirect_loggedin_users(request)
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
 
@@ -54,6 +51,7 @@ def signup(request, backend, *args, **kwargs):
                 form.errors['__all__'] = 'you have entered wrong username/password'
 
     else:
+
         form = RegisterationForm()  # An unbound form
 
     return render(request, 'register.html', {
@@ -66,7 +64,32 @@ def login(request):
     if request.user.is_authenticated():
         return redirect('app')
     else:
-        return render(request, 'social_auth.html', {'oauth_providers': backends})
+        form = LoginForm()
+        return render(request, 'social_auth.html', {'oauth_providers': backends , 'form' : form})
+
+@strategy('social:complete')
+def username_login(request, backend, *args, **kwargs):
+    ''' login form processing'''
+    redirect_loggedin_users(request)   
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+
+            try:
+                return do_complete(request.social_strategy, lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user)
+
+            except exceptions.AuthException:
+                form.errors['__all__'] = 'you have entered wrong username/password'
+
+    else:
+
+        form = LoginForm()  # An unbound form
+
+    return render(request, 'social_auth.html', {'oauth_providers': backends , 'form' : form})
+
+
+
 
 
 def logout(request):
@@ -92,11 +115,21 @@ def app(request):
     return render(request, 'app.html', {'user': request.user, 'oauth_providers': oauth_providers})
 
 
-''' user auth API '''
 
+
+# helper functions
+
+def redirect_loggedin_users(request):
+    ''' redirects the logged in user to home page '''
+    if request.user.is_authenticated():
+        return redirect('app')
+
+
+
+# user auth API 
 
 def username_availability(request, username):
-    # available username
+    ''' checks availability of username '''
     users = User.objects.filter(username=username).count()
     if users == 0:
         available = True
