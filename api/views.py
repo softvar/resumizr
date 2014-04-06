@@ -44,7 +44,13 @@ def signup(request, backend, *args, **kwargs):
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
 
-        if form.is_valid():
+        users = User.objects.filter(email=request.POST['email']).count()
+
+        if(users > 0):
+            form.errors['email'] = 'this email id is already taken did you <a href="/forgot-password/">forgot</a> password'
+
+
+        elif form.is_valid():
 
             try:
                 return do_complete(request.social_strategy, lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user)
@@ -66,7 +72,13 @@ def validation_sent(request):
         'email': request.session.get('email_validation_address')
     })
 
-
+def password_reset_middleware(request):
+    ''' password change middlware '''
+    #redirect if users is logged in
+    if request.user.is_authenticated():
+        return redirect('app')
+    else:
+        return redirect('/users/password/reset')
 
 
 def login(request):

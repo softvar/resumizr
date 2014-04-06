@@ -15,6 +15,17 @@ urlpatterns = patterns('',
     # username verifier : used by ajax
     url(r'^usernames/(?P<username>\w+)/$','api.views.username_availability',name='username_availability'),
 
+    # forget password implementation
+    url(r'^forgot-password/$','api.views.password_reset_middleware', name='forgot_password'),
+
+    url(r'^users/password/reset/$', 'django.contrib.auth.views.password_reset', 
+        {'post_reset_redirect' : '/users/password/reset/done/'}),
+    url(r'^users/password/reset/done/$', 'django.contrib.auth.views.password_reset_done'),
+    url(r'^users/password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', 
+        {'post_reset_redirect' : '/users/password/done/'}),
+    url(r'^users/password/done/$', 'django.contrib.auth.views.password_reset_complete'),
+
+
     url(r'^$', 'api.views.home',name='home'),
     url(r'^signup/(?P<backend>[^/]+)/$', 'api.views.signup', name='signup'),
     url(r'^signup/$' , RedirectView.as_view(url='/signup/username/')),

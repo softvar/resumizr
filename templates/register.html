@@ -69,6 +69,9 @@
 		</script>
 	</head>
 	<body>
+
+    <h3> signup </h3>  <a href="/forgot-password">forgot password </a>
+    <br>
 		
 		<form method="post" action="/signup/username/" id="signup-form">
 		{% csrf_token %}
@@ -76,7 +79,7 @@
 
    			 <div class="fieldWrapper">
         		<label for="id_email">email-id</label>
-        		{{ form.email }}   {{ form.email.errors }}
+        		{{ form.email }}   {{ form.email.errors |safe }}
     		</div>
 
 		    <div class="fieldWrapper">
