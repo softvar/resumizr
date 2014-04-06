@@ -343,10 +343,10 @@ if not DEBUG:
         'ENGINE': 'django_mongodb_engine', 
         'NAME': 'resumizr',                      
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'mongodb://resumizr:bholavarun@troup.mongohq.com:10071/resumizr', 
-        'PORT': '',                      # Set to empty string for default.
+        'USER': 'resumizr',
+        'PASSWORD': 'bholavarun',
+        'HOST': 'mongodb://troup.mongohq.com/resumizr', 
+        'PORT': '10071',                      # Set to empty string for default.
     }
     }
 
