@@ -17,7 +17,7 @@ import json
 
 sys.path.append('../..')
 
-from lib.forms import RegisterationForm , LoginForm
+from modules.forms import RegisterationForm , LoginForm
 
 import datetime
 

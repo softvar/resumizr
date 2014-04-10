@@ -10,7 +10,7 @@ PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-LIB_PATH = os.path.join(PROJECT_PATH,'lib')
+MODULES_PATH = os.path.join(PROJECT_PATH,'modules')
 
 if os.environ.get('DEVELOPMENT', None) == 'YES':
     DEBUG= True
