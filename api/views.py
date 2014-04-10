@@ -87,7 +87,7 @@ def login(request):
         return redirect('app')
     else:
         form = LoginForm()
-        return render(request, 'social_auth.html', {'oauth_providers': backends , 'form' : form})
+        return render(request, 'login.html', {'oauth_providers': backends , 'form' : form})
 
 @strategy('social:complete')
 def username_login(request, backend, *args, **kwargs):
@@ -98,7 +98,15 @@ def username_login(request, backend, *args, **kwargs):
     if request.method == 'POST':
         form = LoginForm(request.POST)
 
-        if form.is_valid():
+        
+        users = User.objects.filter(username=request.POST['username']).count()
+
+        if(users == 0):
+            form.errors['__all__'] = 'you have entered wrong username/password'
+
+
+
+        elif form.is_valid():
 
             try:
                 return do_complete(request.social_strategy, lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user)
@@ -110,7 +118,7 @@ def username_login(request, backend, *args, **kwargs):
 
         form = LoginForm()  # An unbound form
 
-    return render(request, 'social_auth.html', {'form' : form})
+    return render(request, 'login.html', {'form' : form})
 
 
 
