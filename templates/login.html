@@ -1,52 +1,88 @@
 {% load mysplit %}
-{% load staticfiles %}
-<html>
-	<head>
-		<title>
-			Social auth test
-		</title>
-
-		<script src="{% static 'resumizr/js/jquery.js' %}"> </script>
-		<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+{% include "header.html" with title="Welcome to Resumizr" %}
+<body>
+<div id="wrapper">
+	<div id="main">
+	
 		<script type="text/javascript">
 
-		 $(function() {
-		$("#login-form").validate({
+		$(function() {
+			$("#login-form").validate({
     
-        // Specify the validation rules
-        rules: {
-            username: "required",
-            password: {
-                required: true,
-            },
-            
-        },
-        
-        // Specify the validation error messages
-        messages: {
-            username: "Please enter your first name",
-            password: {
-                required: "Please provide a password",
-            },
-        },
-        
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
+		        // Specify the validation rules
+		        rules: {
+		            username: "required",
+		            password: {
+		                required: true,
+		            },
+		            
+		        },
+		        
+		        // Specify the validation error messages
+		        messages: {
+		            username: "Please enter your first name",
+		            password: {
+		                required: "Please provide a password",
+		            },
+		        },
+		        
+		        submitHandler: function(form) {
+		            form.submit();
+		        }
+		    });
 
-  });
-  
-
-
-
-
+  		});
 		</script>
+  		
+  		<div class="nav-bar">
+		<h1> resumizr </h1>
+		</div>
+		
+		<div class="ui inverted divider"></div>
+
+
+<div class="ui two column middle aligned relaxed grid basic segment">
+  <div class="column">
+    <div class="ui form segment">
+      <div class="field">
+        <label>Username</label>
+        <div class="ui left labeled icon input">
+          <input type="text" placeholder="Username">
+          <i class="user icon"></i>
+          <div class="ui corner label">
+            <i class="asterisk icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="ui left labeled icon input">
+          <input type="password">
+          <i class="lock icon"></i>
+          <div class="ui corner label">
+            <i class="asterisk icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="ui green submit button">Login</div>
+    </div>
+  </div>
+  <div class="ui vertical divider">
+    Or
+  </div>
+  <div class="center aligned column">
+    <div class="huge blue ui labeled icon button">
+      <i class="signup icon"></i>
+      Sign Up
+    </div>
+  </div>
+</div>
 
 
 
-	</head>
-	<body>
+
+
+
 		
 		{% for provider in oauth_providers  %}
 		Login with <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:'-'|first|capfirst}}</a> </br>
@@ -74,6 +110,10 @@
 
 
 		</form>
-		
+	</div>
+</div>
+
+{% include "footer.html" %}
+
 	</body>
 </html>
