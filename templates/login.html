@@ -1,53 +1,63 @@
 {% load mysplit %}
+{% load staticfiles %}
 {% include "header.html" with title="Welcome to Resumizr" %}
 <body>
 <div id="wrapper">
 	<div id="main">
 	
-		<script type="text/javascript">
-
-		$(function() {
-			$("#login-form").validate({
-    
-		        // Specify the validation rules
-		        rules: {
-		            username: "required",
-		            password: {
-		                required: true,
-		            },
-		            
-		        },
-		        
-		        // Specify the validation error messages
-		        messages: {
-		            username: "Please enter your first name",
-		            password: {
-		                required: "Please provide a password",
-		            },
-		        },
-		        
-		        submitHandler: function(form) {
-		            form.submit();
-		        }
-		    });
-
-  		});
-		</script>
+		<script type="text/javascript" src="{% static 'resumizr/js/login-form-validate.js' %}"></script>
   		
   		<div class="nav-bar">
-		<h1> resumizr </h1>
+		<h1> Resumizr </h1>
 		</div>
 		
 		<div class="ui inverted divider"></div>
 
 
 <div class="ui two column middle aligned relaxed grid basic segment">
-  <div class="column">
-    <div class="ui form segment">
+<div class="column">
+
+<h1 class="ui purple header">
+  Login
+</h1>
+
+
+<div id="social-login-list" class="ui horizontal list">
+{% for provider in oauth_providers  %}
+		
+		<div class="item">
+    		<a href="{% url 'social:begin' provider %}"> 
+    		<img class="ui mini image" src="{% static 'resumizr/images/'%}{{ provider|mysplit:'-'|first }}.png">
+    		</a>
+  		</div>
+
+{% endfor %}
+
+</div>
+
+
+<form method="post" action="/resumizr-login/username/" id="login-form"> 
+		{% csrf_token %}
+
+	{% if form.non_field_errors %}
+	<div class="ui error message">
+		<div class="header">Action Forbidden</div>	
+		
+		<li>
+		{{ form.non_field_errors}}
+		</li>
+			
+	</div>
+	{% endif %}
+    
+    <div class="ui warning form segment">
       <div class="field">
         <label>Username</label>
         <div class="ui left labeled icon input">
-          <input type="text" placeholder="Username">
+        	<div class="ui error message">
+    		<p> {{ form.username.errors }} </p>
+  			</div>
+          {{ form.username }} 
           <i class="user icon"></i>
           <div class="ui corner label">
             <i class="asterisk icon"></i>
@@ -57,60 +67,38 @@
       <div class="field">
         <label>Password</label>
         <div class="ui left labeled icon input">
-          <input type="password">
+        <div class="ui error message">
+    		<p> {{ form.password.errors }} </p>
+  		</div>
+          {{ form.password }}
           <i class="lock icon"></i>
           <div class="ui corner label">
             <i class="asterisk icon"></i>
           </div>
         </div>
       </div>
-      <div class="ui green submit button">Login</div>
+      <button type="submit" class="ui green submit button">Login</button>
     </div>
   </div>
+  </form> 
+
+
   <div class="ui vertical divider">
     Or
   </div>
+
   <div class="center aligned column">
-    <div class="huge blue ui labeled icon button">
+  <a href="/signup/username/">
+    <div class="huge orange ui labeled icon button">
       <i class="signup icon"></i>
       Sign Up
     </div>
+  </a>
   </div>
 </div>
 
 
-
-
-
-
-		
-		{% for provider in oauth_providers  %}
-		Login with <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:'-'|first|capfirst}}</a> </br>
-		{% endfor %}
-
-		</br>
-		or Login with Resumizr  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <a href="/signup/username/">Signup with resumizr</a>
-
-		<form method="post" action="/resumizr-login/username/" id="login-form">
-		{% csrf_token %}
-		{{ form.non_field_errors }}
-
-   			 <div class="fieldWrapper">
-		       <label for="username">username</label>		   
-		        {{ form.username }} 
-		        {{ form.username.errors }}
-		    </div>
-
-		    <div class="fieldWrapper">
-		      <label for="password">password</label>
-		        {{ form.password }}  {{ form.password.errors }}
-		    </div>
-
-    		<p><input type="submit" value="Login"/></p>
-
-
-		</form>
-	</div>
+</div>
 </div>
 
 {% include "footer.html" %}
