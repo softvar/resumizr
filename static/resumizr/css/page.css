@@ -96,3 +96,22 @@ body:before {
 .nav-bar h1 {
 	font-size:3em;
 }
+
+
+.form-container {
+	width:50%;
+	margin-right: auto;
+	margin-left:auto;
+}
+
+.sub-title {
+font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+font-size: 2.1em;
+color: #564f8a;
+padding-bottom: 10px;
+}
+
+.forgot-password a:active , .forgot-password a:visited , .forgot-password a:link{
+	color:#bb0a43;
+	 text-decoration: none;
+}
