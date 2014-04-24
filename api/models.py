@@ -12,7 +12,7 @@ USER_MODEL = getattr(settings, setting_name('USER_MODEL'), None) or \
 class ResumizrUserData(models.Model):
 
     ''' misc data for resumizr '''
-    user = models.ForeignKey(USER_MODEL, related_name='resumizr_data')
+    user = models.OneToOneField(USER_MODEL, related_name='resumizr_data')
     detailed_social_data = DictField()
     subscribers = ListField()
     following = ListField()

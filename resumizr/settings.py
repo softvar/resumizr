@@ -302,7 +302,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday', 'user_about_me' , 'user_education_history','user_likes','user_interests']
+
+
 SOCIAL_AUTH_GITHUB_SCOPE = ['user']
 
 

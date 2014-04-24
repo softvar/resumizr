@@ -15,6 +15,9 @@ urlpatterns = patterns('',
     # username verifier : used by ajax
     url(r'^usernames/(?P<username>\w+)/$','api.views.username_availability',name='username_availability'),
 
+    # api test
+    url(r'^fb-graph-test/$','api.views.fb_graph_test'),
+
     # forget password implementation
     url(r'^forgot-password/$','api.views.password_reset_middleware', name='forgot_password'),
 

@@ -11,6 +11,9 @@ from social.apps.django_app.utils import strategy
 from social.actions import do_complete
 from social.backends import username
 from social import exceptions
+from api.models import ResumizrUserData
+from django.core.exceptions import ObjectDoesNotExist
+import requests
 
 
 import json
@@ -134,6 +137,15 @@ def logout(request):
 def app(request):
     """Login complete view, displays user data"""
 
+    # checking if user has resumizr_data object and creating if it doesnt exists
+    try:
+        request.user.resumizr_data
+    except ObjectDoesNotExist:
+        request.user.resumizr_data = ResumizrUserData(user = request.user)
+        request.user.resumizr_data.save()
+    
+
+
     # list of associated user auth
     associated_providers = [
         oauth.provider for oauth in request.user.social_auth.all()]
@@ -149,9 +161,8 @@ def app(request):
 
 
 
+
 # helper functions
-
-
 
 
 
@@ -165,3 +176,25 @@ def username_availability(request, username):
     else:
         available = False
     return HttpResponse(json.dumps({'available': available}), content_type="application/json")
+
+
+
+
+
+# api test
+@login_required
+def fb_graph_test(request):
+    fb_access_token = request.user.social_auth.get(provider='facebook').extra_data['access_token']
+
+    if not fb_access_token:
+        return HttpResponse('facebook access token not available', mimetype='application/text')
+
+    else :
+        payload = {'access_token':fb_access_token}
+        r = requests.get('https://graph.facebook.com/me/',params=payload)
+        request.user.resumizr_data.detailed_social_data['facebook'] = r.json()
+        request.user.resumizr_data.save()
+        return HttpResponse(r.text,mimetype='application/json')
+
+    
+
