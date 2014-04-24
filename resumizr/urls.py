@@ -17,6 +17,8 @@ urlpatterns = patterns('',
 
     # api test
     url(r'^fb-graph-test/$','api.views.fb_graph_test'),
+    url(r'^github-api-test/$','api.views.github_api_test'),
+    url(r'^linkedin-api-test/$','api.views.linkedin_api_test'),
 
     # forget password implementation
     url(r'^forgot-password/$','api.views.password_reset_middleware', name='forgot_password'),

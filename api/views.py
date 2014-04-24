@@ -196,5 +196,53 @@ def fb_graph_test(request):
         request.user.resumizr_data.save()
         return HttpResponse(r.text,mimetype='application/json')
 
+
+
+@login_required
+def github_api_test(request):
+    
+    try:
+        github_access_token = request.user.social_auth.get(provider='github').extra_data['access_token']
+
+    except ObjectDoesNotExist:
+        return HttpResponse('github access token not available', mimetype='text/plain')
+    
+    if not github_access_token:
+        return HttpResponse('github access token not available', mimetype='text/plain')
+
+    else :
+        payload = {'access_token':github_access_token}
+        r = requests.get('https://api.github.com/user',params=payload)
+        request.user.resumizr_data.detailed_social_data['github'] = r.json()
+
+        r_repos = requests.get('https://api.github.com/users/psych0der/repos')
+        #print r_repos.json()
+
+        request.user.resumizr_data.detailed_social_data['github']['repos'] = r_repos.json()
+
+
+        request.user.resumizr_data.save()
+        return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data['github']),mimetype='application/json')
+
+
+@login_required
+def linkedin_api_test(request):
+    
+    try:
+        linkedin_access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
+
+    except ObjectDoesNotExist:
+        return HttpResponse('linkedin access token not available', mimetype='text/plain')
+    
+    if not linkedin_access_token:
+        return HttpResponse('linkedin access token not available', mimetype='text/plain')
+
+    else :
+        payload = {'oauth2_access_token':linkedin_access_token ,'format':'json'}
+        r = requests.get('https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)',params=payload)
+        request.user.resumizr_data.detailed_social_data['linkedin'] = r.json()
+        request.user.resumizr_data.save()
+        return HttpResponse(r.text,mimetype='application/json')
+
     
 
