@@ -177,7 +177,60 @@ def username_availability(request, username):
         available = False
     return HttpResponse(json.dumps({'available': available}), content_type="application/json")
 
+def refresh_social_data(request , backend) :
+    ''' refreshes social data of particular backend and returns json '''
+    access_token = None
+    url = None
+    payload = {}
 
+    try:
+        if backend == 'facebook':
+            access_token = request.user.social_auth.get(provider='facebook').extra_data['access_token']
+            url = 'https://graph.facebook.com/me/'
+            payload = {'access_token':access_token}
+
+        elif backend == 'github':
+            access_token = request.user.social_auth.get(provider='github').extra_data['access_token']
+            url = 'https://api.github.com/user'
+            payload = {'access_token':access_token}
+
+        elif backend == 'linkedin':
+            access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
+            url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)'
+            payload = {'oauth2_access_token':linkedin_access_token ,'format':'json'}
+
+        else :
+            return HttpResponse('Error : Invalid backend entered', mimetype='text/plain')
+
+
+    except ObjectDoesNotExist:
+        return HttpResponse('Error : Access token not available for '+backend, mimetype='text/plain')
+
+
+
+    # making api call to corresponding social data vendor
+    r = requests.get(url,params=payload)
+
+    request.user.resumizr_data.detailed_social_data[backend] = r.json()
+
+    if backend == 'github' :
+        r_repos = requests.get(r.json()['repos_url'],params = payload)
+        request.user.resumizr_data.detailed_social_data['github']['repos'] = r_repos.json()
+
+
+    # saving the data
+    request.user.resumizr_data.save()
+
+    return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
+
+
+def fetch_social_data(request , backend) :
+    ''' fetches social data of particular backend from database and returns json '''
+
+    try :    
+        return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
+    except:
+        return HttpResponse('Error : Access token not available for '+backend, mimetype='text/plain')
 
 
 
@@ -222,7 +275,7 @@ def github_api_test(request):
 
 
         request.user.resumizr_data.save()
-        return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data['github']),mimetype='application/json')
+        return HttpResponse(r.text,mimetype='application/json')
 
 
 @login_required
