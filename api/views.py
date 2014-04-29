@@ -157,3 +157,25 @@ def username_availability(request, username):
     else:
         available = False
     return HttpResponse(json.dumps({'available': available}), content_type="application/json")
+
+def generateForm(request):
+    if request.method == 'POST':
+        sectionHeading = request.POST.getlist("heading","")
+        sectionContent = request.POST.getlist("content","")
+        headingStatus =[]
+        contentStatus = []
+
+        # calculating sentimental analysis of each heading
+        for eachHeading in sectionHeading:
+            testimonial = TextBlob(str(eachHeading))
+            headingStatus.append(testimonial.sentiment.polarity)
+
+        # calculating sa of each content
+        for eachContent in sectionContent:
+            testimonial = TextBlob(str(eachContent))
+            contentStatus.append(testimonial.sentiment.polarity)
+
+        contextRender = {'headingStatus':headingStatus,'contentStatus':contentStatus}
+        return render(request, 'cv/generateform.html',contextRender)
+    else:
+        return render(request, 'cv/generateform.html',{})
