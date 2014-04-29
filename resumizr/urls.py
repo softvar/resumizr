@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     url(r'^logout/$','api.views.logout', name='logout'),
     url(r'^app/$','api.views.app',name='app'),
     url(r'^admin/', include(admin.site.urls)),
-    
+    url(r'^generate/cvform/$','api.views.generateForm',name='generateform'),
 )
 
 #development media server
