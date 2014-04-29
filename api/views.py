@@ -47,10 +47,14 @@ def signup(request, backend, *args, **kwargs):
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
 
-        users = User.objects.filter(email=request.POST['email']).count()
-
-        if(users > 0):
+        homo_emails = User.objects.filter(email=request.POST['email']).count()
+        homo_usernames = User.objects.filter(username = request.POST['username']).count()
+        
+        if(homo_emails > 0):
             form.errors['email'] = 'this email id is already taken did you <a href="/forgot-password/">forgot</a> password'
+
+        elif(homo_usernames > 0):
+            form.errors['username'] = 'this username is not available'
 
 
         elif form.is_valid():
@@ -60,6 +64,11 @@ def signup(request, backend, *args, **kwargs):
 
             except exceptions.AuthException:
                 form.errors['__all__'] = 'you have entered wrong username/password'
+
+    
+        else :
+            print 'got error !!!'
+            print form.errors.keys()
 
     else:
 
@@ -105,7 +114,7 @@ def username_login(request, backend, *args, **kwargs):
         users = User.objects.filter(username=request.POST['username']).count()
 
         if(users == 0):
-            form.errors['__all__'] = 'you have entered wrong username/password'
+            form.errors['__all__'] = 'There is no user with username: '+request.POST['username']
 
 
 
