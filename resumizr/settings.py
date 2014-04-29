@@ -10,7 +10,7 @@ PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-LIB_PATH = os.path.join(PROJECT_PATH,'lib')
+MODULES_PATH = os.path.join(PROJECT_PATH,'modules')
 
 if os.environ.get('DEVELOPMENT', None) == 'YES':
     DEBUG= True
@@ -302,8 +302,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday']
-SOCIAL_AUTH_GITHUB_SCOPE = ['user']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_birthday', 'user_about_me' , 'user_education_history','user_likes','user_interests']
+
+
+SOCIAL_AUTH_GITHUB_SCOPE = ['user','public_repo']
 
 
 SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry','picture-url']

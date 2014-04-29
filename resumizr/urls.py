@@ -12,8 +12,15 @@ urlpatterns = patterns('',
 
     url(r'', include('social.apps.django_app.urls', namespace='social')),
     
-    # username verifier : used by ajax
+    # API
     url(r'^usernames/(?P<username>\w+)/$','api.views.username_availability',name='username_availability'),
+    url(r'^users/social-data/(?P<backend>\w+)/$','api.views.fetch_social_data',name='fetch_social_data'),
+    url(r'^users/refresh-social-data/(?P<backend>\w+)/$','api.views.refresh_social_data',name='refresh_social_data'),
+
+    # test api
+    url(r'^fb-graph-test/$','api.views.fb_graph_test'),
+    url(r'^github-api-test/$','api.views.github_api_test'),
+    url(r'^linkedin-api-test/$','api.views.linkedin_api_test'),
 
     # forget password implementation
     url(r'^forgot-password/$','api.views.password_reset_middleware', name='forgot_password'),

@@ -11,13 +11,16 @@ from social.apps.django_app.utils import strategy
 from social.actions import do_complete
 from social.backends import username
 from social import exceptions
+from api.models import ResumizrUserData
+from django.core.exceptions import ObjectDoesNotExist
+import requests
 
 
 import json
 
 sys.path.append('../..')
 
-from lib.forms import RegisterationForm , LoginForm
+from modules.forms import RegisterationForm , LoginForm
 
 import datetime
 
@@ -44,10 +47,14 @@ def signup(request, backend, *args, **kwargs):
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
 
-        users = User.objects.filter(email=request.POST['email']).count()
-
-        if(users > 0):
+        homo_emails = User.objects.filter(email=request.POST['email']).count()
+        homo_usernames = User.objects.filter(username = request.POST['username']).count()
+        
+        if(homo_emails > 0):
             form.errors['email'] = 'this email id is already taken did you <a href="/forgot-password/">forgot</a> password'
+
+        elif(homo_usernames > 0):
+            form.errors['username'] = 'this username is not available'
 
 
         elif form.is_valid():
@@ -57,6 +64,11 @@ def signup(request, backend, *args, **kwargs):
 
             except exceptions.AuthException:
                 form.errors['__all__'] = 'you have entered wrong username/password'
+
+    
+        else :
+            print 'got error !!!'
+            print form.errors.keys()
 
     else:
 
@@ -87,7 +99,7 @@ def login(request):
         return redirect('app')
     else:
         form = LoginForm()
-        return render(request, 'social_auth.html', {'oauth_providers': backends , 'form' : form})
+        return render(request, 'login.html', {'oauth_providers': backends , 'form' : form})
 
 @strategy('social:complete')
 def username_login(request, backend, *args, **kwargs):
@@ -98,7 +110,15 @@ def username_login(request, backend, *args, **kwargs):
     if request.method == 'POST':
         form = LoginForm(request.POST)
 
-        if form.is_valid():
+        
+        users = User.objects.filter(username=request.POST['username']).count()
+
+        if(users == 0):
+            form.errors['__all__'] = 'There is no user with username: '+request.POST['username']
+
+
+
+        elif form.is_valid():
 
             try:
                 return do_complete(request.social_strategy, lambda strategy, user, social_user=None: auth_login(strategy.request, user), request.user)
@@ -110,7 +130,7 @@ def username_login(request, backend, *args, **kwargs):
 
         form = LoginForm()  # An unbound form
 
-    return render(request, 'social_auth.html', {'form' : form})
+    return render(request, 'login.html', {'form' : form})
 
 
 
@@ -125,6 +145,15 @@ def logout(request):
 @login_required
 def app(request):
     """Login complete view, displays user data"""
+
+    # checking if user has resumizr_data object and creating if it doesnt exists
+    try:
+        request.user.resumizr_data
+    except ObjectDoesNotExist:
+        request.user.resumizr_data = ResumizrUserData(user = request.user)
+        request.user.resumizr_data.save()
+    
+
 
     # list of associated user auth
     associated_providers = [
@@ -141,24 +170,9 @@ def app(request):
 
 
 
-# helper functions
-
-
-
-
-
-# user auth API 
-
-def username_availability(request, username):
-    ''' checks availability of username '''
-    users = User.objects.filter(username=username).count()
-    if users == 0:
-        available = True
-    else:
-        available = False
-    return HttpResponse(json.dumps({'available': available}), content_type="application/json")
 
 def generateForm(request):
+    ''' resume form rendere '''
     if request.method == 'POST':
         sectionHeading = request.POST.getlist("heading","")
         sectionContent = request.POST.getlist("content","")
@@ -179,3 +193,141 @@ def generateForm(request):
         return render(request, 'cv/generateform.html',contextRender)
     else:
         return render(request, 'cv/generateform.html',{})
+
+
+# helper functions
+
+
+
+# user auth API 
+
+def username_availability(request, username):
+    ''' checks availability of username '''
+    users = User.objects.filter(username=username).count()
+    if users == 0:
+        available = True
+    else:
+        available = False
+    return HttpResponse(json.dumps({'available': available}), content_type="application/json")
+
+
+def refresh_social_data(request , backend) :
+    ''' refreshes social data of particular backend and returns json '''
+    access_token = None
+    url = None
+    payload = {}
+
+    try:
+        if backend == 'facebook':
+            access_token = request.user.social_auth.get(provider='facebook').extra_data['access_token']
+            url = 'https://graph.facebook.com/me/'
+            payload = {'access_token':access_token}
+
+        elif backend == 'github':
+            access_token = request.user.social_auth.get(provider='github').extra_data['access_token']
+            url = 'https://api.github.com/user'
+            payload = {'access_token':access_token}
+
+        elif backend == 'linkedin':
+            access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
+            url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)'
+            payload = {'oauth2_access_token':linkedin_access_token ,'format':'json'}
+
+        else :
+            return HttpResponse('Error : Invalid backend entered', mimetype='text/plain')
+
+
+    except ObjectDoesNotExist:
+        return HttpResponse('Error : Access token not available for '+backend, mimetype='text/plain')
+
+
+
+    # making api call to corresponding social data vendor
+    r = requests.get(url,params=payload)
+
+    request.user.resumizr_data.detailed_social_data[backend] = r.json()
+
+    if backend == 'github' :
+        r_repos = requests.get(r.json()['repos_url'],params = payload)
+        request.user.resumizr_data.detailed_social_data['github']['repos'] = r_repos.json()
+
+
+    # saving the data
+    request.user.resumizr_data.save()
+
+    return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
+
+
+def fetch_social_data(request , backend) :
+    ''' fetches social data of particular backend from database and returns json '''
+
+    try :    
+        return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
+    except:
+        return HttpResponse('Error : Access token not available for '+backend, mimetype='text/plain')
+
+
+
+# api test
+@login_required
+def fb_graph_test(request):
+    fb_access_token = request.user.social_auth.get(provider='facebook').extra_data['access_token']
+
+    if not fb_access_token:
+        return HttpResponse('facebook access token not available', mimetype='application/text')
+
+    else :
+        payload = {'access_token':fb_access_token}
+        r = requests.get('https://graph.facebook.com/me/',params=payload)
+        request.user.resumizr_data.detailed_social_data['facebook'] = r.json()
+        request.user.resumizr_data.save()
+        return HttpResponse(r.text,mimetype='application/json')
+
+
+
+@login_required
+def github_api_test(request):
+    
+    try:
+        github_access_token = request.user.social_auth.get(provider='github').extra_data['access_token']
+
+    except ObjectDoesNotExist:
+        return HttpResponse('github access token not available', mimetype='text/plain')
+    
+    if not github_access_token:
+        return HttpResponse('github access token not available', mimetype='text/plain')
+
+    else :
+        payload = {'access_token':github_access_token}
+        r = requests.get('https://api.github.com/user',params=payload)
+        request.user.resumizr_data.detailed_social_data['github'] = r.json()
+
+        r_repos = requests.get('https://api.github.com/users/psych0der/repos')
+        #print r_repos.json()
+
+        request.user.resumizr_data.detailed_social_data['github']['repos'] = r_repos.json()
+
+
+        request.user.resumizr_data.save()
+        return HttpResponse(r.text,mimetype='application/json')
+
+
+@login_required
+def linkedin_api_test(request):
+    
+    try:
+        linkedin_access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
+
+    except ObjectDoesNotExist:
+        return HttpResponse('linkedin access token not available', mimetype='text/plain')
+    
+    if not linkedin_access_token:
+        return HttpResponse('linkedin access token not available', mimetype='text/plain')
+
+    else :
+        payload = {'oauth2_access_token':linkedin_access_token ,'format':'json'}
+        r = requests.get('https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)',params=payload)
+        request.user.resumizr_data.detailed_social_data['linkedin'] = r.json()
+        request.user.resumizr_data.save()
+        return HttpResponse(r.text,mimetype='application/json')
+
