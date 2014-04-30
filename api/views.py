@@ -263,8 +263,9 @@ def fetch_social_data(request , backend) :
 
     try :    
         return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
+
     except:
-        return HttpResponse('Error : Access token not available for '+backend, mimetype='text/plain')
+        return HttpResponse('Error : Unable to access data for '+backend, mimetype='text/plain')
 
 
 

@@ -116,7 +116,9 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -151,6 +153,7 @@ INSTALLED_APPS = (
     'django_mongodb_engine',
     'django.contrib.admin',
     'api',
+    'corsheaders',
     'social.apps.django_app.default'
    
     # Uncomment the next line to enable admin documentation:

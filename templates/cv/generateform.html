@@ -5,151 +5,25 @@
 		<title>Resumizr</title>
 		{% load staticfiles %}
 		
+		<!-- google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
 		<link rel="stylesheet" href="{% static 'resumizr/css/bootstrap.min.css' %}">
 		<script src="{% static 'resumizr/js/angular.min.js' %}"></script>
 		<script src="{% static 'resumizr/js/jquery.min.js' %}"></script>
 		<script src="{% static 'resumizr/js/jquery-ui.min.js' %}"></script>
 		<script src="{% static 'resumizr/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'resumizr/js/ajax-load.js' %}"></script>
 		<link href="{% static  'resumizr/css/font-awesome.min.css' %}" rel="stylesheet">
+		<link href="{% static  'resumizr/css/resume-form.css' %}" rel="stylesheet">
+
+
 		
-		<style type="text/css">
-
-			#createForm {
-				background: #DEDEDE;
-			}
-			/* custom inclusion of right, left and below tabs */
-
-.tabs-below > .nav-tabs,
-.tabs-right > .nav-tabs,
-.tabs-left > .nav-tabs {
-  border-bottom: 0;
-}
-
-.tab-content > .tab-pane,
-.pill-content > .pill-pane {
-  display: none;
-}
-
-.tab-content > .active,
-.pill-content > .active {
-  display: block;
-}
-
-.tabs-below > .nav-tabs {
-  border-top: 1px solid #ddd;
-}
-
-.tabs-below > .nav-tabs > li {
-  margin-top: -1px;
-  margin-bottom: 0;
-}
-
-.tabs-below > .nav-tabs > li > a {
-  -webkit-border-radius: 0 0 4px 4px;
-     -moz-border-radius: 0 0 4px 4px;
-          border-radius: 0 0 4px 4px;
-}
-
-.tabs-below > .nav-tabs > li > a:hover,
-.tabs-below > .nav-tabs > li > a:focus {
-  border-top-color: #ddd;
-  border-bottom-color: transparent;
-}
-
-.tabs-below > .nav-tabs > .active > a,
-.tabs-below > .nav-tabs > .active > a:hover,
-.tabs-below > .nav-tabs > .active > a:focus {
-  border-color: transparent #ddd #ddd #ddd;
-}
-
-.tabs-left > .nav-tabs > li,
-.tabs-right > .nav-tabs > li {
-  float: none;
-}
-
-.tabs-left > .nav-tabs > li > a,
-.tabs-right > .nav-tabs > li > a {
-  min-width: 74px;
-  margin-right: 0;
-  margin-bottom: 3px;
-}
-
-.tabs-left > .nav-tabs {
-  float: left;
-  margin-right: 19px;
-  border-right: 1px solid #ddd;
-}
-
-.tabs-left > .nav-tabs > li > a {
-  margin-right: -1px;
-  -webkit-border-radius: 4px 0 0 4px;
-     -moz-border-radius: 4px 0 0 4px;
-          border-radius: 4px 0 0 4px;
-}
-
-.tabs-left > .nav-tabs > li > a:hover,
-.tabs-left > .nav-tabs > li > a:focus {
-  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
-}
-
-.tabs-left > .nav-tabs .active > a,
-.tabs-left > .nav-tabs .active > a:hover,
-.tabs-left > .nav-tabs .active > a:focus {
-  border-color: #ddd transparent #ddd #ddd;
-  *border-right-color: #ffffff;
-}
-
-.tabs-right > .nav-tabs {
-  float: right;
-  margin-left: 19px;
-  border-left: 1px solid #ddd;
-}
-
-.tabs-right > .nav-tabs > li > a {
-  margin-left: -1px;
-  -webkit-border-radius: 0 4px 4px 0;
-     -moz-border-radius: 0 4px 4px 0;
-          border-radius: 0 4px 4px 0;
-}
-
-.tabs-right > .nav-tabs > li > a:hover,
-.tabs-right > .nav-tabs > li > a:focus {
-  border-color: #eeeeee #eeeeee #eeeeee #dddddd;
-}
-
-.tabs-right > .nav-tabs .active > a,
-.tabs-right > .nav-tabs .active > a:hover,
-.tabs-right > .nav-tabs .active > a:focus {
-  border-color: #ddd #ddd #ddd transparent;
-  *border-left-color: #ffffff;
-}
-
-		</style>
-		 <style>
-  #sortable{ list-style-type: none;padding: 0; width: 272px;}
-  #sortable li { margin: 0 5px 5px 0px; padding: 5px; font-size: 1.2em; height: 1.5em; cursor: move; }
-  html>body #sortable li { height: 2em; line-height: 1.2em;}
-  .uis { width: 270px; height: 2em; line-height: 1.2em; background:#D9EDF7;
-  	border: 2px solid #347796; border-radius: 3px; }
-  </style>
-		<style type="text/css">
-			.container {
-				padding-top:5px;
-			}
-			.label--text.heading {
-				padding-top: 2px;
-				color: #333;
-				font-weight: bold;
-				font-size: 20px; 
-			}
-			.label--text.sub-heading {
-				color: #000;
-				font-weight: bold;
-				font-size: 16px; 
-			}
-		</style>
 	</head>
 	<body>
+<!-- ajax progress bar -->
+<div class="progress-bar"></div>
+<button class="refresh" id="refresh">Refresh Genius</button> 
 
 	<div class="container"> 
 
@@ -175,118 +49,155 @@
 		<div class="row">
 		  <div class="col-md-3">
 		  	<ul id="sortable">
-		  	  <li class="uis" href="#1" data-toggle="tab"><i style="color:#777" class="fa fa-arrows-v"></i> Basic Information</li>
-			  <li class="uis" href="#2" data-toggle="tab"><i style="color:#777" class="fa fa-arrows-v"></i> Work Experience</li>
-			  <li class="uis" href="#3" data-toggle="tab"><i style="color:#777" class="fa fa-arrows-v"></i> Education</li>
-			  <li class="uis" href="#4" data-toggle="tab"><i style="color:#777" class="fa fa-arrows-v"></i> Achievements</li>
+		  	  <section class="card"><li class="uis" href="#1" data-toggle="tab"><i style="color:gray" class="fa fa-user"></i> Basic Information</li></section>
+			   <section class="card"><li class="uis" href="#2" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Work Experience</li></section>
+			   <section class="card"><li class="uis" href="#3" data-toggle="tab"><i style="color:gray" class="fa fa-book"></i> Education</li></section>
+			   <section class="card"><li class="uis" href="#4" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
 			</ul>
 			<button class="btn btn-info add--section">Create a new Section</button>
 		  </div>
-		  <div class="col-md-9" style="border:1px solid #AAA;width:70%;height:500px;">
+		  <div class="col-md-9" style="width:70%;height:500px; margin-left:20px">
 		  	<div class="tab-content">
 				<div class="tab-pane active" id="1">
+				<div class="tab-header">
 					<label class="label--text heading">Basic information</label>
+				</div>
 					<span style="margin-left: 20px; color:#9accea">
+						<!-- temporarily disabled
 						<a href=""><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-text-height" data-toggle="modal" data-target="#myModal" title="Font-size"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-font" type="color" title="Color"></i></a>
 						<input type="color" class="fontSel" />
+						-->
 					</span>
-					<hr />
+					
 					<div class="row">
+						
 						<div class="col-md-6">
+						<div class="card">
 							<label class="label--text sub-heading">Full Name</label>
-						    <input type="text" class="form-control" placeholder="Eg: Varun Malhotra"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: Varun Malhotra"/>   
+						</div>
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Email Address</label>
-							<input type="email" class="form-control" placeholder="Eg: valid.mail@gmail.com"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: valid.mail@gmail.com"/>
+							</div>
 						</div>
+					
 					</div>
 					<br/>
 					<div class="row">
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Phone Number</label>
-						    <input type="text" class="form-control" placeholder="Eg: (+91) 99XXXXXX89"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: (+91) 99XXXXXX89"/>
+						    </div>
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Website</label>
-							<input type="email" class="form-control" placeholder="Eg: http://yourname.info"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: http://yourname.info"/>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="2">
 					<label class="label--text heading">Work Experience</label>
 					<span style="margin-left: 20px; color:#9accea">
+						<!-- temporarily disabled
 						<a href=""><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-font" title="Color"></i></a>
 						<input type="color" class="fontSel" />
 						<a href=""><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>
+						-->
 					</span>
 					<hr/>
 					<div class="row">
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Job Title</label>
-						    <input type="text" class="form-control" placeholder="Eg: Frontend Designer"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: Frontend Designer"/>
+							</div>
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Comapny Name</label>
-							<input type="email" class="form-control" placeholder="Eg: Resumizr"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: Resumizr"/>
+							</div>
 						</div>
 					</div>
 					<br/>
 					<div class="row">
 						<div class="col-md-6">
+						<div class="card">
 							<label class="label--text sub-heading">Start Date</label>
-						    <input type="text" class="form-control" placeholder="Eg: 14th May, 20xx"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th May, 20xx"/>
+						</div>
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">End date</label>
-							<input type="email" class="form-control" placeholder="Eg: 2nd July, 20xx"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd July, 20xx"/>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="3">
 					<label class="label--text heading">Education</label>
 					<span style="margin-left: 20px; color:#9accea">
+						<!-- temporarily disabled
 						<a href=""><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-font" title="Color"></i></a>
 						<input type="color" class="fontSel" />
 						<a href=""><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>
+						-->
 					</span>
 					<hr/>
 					<div class="row">
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Course Name</label>
-						    <input type="text" class="form-control" placeholder="Eg: B.Tech"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: B.Tech"/>
+						    </div>
+						    
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Institution Name</label>
-							<input type="email" class="form-control" placeholder="Eg: JIIT"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: JIIT"/>
+							</div>
 						</div>
 					</div>
 					<br/>
 					<div class="row">
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">Start Date</label>
-						    <input type="text" class="form-control" placeholder="Eg: 14th June, 20xx"/>
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th June, 20xx"/>
+						    </div>
 						</div>
 						<div class="col-md-6">
+							<div class="card">
 							<label class="label--text sub-heading">End date</label>
-							<input type="email" class="form-control" placeholder="Eg: 2nd may, 20xx"/>
+							<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd may, 20xx"/>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="4">
 					<label class="label--text heading">Achievements</label>
 					<span style="margin-left: 20px; color:#9accea">
+						<!-- temporarily disabled
 						<a href=""><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>
 						<a href=""><i class="fa fa-font" title="Color"></i></a>
 						<input type="color" class="fontSel" />
 						<a href=""><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>
+						-->
 					</span>
 					<hr/>
 				</div>
