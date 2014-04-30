@@ -285,13 +285,16 @@ def save_data(request):
         request.user.resumizr_data.save()
         return HttpResponse("OK")
     else:
-        HttpResponse("Not authorized.")
+        return HttpResponse("Not authorized.")
 
 
 
 @login_required
 def get_resume_data(request):
-     return HttpResponse(json.dumps(request.user.resumizr_data.resume_data['resume']),mimetype='application/json')
+    try :
+        return HttpResponse(json.dumps(request.user.resumizr_data.resume_data['resume']),mimetype='application/json')
+    except :
+        return HttpResponse('Error : No resumse data found')
 
 
 
