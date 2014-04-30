@@ -62,70 +62,91 @@ $(function () {
     
     $('.add-new-job').click(function () {
     	var newJobSection = '\
-    	<hr>\
-    	<div class="row">\
+    	<hr/>\
+		<div class="row">\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">Job Title</label>\
-			    <input type="text" class="form-control" placeholder="Eg: Frontend Designer"/>\
+			    <input type="text" class="form-control mod-text-box" placeholder="Eg: Frontend Designer"/>\
+				</div>\
 			</div>\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">Comapny Name</label>\
-				<input type="email" class="form-control" placeholder="Eg: Resumizr"/>\
+				<input type="email" class="form-control mod-text-box" placeholder="Eg: Resumizr"/>\
+				</div>\
 			</div>\
 		</div>\
 		<br/>\
 		<div class="row">\
 			<div class="col-md-6">\
+			<div class="card">\
 				<label class="label--text sub-heading">Start Date</label>\
-			    <input type="text" class="form-control" placeholder="Eg: 14th May, 20xx"/>\
+			    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th May, 20xx"/>\
+			</div>\
 			</div>\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">End date</label>\
-				<input type="email" class="form-control" placeholder="Eg: 2nd July, 20xx"/>\
+				<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd July, 20xx"/>\
+				</div>\
 			</div>\
 		</div>\
 		<br/>\
 		<div class="row">\
 			<div class="col-md-12">\
+				<div class="card">\
 				<label class="label--text sub-heading">Description</label>\
-				<textarea class="form-control" rows="2"></textarea>\
+				<textarea class="form-control mod-text-box" rows="2"></textarea>\
+				</div>\
 			</div>\
 		</div>\
-		<br />';
+		<br/>';
 		$('.add-new-job').before(newJobSection);
     });
 
-	$('.add-new-education').click(function () {
+	$('.add-new-education').click(function (){
 		var newEduSection = '\
-		<hr>\
+		<hr/>\
 		<div class="row">\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">Course Name</label>\
-			    <input type="text" class="form-control" placeholder="Eg: B.Tech"/>\
+			    <input type="text" class="form-control mod-text-box" placeholder="Eg: B.Tech"/>\
+			    </div>\
 			</div>\
 			<div class="col-md-6">\
-				<label class="label--text submit-form-heading">Institution Name</label>\
-				<input type="email" class="form-control" placeholder="Eg: JIIT"/>\
+				<div class="card">\
+				<label class="label--text sub-heading">Institution Name</label>\
+				<input type="email" class="form-control mod-text-box" placeholder="Eg: JIIT"/>\
+				</div>\
 			</div>\
 		</div>\
 		<br/>\
 		<div class="row">\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">Start Date</label>\
-			    <input type="text" class="form-control" placeholder="Eg: 14th June, 20xx"/>\
+			    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th June, 20xx"/>\
+			    </div>\
 			</div>\
 			<div class="col-md-6">\
+				<div class="card">\
 				<label class="label--text sub-heading">End date</label>\
-				<input type="email" class="form-control" placeholder="Eg: 2nd may, 20xx"/>\
+				<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd may, 20xx"/>\
+				</div>\
 			</div>\
 		</div>\
+		<br/>\
 		<div class="row">\
 			<div class="col-md-12">\
+			<div class="card">\
 				<label class="label--text sub-heading">Description</label>\
 				<textarea class="form-control" rows="2"></textarea>\
 			</div>\
+			</div>\
 		</div>\
-		<br />';
+		<br/>';
 		$('.add-new-education').before(newEduSection);
 	});
 
@@ -134,7 +155,7 @@ $(function () {
     	var text = $('.prompt-section-title').val();
     	$('.tab-pane.active .label--text.heading').text(text);
     	// change sortable li's
-    	text = '<i style="color:#777" class="fa fa-arrows-v"></i>  ' + text;
+    	text = '<i style="color:gray;" class="fa fa-th-list"></i>  ' + text;
     	$('#sortable li[href="#'+$('.tab-pane.active').attr('id')+'"').html(text);
     });
     $(document).on('click', '.save-font-size' ,function () {
@@ -202,65 +223,22 @@ function buildoPreviewCv(formClientData) {
 			'<div class="tab-pane" id="'+globalId+'">'+
 				'<label class="label--text heading">New Section</label>'+
 				'<span style="margin-left: 20px; color:#9accea">'+
-					'<a><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>'+
-					'<a><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>'+
-					'<a><i class="fa fa-font" title="Color"></i></a>'+
-					'<input type="color" class="fontSel" />'+
-					'<a><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>'+
+					'<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>'+
+					'<a><i style="color:#c0392b; margin-right:5px; position:right;" class="fa fa-times fa-2x" title="Delete"></i></a>'+
 				'</span>'+
 				'<hr/>'+
-				'<textarea name="content" class="form-control" rows="6"></textarea>'+
+				'<div class="card">\
+					<label class="label--text sub-heading">Description</label>\
+					<textarea class="form-control mod-text-box" rows="3"></textarea>\
+				</div>'+
 				'<br />'+
 				'<button class="btn btn-primary add--entry">Add Entry</button>'+
 			'</div>';
 				
-			function buildoPreviewCv(formClientData) {
-				// view cv in modal view container
-				formClientData = typeof formClientData !== 'undefined' ? formClientData : null;
-
-				for (var k in formClientData) {
-			    	console.log(formClientData[k]);
-			    }
-                $('#myModalPreview').modal('show');
-
-			}
-				function addSectionDetail(globalId) {
-					var sectionAddData = ''+
-						'<div class="tab-pane" id="'+globalId+'">'+
-							'<label class="label--text heading">New Section</label>'+
-							'<span style="margin-left: 20px; color:#9accea">'+
-								'<a><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>'+
-								'<a><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>'+
-								'<a><i class="fa fa-font" title="Color"></i></a>'+
-								'<input type="color" class="fontSel" />'+
-								'<a><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>'+
-							'</span>'+
-							'<hr/>'+
-							'<textarea name="content" class="form-control" rows="6"></textarea>'+
-							'<br />'+
-							'<button class="btn btn-primary add--entry">Add Entry</button>'+
-						'</div>';
-					$('.tab-content').append(sectionAddData);
-				}
-
-				$('.add--new').click(function () {
-					$('.btn-success.submit-form').before(newSection);
-				});
-				$(document).on('click', '.btn.add--entry', function () {
-					
-				});
-				$('.add--section').click(function () {
-					var newSection = '<li style="display:inline-block;" class="uis" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:#777;display:inline-block;" class="fa fa-arrows-v"></i> New Section</li>';
-					$('#sortable').append(newSection);
-					addSectionDetail(globalSectionId);
-					$('li.uis').last().click();
-					globalSectionId++;
-				});
-
-			});
 			
+				$('.tab-content').append(sectionAddData);
+				
 
-		$('.tab-content').append(sectionAddData);
 	}
 
 	$('.add--new').click(function () {
@@ -270,7 +248,7 @@ function buildoPreviewCv(formClientData) {
 		
 	});
 	$('.add--section').click(function () {
-		var newSection = '<li style="display:inline-block;" class="uis" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:#777;display:inline-block;" class="fa fa-arrows-v"></i> New Section</li>';
+		var newSection = '<section class="card"><li style="display:inline-block;" class="uis" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
 		$('#sortable').append(newSection);
 		addSectionDetail(globalSectionId);
 		$('li.uis').last().click();
