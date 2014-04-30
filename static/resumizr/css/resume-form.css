@@ -161,21 +161,15 @@
 #refresh {
   float:right;
   right:-1px;
-  background-color:#fff;
-  border:2px solid #09ab44;
-  color:#09ab44;
-  /*box-shadow: 2px 2px 5px #ccc;*/
+  background-color:#2980b9;
+  color:#fff;
+  border:none;
   padding:4px;
   padding-left:10px;
   margin-right:-2px;
 
 }
 
-#refresh:hover {
-  background-color: #09ab44;
-  color:#fff;
-
-}
   
 /* card UI */
 
