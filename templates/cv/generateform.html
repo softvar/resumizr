@@ -172,6 +172,26 @@
   </div>
 </div>
 
+<!-- Preview Modal -->
+<div class="modal fade" id="myModalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">CV Preview</h4>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control prompt-section-title" placeholder="Change Section's Title"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-section-title">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 		<div class="row">
 		  <div class="col-md-3">
 		  	<ul id="sortable">
@@ -199,8 +219,8 @@
 						    <input type="text" class="form-control" data-field-value="1" placeholder="Eg: Varun Malhotra"/>
 						</div>
 						<div class="col-md-6">
-							<label class="label--text sub-heading">Email Address</label>
-							<input type="email" class="form-control" placeholder="Eg: valid.mail@gmail.com"/>
+							<label class="label--text sub-heading">Address</label>
+							<input type="text" class="form-control" placeholder="Eg: A-1, Park Street, India"/>
 						</div>
 					</div>
 					<br/>
@@ -210,8 +230,15 @@
 						    <input type="text" class="form-control" placeholder="Eg: (+91) 99XXXXXX89"/>
 						</div>
 						<div class="col-md-6">
-							<label class="label--text sub-heading">Website</label>
-							<input type="email" class="form-control" placeholder="Eg: http://yourname.info"/>
+							<label class="label--text sub-heading">Email</label>
+							<input type="email" class="form-control" placeholder="Eg: valid.mail@gmail.com"/>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-6">
+							<label class="label--text sub-heading">Website Address</label>
+							<input type="text" class="form-control" placeholder="Eg: http://yourname.info"/>
 						</div>
 					</div>
 				</div>
@@ -313,8 +340,10 @@
 		</div>
 
 
-		<button id="lol" class="btn">Preview</button>
-		 
+		
+			<button type="submit" id="lol" class="btn">Preview</button>
+		</form>
+		<button id="lol" class="btn btn-success save--form">Save Form</button>
       </div>
 		<!--
 		<div class="tabbable tabs-left">
@@ -442,7 +471,10 @@
 			    			heading = $(id).find('.label--text.heading').text();
 			    		$(id).find('.form-control').each(function () {
 			    			if($(this).val()!=null && $(this).val()!=''){
-					        	data = data + '|&|' + $(this).val();
+					        	if (data=='')
+					        		data = $(this).val();
+					        	else
+						        	data = data + '|&|' + $(this).val();
 			    				emptySection = false; 
 			    			}  
 					    });
@@ -451,11 +483,19 @@
 					    }
 			    	});
 			    	console.log(formClientData);
-			    	for (var k in formClientData) {
-			    		console.log(formClientData[k]);
-			    	}
-			    	buildoPreviewCv();
+			    	buildoPreviewCv(formClientData);
 
+			    });
+
+			    $('.save--form').click(function () {
+			    	var jsonFormData = buildoPreviewCv();
+			    	// save to DB
+			    	$.ajax({
+					  url: "api.bhola.db",
+					  context: document.body
+					}).done(function() {
+					  $( this ).addClass( "done" );
+					});
 			    });
 			    
 			    $('.add-new-job').click(function () {
@@ -502,7 +542,7 @@
 						    <input type="text" class="form-control" placeholder="Eg: B.Tech"/>\
 						</div>\
 						<div class="col-md-6">\
-							<label class="label--text sub-heading">Institution Name</label>\
+							<label class="label--text submit-form-heading">Institution Name</label>\
 							<input type="email" class="form-control" placeholder="Eg: JIIT"/>\
 						</div>\
 					</div>\
@@ -587,6 +627,12 @@
 				
 			function buildoPreviewCv(formClientData) {
 				// view cv in modal view container
+				formClientData = typeof formClientData !== 'undefined' ? formClientData : null;
+
+				for (var k in formClientData) {
+			    	console.log(formClientData[k]);
+			    }
+                
 			}
 				function addSectionDetail(globalId) {
 					var sectionAddData = ''+
@@ -600,7 +646,8 @@
 								'<a><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>'+
 							'</span>'+
 							'<hr/>'+
-							'<textarea name="content" id="markdown-editor" data-provide="markdown" data-iconlibrary="fa" data-savable="true" rows="10"></textarea>'+
+							'<textarea name="content" class="form-control" rows="6"></textarea>'+
+							'<br />'+
 							'<button class="btn btn-primary add--entry">Add Entry</button>'+
 						'</div>';
 					$('.tab-content').append(sectionAddData);
