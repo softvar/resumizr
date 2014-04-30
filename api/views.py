@@ -159,6 +159,13 @@ def username_availability(request, username):
         available = False
     return HttpResponse(json.dumps({'available': available}), content_type="application/json")
 
+def previewCv(request):
+    if request.method == 'POST':
+        request.POST
+        contextRender = {'data': request.POST}
+        return render(request, 'cv/preview.html',contextRender)
+    else:
+        return render(request, 'custom_404.html', '')
 def generateForm(request):
     if request.method == 'POST':
         sectionHeading = request.POST.getlist("heading","")

@@ -38,6 +38,8 @@ urlpatterns = patterns('',
     url(r'^app/$','api.views.app',name='app'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^generate/cvform/$','api.views.generateForm',name='generateform'),
+    url(r'^preview/cv/$','api.views.previewCv',name='preview'),
+
 )
 
 #development media server
