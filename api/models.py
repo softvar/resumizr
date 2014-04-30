@@ -14,6 +14,7 @@ class ResumizrUserData(models.Model):
     ''' misc data for resumizr '''
     user = models.OneToOneField(USER_MODEL, related_name='resumizr_data')
     detailed_social_data = DictField()
+    resume_data = DictField()
     subscribers = ListField()
     following = ListField()
 

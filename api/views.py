@@ -171,7 +171,7 @@ def app(request):
 
 
 
-
+@login_required
 def previewCv(request):
     if request.method == 'POST':
         request.POST
@@ -179,6 +179,8 @@ def previewCv(request):
         return render(request, 'cv/preview.html',contextRender)
     else:
         return render(request, 'custom_404.html', '')
+
+@login_required
 def generateForm(request):
     ''' resume form rendere '''
     if request.method == 'POST':
@@ -218,7 +220,7 @@ def username_availability(request, username):
         available = False
     return HttpResponse(json.dumps({'available': available}), content_type="application/json")
 
-
+@login_required
 def refresh_social_data(request , backend) :
     ''' refreshes social data of particular backend and returns json '''
     access_token = None
@@ -265,7 +267,7 @@ def refresh_social_data(request , backend) :
 
     return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
 
-
+@login_required
 def fetch_social_data(request , backend) :
     ''' fetches social data of particular backend from database and returns json '''
 
@@ -274,6 +276,22 @@ def fetch_social_data(request , backend) :
 
     except:
         return HttpResponse('Error : Unable to access data for '+backend, mimetype='text/plain')
+
+
+@login_required
+def save_data(request):
+    if request.method == "POST" and request.is_ajax():
+        request.user.resumizr_data.resume_data['resume'] = json.loads(request.body)
+        request.user.resumizr_data.save()
+        return HttpResponse("OK")
+    else:
+        HttpResponse("Not authorized.")
+
+
+
+@login_required
+def get_resume_data(request):
+     return HttpResponse(json.dumps(request.user.resumizr_data.resume_data['resume']),mimetype='application/json')
 
 
 

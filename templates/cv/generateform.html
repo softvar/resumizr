@@ -15,9 +15,11 @@
 		<script src="{% static 'resumizr/js/bootstrap.min.js' %}"></script>
 		<script src="{% static 'resumizr/js/ajax-load.js' %}"></script>
         <script src="{% static 'resumizr/js/cv-generation/generate.js' %}"></script>
+        <script src="{% static 'resumizr/js/pnotify.custom.min.js' %}"></script>
 
 		<link href="{% static  'resumizr/css/font-awesome.min.css' %}" rel="stylesheet">
 		<link href="{% static  'resumizr/css/resume-form.css' %}" rel="stylesheet">
+		<link href="{% static  'resumizr/css/pnotify.custom.min.css' %}" rel="stylesheet">
 
 
 		
@@ -25,7 +27,7 @@
 	<body>
 <!-- ajax progress bar -->
 <div class="progress-bar"></div>
-<button class="refresh" id="refresh">Refresh Genius</button> 
+<button type="button" class="btn btn-lg btn-primary refresh" id="refresh">Refresh Genius</button> 
 
 	<div class="container"> 
 

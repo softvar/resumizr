@@ -163,12 +163,13 @@
 #refresh {
   float:right;
   right:-1px;
-  background-color:#2980b9;
-  color:#fff;
-  border:none;
+  background-color:#fff;
+  color:#333;
   padding:4px;
   padding-left:10px;
   margin-right:-2px;
+  border : 2px solid #bbb;
+  border-radius: 0px;
 
 }
 

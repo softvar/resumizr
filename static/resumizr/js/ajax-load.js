@@ -1,66 +1,237 @@
 $(document).ready(function(){
 
+
+// setting styling for P-notification
+PNotify.prototype.options.styling = "bootstrap3";
+
 var bar = $('.progress-bar');
 var button = $('#refresh');
 
+var social_data = {};
+
+
 
 $('#refresh').click(function(){
-bar.css('display','inline-block');
-bar.css('width', '5%');
-setTimeout(function(){
-    bar.css('width', '25%');
-    },1000);
 
-button.attr('disabled','disabled');
+  bar.css('display','inline-block');
+  bar.css('width', '5%');
+
+  button.attr('disabled','disabled');
+  button.animate({
+    'margin-right':'-100px',
+    'background-color':'#129308',
+    'color':'#fff'
+
+},500);
+
+$.when(
+
+ /* fetching facebook data */ 
 $.ajax({
 
      xhr: function()
     {
       var xhr = new window.XMLHttpRequest();
-      //Upload progress
-      xhr.upload.addEventListener("progress", function(evt){
-      	console.log(evt);
-        if (evt.lengthComputable) {
-          var percentComplete = evt.loaded / evt.total;
-          //Do something with upload progress
-         console.log(percentComplete);
-       }
-     }, false);
-
-
      //Download progress
      xhr.addEventListener("progress", function(evt){
-       if (evt.lengthComputable) {
+   /*    if (evt.lengthComputable) {
          var percentComplete = evt.loaded / evt.total;
           bar.css('width', '' + (100 * percentComplete) + '%');
          console.log(percentComplete);
+      
        }
+    */ 
      }, false);
      return xhr;
    },
 
    beforeSend: function( xhr ) {
-    
-    
   	},
-  	dataType:'json',
+  	
      type: 'GET',
      url: "../../users/refresh-social-data/facebook",
    
      data: {},
-     success: function(data){
-    	console.log(data);
-      button.removeAttr('disabled');
+     success: function(response, status, xhr){
+    	console.log(response);
+      var ct = xhr.getResponseHeader("content-type") || "";
+      if (ct.indexOf('text') > -1) {
+        new PNotify({
+        title: 'Ahrrgg!',
+        text: 'Unable to get Facebook data',
+        animate_speed : 'fast',
+        addclass : 'card'
+        });
+      }
+      if (ct.indexOf('json') > -1) {
+        social_data['facebook'] = response;
+      } 
     	
+    },
+
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(textStatus, errorThrown);
+     new PNotify({
+      title: 'Ahrrgg!',
+      text: 'Unable to get Facebook data',
+      animate_speed : 'fast',
+      addclass : 'card'
+      });
+}
+
+ }).always(function(){
+
+bar.animate({
+  width : (button.width() / button.parent().width() * 100)+25+'%'
+},1000); 	
+}),
+
+
+
+/* fetching linkedin data */
+
+$.ajax({
+
+     xhr: function()
+    {
+      var xhr = new window.XMLHttpRequest();
+     //Download progress
+     xhr.addEventListener("progress", function(evt){
+     /*    if (evt.lengthComputable) {
+           var percentComplete = evt.loaded / evt.total;
+            bar.css('width', '' + (100 * percentComplete) + '%');
+           console.log(percentComplete);
+         
+       }
+    */ 
+     }, false);
+     return xhr;
+   },
+
+   beforeSend: function( xhr ) {
+    },
+    
+     type: 'GET',
+     url: "../../users/refresh-social-data/linkedin",
+   
+     data: {},
+     success: function(response, status, xhr){
+      console.log(response);
+      var ct = xhr.getResponseHeader("content-type") || "";
+      if (ct.indexOf('text') > -1) {
+        new PNotify({
+        title: 'Ahrrgg!',
+        text: 'Unable to get Linkedin data',
+        animate_speed : 'fast',
+        addclass : 'card'
+        });
+      }
+      if (ct.indexOf('json') > -1) {
+        social_data['linkedin'] = response;
+      } 
+
+      
+      
+    },
+
+     error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+            alert('linkedin...');
+            new PNotify({
+            title: 'Ahrrgg!',
+            text: 'Unable to get Linkedin data',
+            animate_speed : 'fast',
+            addclass : 'card'
+            });
     }
- }).done(function(){
 
- 	setTimeout(function(){
- 		bar.fadeOut();
-    },1000);
+ }).always(function(){
 
-	
- });
+bar.animate({
+  width : (button.width() / button.parent().width() * 100)+25+'%'
+},1000);  
+}),
+
+
+/* github data */
+
+$.ajax({
+
+     xhr: function()
+    {
+      var xhr = new window.XMLHttpRequest();
+     //Download progress
+     xhr.addEventListener("progress", function(evt){
+   /*    if (evt.lengthComputable) {
+         var percentComplete = evt.loaded / evt.total;
+          bar.css('width', '' + (100 * percentComplete) + '%');
+         console.log(percentComplete);
+      
+       }
+    */  
+     }, false);
+     return xhr;
+   },
+
+   beforeSend: function( xhr ) {
+    },
+    
+     type: 'GET',
+     url: "../../users/refresh-social-data/github",
+   
+     data: {},
+     success: function(response, status, xhr){
+      console.log(response);
+      var ct = xhr.getResponseHeader("content-type") || "";
+      
+      if (ct.indexOf('text') > -1) {
+        new PNotify({
+        title: 'Ahrrgg!',
+        text: 'Unable to get Github data',
+        animate_speed : 'fast',
+        addclass : 'card'
+        });
+      }
+      if (ct.indexOf('json') > -1) {
+        social_data['github'] = response;
+      } 
+      
+    },
+     error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        new PNotify({
+        title: 'Ahrrgg!',
+        text: 'Unable to get Github data',
+        animate_speed : 'fast',
+        addclass : 'card'
+        });
+}
+
+ }).always(function(){
+
+bar.animate({
+  width : (button.width() / button.parent().width() * 100)+25+'%'
+},1000);  
+})
+
+).then(function(){
+
+bar.animate({
+  width : '100%'
+},1000);
+
+setTimeout(function(){
+    bar.fadeOut();
+    button.removeAttr('disabled');
+     button.css('margin-right','-2px');
+
+},2000);
+
+
+
+});
+
+
 
 });
 
