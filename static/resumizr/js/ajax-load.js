@@ -1,13 +1,12 @@
 $(document).ready(function(){
 
-
 // setting styling for P-notification
 PNotify.prototype.options.styling = "bootstrap3";
 
 var bar = $('.progress-bar');
 var button = $('#refresh');
 
-var social_data = {};
+
 
 
 
@@ -49,7 +48,7 @@ $.ajax({
   	},
   	
      type: 'GET',
-     url: "../../users/refresh-social-data/facebook",
+     url: "../../users/social-data/facebook",
    
      data: {},
      success: function(response, status, xhr){
@@ -112,7 +111,7 @@ $.ajax({
     },
     
      type: 'GET',
-     url: "../../users/refresh-social-data/linkedin",
+     url: "../../users/social-data/linkedin",
    
      data: {},
      success: function(response, status, xhr){
@@ -177,7 +176,7 @@ $.ajax({
     },
     
      type: 'GET',
-     url: "../../users/refresh-social-data/github",
+     url: "../../users/social-data/github",
    
      data: {},
      success: function(response, status, xhr){
@@ -227,7 +226,7 @@ setTimeout(function(){
 
 },2000);
 
-
+attachPopOvers();
 
 });
 

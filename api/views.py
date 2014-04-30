@@ -241,7 +241,7 @@ def refresh_social_data(request , backend) :
         elif backend == 'linkedin':
             access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
             url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)'
-            payload = {'oauth2_access_token':linkedin_access_token ,'format':'json'}
+            payload = {'oauth2_access_token':access_token ,'format':'json'}
 
         else :
             return HttpResponse('Error : Invalid backend entered', mimetype='text/plain')
@@ -275,7 +275,7 @@ def fetch_social_data(request , backend) :
         return HttpResponse(json.dumps(request.user.resumizr_data.detailed_social_data[backend]),mimetype='application/json')
 
     except:
-        return HttpResponse('Error : Unable to access data for '+backend, mimetype='text/plain')
+        return redirect('http://myapp.com:8000/users/refresh-social-data/'+backend)
 
 
 @login_required
