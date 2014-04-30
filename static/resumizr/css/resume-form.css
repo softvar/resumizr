@@ -130,7 +130,7 @@
   padding-right:10px;
   border-right : solid 2px #09ab44;
   height: 450px;
-  overflow: scroll;
+  overflow: auto;
 }
   
 
@@ -231,6 +231,13 @@ ul.gNow li {
   color: gray;
   font-weight: 200;
   font-size: 20px; 
+  font-family: 'Open Sans', 'cursive';
+}
+
+.sub-section-heading {
+  color: #555;
+  font-weight: 400;
+  font-size: 22px; 
   font-family: 'Open Sans', 'cursive';
 }
 
