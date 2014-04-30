@@ -24,6 +24,7 @@ from modules.forms import RegisterationForm , LoginForm
 
 import datetime
 
+import textblob
 
 # list of social auth mapping
 backends = ['twitter', 'github', 'facebook',
@@ -171,6 +172,13 @@ def app(request):
 
 
 
+def previewCv(request):
+    if request.method == 'POST':
+        request.POST
+        contextRender = {'data': request.POST}
+        return render(request, 'cv/preview.html',contextRender)
+    else:
+        return render(request, 'custom_404.html', '')
 def generateForm(request):
     ''' resume form rendere '''
     if request.method == 'POST':
