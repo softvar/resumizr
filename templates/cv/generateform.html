@@ -182,7 +182,7 @@
 			</ul>
 			<button class="btn btn-info add--section">Create a new Section</button>
 		  </div>
-		  <div class="col-md-9" style="border:1px solid #AAA;width:70%;height:500px;">
+		  <div class="col-md-9" style="border:1px solid #AAA;width:70%;height:500px;overflow:auto;">
 		  	<div class="tab-content">
 				<div class="tab-pane active" id="1">
 					<label class="label--text heading">Basic information</label>
@@ -196,7 +196,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label class="label--text sub-heading">Full Name</label>
-						    <input type="text" class="form-control" placeholder="Eg: Varun Malhotra"/>
+						    <input type="text" class="form-control" data-field-value="1" placeholder="Eg: Varun Malhotra"/>
 						</div>
 						<div class="col-md-6">
 							<label class="label--text sub-heading">Email Address</label>
@@ -246,6 +246,15 @@
 							<input type="email" class="form-control" placeholder="Eg: 2nd July, 20xx"/>
 						</div>
 					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<label class="label--text sub-heading">Description</label>
+							<textarea class="form-control" rows="2"></textarea>
+						</div>
+					</div>
+					<br/>
+					<button class="btn btn-primary add-new-job">Add Entry</button>
 				</div>
 				<div class="tab-pane" id="3">
 					<label class="label--text heading">Education</label>
@@ -278,6 +287,15 @@
 							<input type="email" class="form-control" placeholder="Eg: 2nd may, 20xx"/>
 						</div>
 					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<label class="label--text sub-heading">Description</label>
+							<textarea class="form-control" rows="2"></textarea>
+						</div>
+					</div>
+					<br/>
+					<button class="btn btn-primary add-new-education">Add Entry</button>
 				</div>
 				<div class="tab-pane" id="4">
 					<label class="label--text heading">Achievements</label>
@@ -319,7 +337,7 @@
 		
 		<br />
 			<div class="ui fluid form segment" ng-controller="SubmitFormField">
-			<form class="form-horizontal" id="createForm" action = "/build/" ng-submit="checkField()" method="post">
+			<form class="form-horizontal" id="createForm" action = "/generate/cvform/" ng-submit="checkField()" method="post">
 			{% csrf_token %}
 			<br />
 				  <div class="form-group">
@@ -414,12 +432,101 @@
 			      placeholder: "ui-state-highlight"
 			    });
 			    $( "#sortable" ).disableSelection();
+			    
 			    $('#lol').click(function () {
+			    	var formClientData = {};
+
 			    	$('.uis').each(function () {
-			    		alert($(this).attr('href'));
+			    		var data='', id = $(this).attr('href'),
+			    			emptySection = true,
+			    			heading = $(id).find('.label--text.heading').text();
+			    		$(id).find('.form-control').each(function () {
+			    			if($(this).val()!=null && $(this).val()!=''){
+					        	data = data + '|&|' + $(this).val();
+			    				emptySection = false; 
+			    			}  
+					    });
+					    if(!emptySection){
+					    	formClientData[heading] = data;
+					    }
 			    	});
+			    	console.log(formClientData);
+			    	for (var k in formClientData) {
+			    		console.log(formClientData[k]);
+			    	}
+			    	buildoPreviewCv();
+
 			    });
 			    
+			    $('.add-new-job').click(function () {
+			    	var newJobSection = '\
+			    	<hr>\
+			    	<div class="row">\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Job Title</label>\
+						    <input type="text" class="form-control" placeholder="Eg: Frontend Designer"/>\
+						</div>\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Comapny Name</label>\
+							<input type="email" class="form-control" placeholder="Eg: Resumizr"/>\
+						</div>\
+					</div>\
+					<br/>\
+					<div class="row">\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Start Date</label>\
+						    <input type="text" class="form-control" placeholder="Eg: 14th May, 20xx"/>\
+						</div>\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">End date</label>\
+							<input type="email" class="form-control" placeholder="Eg: 2nd July, 20xx"/>\
+						</div>\
+					</div>\
+					<br/>\
+					<div class="row">\
+						<div class="col-md-12">\
+							<label class="label--text sub-heading">Description</label>\
+							<textarea class="form-control" rows="2"></textarea>\
+						</div>\
+					</div>\
+					<br />';
+					$('.add-new-job').before(newJobSection);
+			    });
+
+				$('.add-new-education').click(function () {
+					var newEduSection = '\
+					<hr>\
+					<div class="row">\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Course Name</label>\
+						    <input type="text" class="form-control" placeholder="Eg: B.Tech"/>\
+						</div>\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Institution Name</label>\
+							<input type="email" class="form-control" placeholder="Eg: JIIT"/>\
+						</div>\
+					</div>\
+					<br/>\
+					<div class="row">\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">Start Date</label>\
+						    <input type="text" class="form-control" placeholder="Eg: 14th June, 20xx"/>\
+						</div>\
+						<div class="col-md-6">\
+							<label class="label--text sub-heading">End date</label>\
+							<input type="email" class="form-control" placeholder="Eg: 2nd may, 20xx"/>\
+						</div>\
+					</div>\
+					<div class="row">\
+						<div class="col-md-12">\
+							<label class="label--text sub-heading">Description</label>\
+							<textarea class="form-control" rows="2"></textarea>\
+						</div>\
+					</div>\
+					<br />';
+					$('.add-new-education').before(newEduSection);
+				});
+
 			    $(document).on('click', '.save-section-title' ,function () {
 			    	console.log($('.tab-pane.active').attr('id'));
 			    	var text = $('.prompt-section-title').val();
@@ -477,7 +584,10 @@
 				  '</div>'+
 			  
 			'</div>';
-			
+				
+			function buildoPreviewCv(formClientData) {
+				// view cv in modal view container
+			}
 				function addSectionDetail(globalId) {
 					var sectionAddData = ''+
 						'<div class="tab-pane" id="'+globalId+'">'+
@@ -508,10 +618,6 @@
 					addSectionDetail(globalSectionId);
 					$('li.uis').last().click();
 					globalSectionId++;
-				});
-		
-				$(document).on('click', '.glyphicon-remove-', function () {
-					console.log($(this).parent().remove());
 				});
 
 			});
