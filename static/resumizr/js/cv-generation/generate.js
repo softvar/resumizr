@@ -28,23 +28,27 @@ $(function () {
     	var formClientData = {};
 
     	$('.uis').each(function () {
-    		var data='', id = $(this).attr('href'),
+    		var data='', object = {},
+    		    id = $(this).attr('href'),
     			emptySection = true,
     			heading = $(id).find('.label--text.heading').text();
     		$(id).find('.form-control').each(function () {
     			if($(this).val()!=null && $(this).val()!=''){
-		        	if (data=='')
-		        		data = $(id +' .form-control').index(this) + $(this).val();
+		        	/*if (data=='')
+		        		data = $(id +' .form-control').index(this) + '|^|' + $(this).val();
 		        	else
-			        	data = data + '|&|' + $(id +' .form-control').index(this) + $(this).val();
+			        	data = data + '|&|' + $(id +' .form-control').index(this) + '|^|' + $(this).val();
+    				*/
+    				object[$(this).attr('name')] = $(this).val();
     				emptySection = false; 
     			}  
 		    });
 		    if(!emptySection){
-		    	formClientData[heading] = data;
+		    	formClientData[heading] = object;
 		    }
     	});
-    	console.log(formClientData);
+    	//console.log(formClientData['Basic information']);
+    	//formClientData = JSON.stringify(formClientData);
     	buildoPreviewCv(formClientData);
 
     });
@@ -53,7 +57,7 @@ $(function () {
     	var jsonFormData = buildoPreviewCv();
     	// save to DB
     	$.ajax({
-		  url: "api.bhola.db",
+		  url: "http://myapp.com:8000s/users/save-data",
 		  context: document.body
 		}).done(function() {
 		  $( this ).addClass( "done" );
@@ -61,92 +65,13 @@ $(function () {
     });
     
     $('.add-new-job').click(function () {
-    	var newJobSection = '\
-    	<hr/>\
-		<div class="row">\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">Job Title</label>\
-			    <input type="text" class="form-control mod-text-box" placeholder="Eg: Frontend Designer"/>\
-				</div>\
-			</div>\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">Comapny Name</label>\
-				<input type="email" class="form-control mod-text-box" placeholder="Eg: Resumizr"/>\
-				</div>\
-			</div>\
-		</div>\
-		<br/>\
-		<div class="row">\
-			<div class="col-md-6">\
-			<div class="card">\
-				<label class="label--text sub-heading">Start Date</label>\
-			    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th May, 20xx"/>\
-			</div>\
-			</div>\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">End date</label>\
-				<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd July, 20xx"/>\
-				</div>\
-			</div>\
-		</div>\
-		<br/>\
-		<div class="row">\
-			<div class="col-md-12">\
-				<div class="card">\
-				<label class="label--text sub-heading">Description</label>\
-				<textarea class="form-control mod-text-box" rows="2"></textarea>\
-				</div>\
-			</div>\
-		</div>\
-		<br/>';
+    	var newJobSection = '<hr>' + $('.cv-work-experience').html();
+    	
 		$('.add-new-job').before(newJobSection);
     });
 
 	$('.add-new-education').click(function (){
-		var newEduSection = '\
-		<hr/>\
-		<div class="row">\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">Course Name</label>\
-			    <input type="text" class="form-control mod-text-box" placeholder="Eg: B.Tech"/>\
-			    </div>\
-			</div>\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">Institution Name</label>\
-				<input type="email" class="form-control mod-text-box" placeholder="Eg: JIIT"/>\
-				</div>\
-			</div>\
-		</div>\
-		<br/>\
-		<div class="row">\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">Start Date</label>\
-			    <input type="text" class="form-control mod-text-box" placeholder="Eg: 14th June, 20xx"/>\
-			    </div>\
-			</div>\
-			<div class="col-md-6">\
-				<div class="card">\
-				<label class="label--text sub-heading">End date</label>\
-				<input type="email" class="form-control mod-text-box" placeholder="Eg: 2nd may, 20xx"/>\
-				</div>\
-			</div>\
-		</div>\
-		<br/>\
-		<div class="row">\
-			<div class="col-md-12">\
-			<div class="card">\
-				<label class="label--text sub-heading">Description</label>\
-				<textarea class="form-control" rows="2"></textarea>\
-			</div>\
-			</div>\
-		</div>\
-		<br/>';
+		var newEduSection = '<hr/>' + $('.cv-education').html();
 		$('.add-new-education').before(newEduSection);
 	});
 
@@ -157,6 +82,7 @@ $(function () {
     	// change sortable li's
     	text = '<i style="color:gray;" class="fa fa-th-list"></i>  ' + text;
     	$('#sortable li[href="#'+$('.tab-pane.active').attr('id')+'"').html(text);
+    	$('#myModal').modal('hide');
     });
     $(document).on('click', '.save-font-size' ,function () {
     	var text = $('.prompt-section-title').val() + 'px';
@@ -179,13 +105,14 @@ $(function () {
 	});
     $(document).on('click', '.fa.fa-times' ,function () {
     	var id = $('.tab-pane.active').attr('id');
-    	$('#sortable li[href="#'+id+'"').remove();
     	$('#'+ $('.tab-pane.active').attr('id')).remove();
+    	console.log($('#sortable section li[href="#'+id+'"').parent().prev().html());
     	if($('#sortable li[href="#'+id+'"').prev()) {
 	    	$('#sortable li[href="#'+id+'"').prev().click();
 	    }
 	    else
 	    	$('#sortable li[href="#1"]').click();
+	    $('#sortable li[href="#'+id+'"').parent().remove();
     });
 
 
@@ -208,14 +135,115 @@ $(function () {
   
 '</div>';
 	
-function buildoPreviewCv(formClientData) {
+function buildoPreviewCv(f) {
 	// view cv in modal view container
-	formClientData = typeof formClientData !== 'undefined' ? formClientData : null;
+	var renderFormData = '<div class="build-resume-service">';
 
-	for (var k in formClientData) {
-    	console.log(formClientData[k]);
-    }
     $('#myModalPreview').modal('show');
+
+    
+    for (var key in f) {
+    	console.log(key);
+    
+	    if(key == 'Basic information') {
+	    	renderFormData = '<div class="about-self-details">'+
+    			'<div class="client--name">';
+	    	if(f[key]['cv__fullname'])
+		    	renderFormData = renderFormData + String(f['Basic information']['cv__fullname']);
+	   		renderFormData = renderFormData +'</div>'+
+	   		'<div class="client-personal-details">';
+	    	if(f[key]['cv__address'])
+		        renderFormData = renderFormData + '<p>Address: '+f['Basic information']['cv__address']+'</p>';
+		    if(f[key]['cv__contact'])
+		        renderFormData = renderFormData + '<p>Contact: '+f['Basic information']['cv__contact']+'</p>';
+		    if(f[key]['cv__email'])
+		        renderFormData = renderFormData + '<p>Email: <a href="#">'+f['Basic information']['cv__email']+'</a></p>';
+		    if(f[key]['cv__website'])
+		        renderFormData = renderFormData + '<p>Website: <a href="#">'+f['Basic information']['cv__website']+'</a></p>';
+	    	renderFormData = renderFormData + '</div>'+
+				'</div><hr>';
+	    }
+
+	    else if(key == 'Work Experience') {
+	    	renderFormData = renderFormData + '<div class="section--area">' +
+    			'<div class="grey-box rectangle">'+
+        		'<span>'+ key +'</span>' +  
+			    '</div>'+
+			    '<div class="data--info">'+
+			        '<div class="row">'+
+			            '<div class="col-md-4" >';
+			if(f[key]['cv__jobtitle'])
+				renderFormData = renderFormData + '<span>'+f[key]['cv__jobtitle']+'</span>';
+			renderFormData = renderFormData + '</div>'+
+            '<div class="col-md-4" style="text-align:center;">';
+            if(f[key]['cv__companyname'])
+            	renderFormData = renderFormData + '<span >'+f[key]['cv__companyname']+'</span>';
+            renderFormData = renderFormData +'</div>'+
+          		'<div class="col-md-4" style="text-align:right;padding-right:50px;" >';
+            if(f[key]['cv__companystart'] && f[key]['cv__companyend']){
+                renderFormData = renderFormData + '<span>'+f[key]['cv__companystart'] +'</span>' +
+                '<span>'+f[key]['cv__companyend'] +'</span>';
+            }
+            renderFormData = renderFormData + '</div>' +
+        	'</div>';
+        	if(f[key]['cv__companydesc'])
+        		renderFormData = renderFormData + '<p>'+f[key]['cv__companydesc']+'</p>';
+    		
+    		renderFormData = renderFormData + '</div>'+
+				'</div>';
+	    }
+	    else if(key == 'Education') {
+	    	renderFormData = renderFormData + '<div class="section--area">'+
+    			'<div class="grey-box rectangle">';
+        	if(f[key])
+        		renderFormData = renderFormData +'<span>'+key+'</span>';
+    		
+    		renderFormData = renderFormData + '</div>'+
+    			'<div class="data--info">';
+        	if(f[key]['cv__coursename'])
+        		renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key]['cv__coursename'];
+    		if(f[key]['cv__eduperiod'])
+    			renderFormData = renderFormData + ',' +f[key]['cv__eduperiod'];
+    		renderFormData = renderFormData + '</span>';
+
+    		if(f[key]['cv__instiname'])
+    			renderFormData = renderFormData + '<br/><span>'+f[key]['cv__instiname']+'</span>';
+    		if(f[key]['cv__instidescription'])
+    			renderFormData = renderFormData + '<p>'+f[key]['cv__instidescription']+'</p>';
+    		
+    		renderFormData = renderFormData + '</div>';
+				'</div>';
+	    }
+	    else if(key == 'Achievements') {
+	    	renderFormData = renderFormData + '<div class="section--area">'+
+    			'<div class="grey-box rectangle">';
+        	if(f[key])
+        		renderFormData = renderFormData +'<span>'+key+'</span>';
+    		
+    		renderFormData = renderFormData + '</div>'+
+    			'<div class="data--info">';
+        	if(f[key]['cv__achievemnet'])
+        		renderFormData = renderFormData +'<p>'+f[key]['cv__achievemnet']+'</p>';
+    		renderFormData = renderFormData + '</div>'+
+				'</div>';
+	    }
+	    else {
+	    	renderFormData = renderFormData + '<div class="section--area">'+
+    			'<div class="grey-box rectangle">';
+        	if(f[key])
+        		renderFormData = renderFormData +'<span>'+key+'</span>';
+    		
+    		renderFormData = renderFormData + '</div>'+
+    			'<div class="data--info">';
+        	if(f[key]['cv__fielddata'])
+        		renderFormData = renderFormData +'<p>'+f[key]['cv__fielddata']+'</p>';
+    		renderFormData = renderFormData + '</div>'+
+				'</div>';
+	    }
+	    
+	}
+	renderFormData = renderFormData + '</div>'
+    $('.preview-generated-cv').html(renderFormData);
 
 }
 	function addSectionDetail(globalId) {
@@ -228,8 +256,8 @@ function buildoPreviewCv(formClientData) {
 				'</span>'+
 				'<hr/>'+
 				'<div class="card">\
-					<label class="label--text sub-heading">Description</label>\
-					<textarea class="form-control mod-text-box" rows="3"></textarea>\
+					<label class="label--text sub-heading">Detail</label>\
+					<textarea class="form-control mod-text-box" rows="3" name="cv__fielddata"></textarea>\
 				</div>'+
 				'<br />'+
 				'<button class="btn btn-primary add--entry">Add Entry</button>'+
