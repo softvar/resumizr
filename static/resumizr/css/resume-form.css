@@ -267,5 +267,9 @@ border-bottom: thin solid #ccc;
    font-size : 1em; 
 }
 
+.provider {
+  color:#bbb;
+  font-size:0.8em;
+}
 
 

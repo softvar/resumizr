@@ -49,7 +49,7 @@ $("#name").popover({
  		
  		if(facebook_name && linkedin_name)
  		{
- 			var names_list = '<ul><li>'+facebook_name+'</li><li>'+linkedin_name+'</li></ul>';
+ 			var names_list = '<ul><li><span class="suggestion-item">'+facebook_name+'</span><span class="provider"><i>    facebook</i></span></li><li><span class="suggestion-item">'+linkedin_name+'</span><span class="provider"><i>    linkedin</i></span></li></ul>';
  			return names_list;
  		}
  		else
@@ -68,7 +68,7 @@ $('#email').popover('destroy');
  		
  		if (facebook_email && linkedin_email)
  		{
-	 		var emails_list = '<ul><li>'+facebook_email+'</li><li>'+linkedin_email+'</li></ul>';
+	 		var emails_list = '<ul><li><span class="suggestion-item">'+facebook_email+'</span><span class="provider"><i>    facebook</i></span></li><li><span class="suggestion-item">'+linkedin_email+'</span><span class="provider"><i>    linkedin</i></span></li></ul>';
 	 		return emails_list;
 	 	}	
 	 	else
