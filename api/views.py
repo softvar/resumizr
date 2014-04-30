@@ -24,7 +24,7 @@ from modules.forms import RegisterationForm , LoginForm
 
 import datetime
 
-import textblob
+from textblob import TextBlob
 
 # list of social auth mapping
 backends = ['twitter', 'github', 'facebook',
