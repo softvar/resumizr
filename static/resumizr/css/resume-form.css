@@ -129,6 +129,8 @@
   margin-right : 15px;
   padding-right:10px;
   border-right : solid 2px #09ab44;
+  height: 450px;
+  overflow: scroll;
 }
   
 
