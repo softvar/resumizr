@@ -1,5 +1,4 @@
-<script type="text/javascript">
-			function SubmitFormField($scope, $element) {
+function SubmitFormField($scope, $element) {
 		  var loginForm = $($element);
 		  //console.log(loginForm);
 		  $scope.isInvalid = function() {
@@ -272,4 +271,3 @@
 
 			});
 			
-		</script>
