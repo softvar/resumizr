@@ -21,3 +21,5 @@ class ResumizrUserData(models.Model):
     class Meta:
     	verbose_name_plural = "Resumizr User Data"
     	verbose_name = "Resumizr User Data"
+
+    

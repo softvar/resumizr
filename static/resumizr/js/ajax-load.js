@@ -18,8 +18,6 @@ $('#refresh').click(function(){
   button.attr('disabled','disabled');
   button.animate({
     'margin-right':'-100px',
-    'background-color':'#129308',
-    'color':'#fff'
 
 },500);
 
@@ -226,6 +224,8 @@ setTimeout(function(){
 
 },2000);
 
+
+// attaching suggestion popovers
 attachPopOvers();
 
 });
