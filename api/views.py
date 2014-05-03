@@ -240,7 +240,7 @@ def refresh_social_data(request , backend) :
 
         elif backend == 'linkedin':
             access_token = request.user.social_auth.get(provider='linkedin-oauth2').extra_data['access_token']
-            url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,email-address,positions,skills,educations,following,courses,num_connections)'
+            url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,summary,specialties,projects,email-address,positions,skills,educations,following,courses,num_connections)'
             payload = {'oauth2_access_token':access_token ,'format':'json'}
 
         else :
