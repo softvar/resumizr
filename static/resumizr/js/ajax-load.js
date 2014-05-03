@@ -189,9 +189,11 @@ $.ajax({
         addclass : 'card'
         });
       }
-      if (ct.indexOf('json') > -1) {
+      else if (ct.indexOf('json') > -1) {
         social_data['github'] = response;
+
       } 
+      
       
     },
      error: function(jqXHR, textStatus, errorThrown) {

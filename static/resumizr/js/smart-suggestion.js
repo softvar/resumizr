@@ -14,6 +14,12 @@ $("body").on("click", ".emailSuggestion", function(){
   
 });
 
+// event listener for website suggestion
+$("body").on("click", ".websiteSuggestion", function(){  
+     $('#website').val($(this).children('span:first').text()); // setting value of email input
+  
+});
+
 
 
 });
@@ -40,8 +46,11 @@ var providers = ['facebook','linkedin','github'];
 
  suggestions['facebook_name'] = '';
  suggestions['linkedin_name'] = '';
+ suggestions['github_name'] = '';
  suggestions['facebook_email'] = '';
  suggestions['linkedin_email'] = '';
+ suggestions['github_email'] = '';
+ suggestions['github_website'] = '';
 
  
 
@@ -68,6 +77,21 @@ if(social_data['linkedin'])
 	
 }
 
+if(social_data['github'])
+{
+	
+	if(social_data['github']['name'])
+		suggestions['github_name'] = social_data['github']['name'];
+
+	if(social_data['github']['email'])
+		suggestions['github_email'] = social_data['github']['email'];
+
+	if(social_data['github']['blog'])
+		suggestions['github_website'] = social_data['github']['blog'];
+
+
+}
+
 
 
 
@@ -86,7 +110,7 @@ $("#name").popover({
  			{
  				
  				// if suggestion is availbale from social provider
- 				if (suggestions[provider+'_name'])
+ 				if (suggestions[provider+'_name'] && (suggestions[provider+'_name'] != ''))
  				{	
  					names_list+='<li class="nameSuggestion"><span class="suggestion-item">'+suggestions[provider+'_name']+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
 
@@ -120,7 +144,7 @@ $('#email').popover('destroy');
  			{
  				// if suggestion is availbale from social provider
  				
- 				if (suggestions[provider+'_email'])
+ 				if (suggestions[provider+'_email']&& (suggestions[provider+'_email'] != ''))
  				{	
  					email_list+='<li class="emailSuggestion"><span class="suggestion-item">'+suggestions[provider+'_email']+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
 
@@ -131,6 +155,41 @@ $('#email').popover('destroy');
  		{
  			email_list='<ul class="suggestion-list">'+email_list+'</ul>';
  			return email_list;
+ 		}
+ 		else
+ 			return 'No sugestions available';
+ 	}
+
+
+
+ });
+
+// website suggestions
+$('#website').popover('destroy');
+ $("#website").popover({
+ 	placement : 'auto',
+ 	title : 'Website suggestions',
+ 	html : true,
+ 	trigger : 'focus',
+ 	content : function(){
+ 		
+ 		
+ 			var website_list = '';
+ 			providers.forEach(function(provider)
+ 			{
+ 				// if suggestion is availbale from social provider
+ 				
+ 				if (suggestions[provider+'_website']&& (suggestions[provider+'_website'] != ''))
+ 				{	
+ 					website_list+='<li class="websiteSuggestion"><span class="suggestion-item">'+suggestions[provider+'_website']+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+
+ 				}
+
+ 			});
+ 		if(website_list != '')
+ 		{
+ 			website_list='<ul class="suggestion-list">'+website_list+'</ul>';
+ 			return website_list;
  		}
  		else
  			return 'No sugestions available';
