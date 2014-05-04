@@ -65,13 +65,14 @@ $(function () {
     });
     
     $('.add-new-job').click(function () {
-    	var newJobSection = '<hr>' + $('.cv-work-experience').html();
-    	
+    	var newJobSection = '<hr/> <div class="cv-work-experience">' + $('.cv-work-experience').html()+'</div>'; 	
 		$('.add-new-job').before(newJobSection);
+        dynamicWorkexPopoverBinder();
+
     });
 
 	$('.add-new-education').click(function (){
-		var newEduSection = '<hr/>' + $('.cv-education').html();
+		var newEduSection = '<hr/> <div class="cv-education">' + $('.cv-education').html()+'</div>';
 		$('.add-new-education').before(newEduSection);
 	});
 
