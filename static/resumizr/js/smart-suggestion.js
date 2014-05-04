@@ -20,7 +20,7 @@ month[11] = "December";
 /* list of providers */
 var providers = ['facebook','linkedin','github'];
 
-var single_fields = ['name','email','website'];
+var single_fields = ['name','email','website','location'];
 
 var workex_fields = ['job-description','company-name','job-title','end-date','start-date'];  // array of fields attached with each suggestion
 
@@ -141,6 +141,8 @@ function attachPopOvers()
 	 suggestions['facebook_workex'] = [];
 	 suggestions['linkedin_workex'] = [];
 
+	 suggestions['facebook_location'] = '';
+	 suggestions['github_location'] = '';
 	 
 
 
@@ -152,6 +154,9 @@ function attachPopOvers()
 	 	if(social_data['facebook']['email'])
 	 		suggestions['facebook_email']= social_data['facebook']['email'];
 
+	 	if(social_data['facebook']['location']['name'])
+	 		suggestions['facebook_location']= social_data['facebook']['location']['name'];
+
 
 		if(social_data['facebook']['work'])
 		{
@@ -161,9 +166,9 @@ function attachPopOvers()
 			 		var workex = social_data['facebook']['work'][key];
 			 		var work_info = {};
 			 		
-			 		work_info['job-description'] = workex['description'];
-			 		work_info['company-name'] = workex['employer']['name'];
-			 		work_info['job-title'] = workex['position']['name'];
+			 		work_info['job-description'] = workex['description'] || '';
+			 		work_info['company-name'] = workex['employer']['name'] || '';
+			 		work_info['job-title'] = workex['position']['name'] || '';
 			 		d = new Date(workex['start_date']);
 			 		work_info['start-date'] = month[d.getMonth()]+', '+d.getFullYear();
 			 		
@@ -202,9 +207,9 @@ function attachPopOvers()
 			 		var workex = social_data['linkedin']['positions']['values'][key];
 			 		var work_info = {};
 			 		
-			 		work_info['job-description'] = workex['summary'];
-			 		work_info['company-name'] = workex['company']['name'];
-			 		work_info['job-title'] = workex['title'];
+			 		work_info['job-description'] = workex['summary'] || '';
+			 		work_info['company-name'] = workex['company']['name'] || '';
+			 		work_info['job-title'] = workex['title'] || '';
 			 		work_info['start-date'] = month[parseInt(workex['startDate']['month'])-1]+', '+workex['startDate']['year'];
 			 		
 			 		if(workex['isCurrent']==true)
@@ -232,6 +237,9 @@ function attachPopOvers()
 
 		if(social_data['github']['blog'])
 			suggestions['github_website'] = social_data['github']['blog'];
+
+		if(social_data['github']['location'])
+			suggestions['github_location'] = social_data['github']['location'];
 
 
 	}
