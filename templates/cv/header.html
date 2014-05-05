@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+	<head>
+		<meta charset="utf-8">
+		<title> {{ title }}</title>
+		{% load staticfiles %}
+		
+		<!-- google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{% static 'resumizr/css/bootstrap.min.css' %}">
+
+		<script>
+		var social_data = {};
+		</script>
+
+		<script src="{% static 'resumizr/js/angular.min.js' %}"></script>
+		<script src="{% static 'resumizr/js/jquery.min.js' %}"></script>
+		<script src="{% static 'resumizr/js/jquery-ui.min.js' %}"></script>
+		<script src="{% static 'resumizr/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'resumizr/js/pnotify.custom.min.js' %}"></script>
+        <script src="{% static 'resumizr/js/smart-suggestion.js' %}"></script>
+        <script src="{% static 'resumizr/js/cv-generation/generate.js' %}"></script>
+        <script src="{% static 'resumizr/js/ajax-load.js' %}"></script>
+
+
+
+		<link href="{% static  'resumizr/css/font-awesome.min.css' %}" rel="stylesheet">
+		<link href="{% static  'resumizr/css/resume-form.css' %}" rel="stylesheet">
+		<link href="{% static  'resumizr/css/cv-template-general.css' %}" rel="stylesheet">
+		<link href="{% static  'resumizr/css/pnotify.custom.min.css' %}" rel="stylesheet">
+
+
+		
+	</head>

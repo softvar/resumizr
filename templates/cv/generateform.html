@@ -1,77 +1,44 @@
-<!DOCTYPE html>
-<html lang="en" ng-app>
-	<head>
-		<meta charset="utf-8">
-		<title>Resumizr</title>
-		{% load staticfiles %}
-		
-		<!-- google fonts -->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="{% static 'resumizr/css/bootstrap.min.css' %}">
-
-		<script>
-		var social_data = {};
-		</script>
-
-		<script src="{% static 'resumizr/js/angular.min.js' %}"></script>
-		<script src="{% static 'resumizr/js/jquery.min.js' %}"></script>
-		<script src="{% static 'resumizr/js/jquery-ui.min.js' %}"></script>
-		<script src="{% static 'resumizr/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'resumizr/js/pnotify.custom.min.js' %}"></script>
-        <script src="{% static 'resumizr/js/smart-suggestion.js' %}"></script>
-        <script src="{% static 'resumizr/js/cv-generation/generate.js' %}"></script>
-        <script src="{% static 'resumizr/js/ajax-load.js' %}"></script>
-
-
-
-		<link href="{% static  'resumizr/css/font-awesome.min.css' %}" rel="stylesheet">
-		<link href="{% static  'resumizr/css/resume-form.css' %}" rel="stylesheet">
-		<link href="{% static  'resumizr/css/cv-template-general.css' %}" rel="stylesheet">
-		<link href="{% static  'resumizr/css/pnotify.custom.min.css' %}" rel="stylesheet">
-
-
-		
-	</head>
-	<body>
+{% include "cv/header.html" with title="Resumizr- Manual CV Generation" %}
+<body>
 <!-- ajax progress bar -->
 <div class="progress-bar"></div>
 <button type="button" class="btn btn-lg btn-primary refresh" id="refresh">Refresh Genius</button> 
 
 	<div class="container"> 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <input type="text" class="form-control prompt-section-title" placeholder="Change Section's Title"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-section-title">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+		      </div>
+		      <div class="modal-body">
+		        <input type="text" class="form-control prompt-section-title" placeholder="Change Section's Title"/>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary save-section-title">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
-<!-- Preview Modal -->
-<div class="modal fade" id="myModalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
-  <div class="modal-dialog" style="width:80%;overflow:auto;">
-    <div class="modal-content">
-      <div class="modal-header" style="height:620px;overflow:auto;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel" style="text-align:center;">CV Preview</h4>
-        <hr>
-        <div class="preview-generated-cv"></div>
-      </div>
-      
-    </div>
-  </div>
-</div>
+		<!-- Preview Modal -->
+		<div class="modal fade" id="myModalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+		  <div class="modal-dialog" style="width:80%;overflow:auto;">
+		    <div class="modal-content">
+		      <div class="modal-header" style="height:620px;overflow:auto;">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel" style="text-align:center;">CV Preview</h4>
+		        <hr>
+		        <div class="preview-generated-cv"></div>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
 
 
 		<div class="row">
@@ -315,14 +282,7 @@
 			
 		{{headingStatus}}
 		{{contentStatus}}
-		<!--<textarea name="content" id="markdown-editor" data-provide="markdown" data-iconlibrary="fa" data-savable="true" rows="10"></textarea>
-		<textarea class="ckeditor" name="editor1"></textarea>
-		</div>
-		<script src="{% static 'js/markdown.js' %}"></script>
-		<script src="{% static 'js/to-markdown.js' %}"></script>
-		<script src="{% static 'js/bootstrap-markdown.js' %}"></script> -->
-		<!-- <script src="{% static 'js/ckeditor.js' %}"></script>
-		 -->
+
 		
 	
 	</body>
