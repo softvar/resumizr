@@ -59,10 +59,10 @@
 </div>
 
 <!-- Preview Modal -->
-<div class="modal fade" id="myModalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal fade" id="myModalPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
   <div class="modal-dialog" style="width:80%;overflow:auto;">
     <div class="modal-content">
-      <div class="modal-header" style="height:620px;">
+      <div class="modal-header" style="height:620px;overflow:auto;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel" style="text-align:center;">CV Preview</h4>
         <hr>
@@ -77,10 +77,10 @@
 		<div class="row">
 		  <div class="col-md-3" >
 		  	<ul id="sortable">
-		  	  <section class="card"><li class="uis" href="#1" data-toggle="tab"><i style="color:gray" class="fa fa-user"></i> Basic Information</li></section>
-			   <section class="card"><li class="uis" href="#2" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Work Experience</li></section>
-			   <section class="card"><li class="uis" href="#3" data-toggle="tab"><i style="color:gray" class="fa fa-book"></i> Education</li></section>
-			   <section class="card"><li class="uis" href="#4" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
+		  	  <section class="card"><li class="sortable-tab--field" href="#1" data-toggle="tab"><i style="color:gray" class="fa fa-user"></i> Basic Information</li></section>
+			   <section class="card"><li class="sortable-tab--field" href="#2" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Work Experience</li></section>
+			   <section class="card"><li class="sortable-tab--field" href="#3" data-toggle="tab"><i style="color:gray" class="fa fa-book"></i> Education</li></section>
+			   <section class="card"><li class="sortable-tab--field" href="#4" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
 			</ul>
 			<button class="btn btn-info add--section">Create a new Section</button>
 		  </div>
@@ -267,9 +267,9 @@
 
 
 		
-			<button type="submit" id="lol" class="btn">Preview</button>
+			<button type="submit" id="preview" class="btn">Preview</button>
 		</form>
-		<button id="lol" class="btn btn-success save--form">Save Form</button>
+		<button id="save" class="btn btn-success save--form">Save Form</button>
       </div>
 		<!--
 		<div class="tabbable tabs-left">
