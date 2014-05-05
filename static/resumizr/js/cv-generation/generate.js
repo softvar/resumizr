@@ -24,37 +24,55 @@ $(function () {
     });
     $( "#sortable" ).disableSelection();
     
-    $('#lol').click(function () {
+    $('#preview').click(function () {
     	var formClientData = {};
 
-    	$('.uis').each(function () {
+    	$('.sortable-tab--field').each(function () {
     		var data='', object = {},
     		    id = $(this).attr('href'),
     			emptySection = true,
     			heading = $(id).find('.label--text.heading').text();
-    		$(id).find('.form-control').each(function () {
-    			if($(this).val()!=null && $(this).val()!=''){
-		        	/*if (data=='')
-		        		data = $(id +' .form-control').index(this) + '|^|' + $(this).val();
-		        	else
-			        	data = data + '|&|' + $(id +' .form-control').index(this) + '|^|' + $(this).val();
-    				*/
-    				object[$(this).attr('name')] = $(this).val();
-    				emptySection = false; 
-    			}  
-		    });
-		    if(!emptySection){
-		    	formClientData[heading] = object;
-		    }
+    		//console.log(id);
+            if(id == '#2') {
+                var workExObject = {},
+                    workExArray = [];
+                $(id).find('.cv-work-experience').each(function (i) {
+                    $('.cv-work-experience:eq('+i+') .form-control').each(function (i) {
+                        if($(this).val()!=null && $(this).val()!=''){
+                            workExObject[$(this).attr('name')] = $(this).val();
+                            emptySection = false; 
+                        }
+                    });
+                    if(!emptySection){
+                        workExArray.push(workExObject);
+                        workExObject = {};
+                    }
+                });
+                if(workExArray.length>0){
+                    formClientData[heading] = workExArray;
+                }
+            }
+            else {
+                $(id).find('.form-control').each(function () {
+        			if($(this).val()!=null && $(this).val()!=''){
+        				object[$(this).attr('name')] = $(this).val();
+        				emptySection = false; 
+        			}  
+    		    });
+                if(!emptySection){
+                    formClientData[heading] = object;
+                }
+            }   
+
     	});
-    	//console.log(formClientData['Basic information']);
+    	console.log(formClientData);
     	//formClientData = JSON.stringify(formClientData);
     	buildoPreviewCv(formClientData);
 
     });
 
     $('.save--form').click(function () {
-    	var jsonFormData = buildoPreviewCv();
+    	//var jsonFormData = buildoPreviewCv();
     	// save to DB
     	$.ajax({
 		  url: "http://myapp.com:8000s/users/save-data",
@@ -169,29 +187,31 @@ function buildoPreviewCv(f) {
 	    	renderFormData = renderFormData + '<div class="section--area">' +
     			'<div class="grey-box rectangle">'+
         		'<span>'+ key +'</span>' +  
-			    '</div>'+
-			    '<div class="data--info">'+
-			        '<div class="row">'+
-			            '<div class="col-md-4" >';
-			if(f[key]['cv__jobtitle'])
-				renderFormData = renderFormData + '<span>'+f[key]['cv__jobtitle']+'</span>';
-			renderFormData = renderFormData + '</div>'+
-            '<div class="col-md-4" style="text-align:center;">';
-            if(f[key]['cv__companyname'])
-            	renderFormData = renderFormData + '<span >'+f[key]['cv__companyname']+'</span>';
-            renderFormData = renderFormData +'</div>'+
-          		'<div class="col-md-4" style="text-align:right;padding-right:50px;" >';
-            if(f[key]['cv__companystart'] && f[key]['cv__companyend']){
-                renderFormData = renderFormData + '<span>'+f[key]['cv__companystart'] +'</span>' +
-                '<span>'+f[key]['cv__companyend'] +'</span>';
+			    '</div>';
+
+            for (var work in f[key]) {
+    			renderFormData = renderFormData + '<div class="data--info">'+
+    			    '<div class="row">'+
+    			       '<div class="col-md-4" >';
+    			if(f[key][work]['cv__jobtitle'])
+    				renderFormData = renderFormData + '<span class="cv__jobtitle">'+f[key][work]['cv__jobtitle']+'</span>';
+    			renderFormData = renderFormData + '</div>'+
+                '<div class="col-md-4" style="text-align:center;">';
+                if(f[key][work]['cv__companyname'])
+                	renderFormData = renderFormData + '<span class="cv__companyname">'+f[key][work]['cv__companyname']+'</span>';
+                renderFormData = renderFormData +'</div>'+
+              		'<div class="col-md-4" style="text-align:right;padding-right:50px;" >';
+                if(f[key][work]['cv__companystart'] && f[key][work]['cv__companyend']){
+                    renderFormData = renderFormData + '<span class="cv__companystart">'+f[key][work]['cv__companystart'] +'</span>' +
+                    '<span class="cv__companyend">'+f[key][work]['cv__companyend'] +'</span>';
+                }                renderFormData = renderFormData + '</div>' +
+            	'</div>';
+            	if(f[key][work]['cv__companydesc'])
+            		renderFormData = renderFormData + '<p>'+f[key][work]['cv__companydesc']+'</p>';
+        		
+        		renderFormData = renderFormData + '</div>'+
+    				'</div>';
             }
-            renderFormData = renderFormData + '</div>' +
-        	'</div>';
-        	if(f[key]['cv__companydesc'])
-        		renderFormData = renderFormData + '<p>'+f[key]['cv__companydesc']+'</p>';
-    		
-    		renderFormData = renderFormData + '</div>'+
-				'</div>';
 	    }
 	    else if(key == 'Education') {
 	    	renderFormData = renderFormData + '<div class="section--area">'+
@@ -277,10 +297,10 @@ function buildoPreviewCv(f) {
 		
 	});
 	$('.add--section').click(function () {
-		var newSection = '<section class="card"><li style="display:inline-block;" class="uis" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
+		var newSection = '<section class="card"><li style="display:inline-block;" class="sortable-tab--field" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
 		$('#sortable').append(newSection);
 		addSectionDetail(globalSectionId);
-		$('li.uis').last().click();
+		$('li.sortable-tab--field').last().click();
 		globalSectionId++;
 	});
 
