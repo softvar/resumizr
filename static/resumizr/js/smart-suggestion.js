@@ -23,9 +23,10 @@ var providers = ['facebook','linkedin','github'];
 var single_fields = ['name','email','website','location'];
 
 var workex_fields = ['job-description','company-name','job-title','end-date','start-date'];  // array of fields attached with each suggestion
+var education_fields = ['education-type','institution-name','education-period' ,'education-description'];
 
 var workex_popoverFields = ['job-title','company-name'];  // fields for which popovers will be defined
-
+var education_popoverFields = ['education-type','institution-name'];
 
 
 
@@ -67,6 +68,32 @@ workex_popoverFields.forEach(function(field){
 });
 
 
+/* attaching click event listerner for education suggestion fields */
+education_popoverFields.forEach(function(field){
+
+	$("body").on("click", '.'+field+'Suggestion', function(event){  
+	     
+		var provider = $(this).data('provider');
+		var key = $(this).data('ref-no');
+		
+		var target = $(event.target).parents().eq(3).children('.'+field); // target input box
+		
+		container = target.parents().eq(3); // getting 4th level parent of target element
+    	
+
+    	education_fields.forEach(function(sibling){
+
+    		container.find('.'+sibling+':first').val(suggestions[provider+'_education'][key][sibling]); // seting text of sibbling fields in div
+    	});
+   
+
+	});
+
+});
+
+
+
+
 
 });
 
@@ -93,9 +120,15 @@ return {
  					for(key in suggestions[provider+'_workex'])
  					{
  						var suggestion = suggestions[provider+'_workex'][key];
- 						//console.log('suggestion: '+suggestions[provider+'_workex'][key]['job-title']);
- 						//console.log('key: '+key);
- 						list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						
+ 						if(suggestion[field]!='')
+ 						{						
+ 							if(field =='company-name')
+ 						 		list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						 	else 
+ 						 		list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+' ('+suggestion['company-name']+')'+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						 }
+
  					}
  					
  				}
@@ -113,6 +146,56 @@ return {
 
  }
 };
+
+
+/* popover settings for work expeirence segment */
+function education_popoverSettings(field) {
+return {
+ 	placement : 'auto',
+ 	title :field+' suggestions',
+ 	html : true,
+ 	trigger : 'focus',
+ 	content : function(){
+ 		
+ 		
+ 			var list = '';
+ 			providers.forEach(function(provider)
+ 			{
+ 				
+ 				// if suggestion is availbale from social provider
+ 				if (suggestions[provider+'_education'] && (suggestions[provider+'_education'] != ''))
+ 				{	
+ 					//console.log(suggestions[provider+'_workex']);
+ 					
+ 					for(key in suggestions[provider+'_education'])
+ 					{
+ 						var suggestion = suggestions[provider+'_education'][key];
+ 						
+ 						if(suggestion[field] !='')
+ 							list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						
+
+ 					}
+ 					
+ 				}
+
+ 			});
+
+	 		if(list != '')
+	 		{
+	 			list='<ul class="suggestion-list">'+list+'</ul>';
+	 			return list;
+	 		}
+	 		else
+	 			return 'No sugestions available';
+ 	}
+
+ }
+};
+
+
+
+
 
 function attachPopOvers()
 {
@@ -143,6 +226,9 @@ function attachPopOvers()
 
 	 suggestions['facebook_location'] = '';
 	 suggestions['github_location'] = '';
+
+	 suggestions['facebook_education'] = [];
+	 suggestions['linkedin_education'] = [];
 	 
 
 
@@ -179,11 +265,35 @@ function attachPopOvers()
 			 		{
 			 			d = new Date(workex['end_date']);
 				 		work_info['end-date'] = month[d.getMonth()]+', '+d.getFullYear();	
-				 		suggestions['facebook_workex'].push(work_info);
-			 		}   		  		
+			 		}   	
+			 		suggestions['facebook_workex'].push(work_info);	  		
 				}
 	 	}
-	 	console.log(suggestions['facebook_workex']);
+
+	 	if(social_data['facebook']['education'])
+		{
+				var d = '';
+		 		for (var key in social_data['facebook']['education']) {
+
+			 		var education = social_data['facebook']['education'][key];
+			 		var education_info = {};
+			 		
+			 		education_info['education-type'] = education['type'] || '';
+			 		education_info['institution-name'] = education['school']['name'] || '';
+			 		if('year' in education)
+			 			education_info['education-period'] = ' -'+(education['year']['name'] || '');
+			 		else
+			 			education_info['education-period'] = '';
+			 		
+			 		education_info['education-description'] = '';
+			 		
+			 		
+				 	suggestions['facebook_education'].push(education_info);
+			 		   		  		
+				}
+				console.log(suggestions['facebook_education']);
+	 	}
+	 	
 
 
 	 
@@ -222,7 +332,35 @@ function attachPopOvers()
 			 		suggestions['linkedin_workex'].push(work_info);   		  		
 				}
 	 	}
-	 	console.log(suggestions['linkedin_workex']);
+
+	 	if(social_data['linkedin']['educations'] && (social_data['linkedin']['educations']['_total']>0))
+		{
+
+		 		for (var key in social_data['linkedin']['educations']['values']) {
+
+			 		var education = social_data['linkedin']['educations']['values'][key];
+			 		var education_info = {};
+			 		
+			 		education_info['education-type'] = '';
+			 		education_info['institution-name'] = education['schoolName'] || '';
+
+			 		if(('startDate' in education) && ('endDate' in education))
+			 			education_info['education-period'] = (education['startDate']['year'] || '') +'-'+(education['endDate']['year'] || '');
+			 		
+			 		else
+			 			education_info['education-period'] = '';
+
+			 		
+			 		education_info['education-description'] = education['activities'] || '';
+			 		
+			 		
+			 		
+			 		suggestions['linkedin_education'].push(education_info);   		  		
+				}
+	 	
+				console.log(suggestions['linkedin_education']);
+	 	}
+	 	
 		
 		
 	}
@@ -245,7 +383,7 @@ function attachPopOvers()
 
 	}
 
-	window.suggestions = suggestions ; // assigning local to global vriable
+	window.suggestions = suggestions ; // assigning local data to global variable
 
 
 	/* attaching popovers to single fields */
@@ -288,6 +426,7 @@ function attachPopOvers()
 
 	
 	dynamicWorkexPopoverBinder();
+	dynamicEducationPopoverBinder();
 	
 
 }
@@ -302,6 +441,21 @@ function dynamicWorkexPopoverBinder()
 		$('.'+field).popover(workex_popoverSettings(field));
 
 	});
+
+
+}
+
+function dynamicEducationPopoverBinder()
+{
+
+	/* suggestion for education */
+
+	education_popoverFields.forEach(function(field){
+		$('.'+field).popover('destroy'); 
+		$('.'+field).popover(education_popoverSettings(field));
+
+	});
+
 
 
 }

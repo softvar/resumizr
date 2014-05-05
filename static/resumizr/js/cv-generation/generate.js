@@ -92,6 +92,7 @@ $(function () {
 	$('.add-new-education').click(function (){
 		var newEduSection = '<hr/> <div class="cv-education">' + $('.cv-education').html()+'</div>';
 		$('.add-new-education').before(newEduSection);
+        dynamicEducationPopoverBinder();
 	});
 
     $(document).on('click', '.save-section-title' ,function () {
