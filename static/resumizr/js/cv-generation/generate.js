@@ -52,6 +52,25 @@ $(function () {
                     formClientData[heading] = workExArray;
                 }
             }
+            if(id == '#3') {
+                var eduObject = {},
+                    eduArray = [];
+                $(id).find('.cv-education').each(function (i) {
+                    $('.cv-education:eq('+i+') .form-control').each(function (i) {
+                        if($(this).val()!=null && $(this).val()!=''){
+                            eduObject[$(this).attr('name')] = $(this).val();
+                            emptySection = false; 
+                        }
+                    });
+                    if(!emptySection){
+                        eduArray.push(eduObject);
+                        eduObject = {};
+                    }
+                });
+                if(eduArray.length>0){
+                    formClientData[heading] = eduArray;
+                }
+            }
             else {
                 $(id).find('.form-control').each(function () {
         			if($(this).val()!=null && $(this).val()!=''){
@@ -218,23 +237,24 @@ function buildoPreviewCv(f) {
 	    	renderFormData = renderFormData + '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData = renderFormData +'<span>'+key+'</span>';
+        		renderFormData = renderFormData +'<span>'+key+'</span></div>';
     		
-    		renderFormData = renderFormData + '</div>'+
-    			'<div class="data--info">';
-        	if(f[key]['cv__coursename'])
-        		renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key]['cv__coursename'];
-    		if(f[key]['cv__eduperiod'])
-    			renderFormData = renderFormData + ',' +f[key]['cv__eduperiod'];
-    		renderFormData = renderFormData + '</span>';
+            for (var edu in f[key]) {
+        		renderFormData = renderFormData + '<div class="data--info">';
+            	if(f[key][edu]['cv__coursename'])
+            		renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key][edu]['cv__coursename'];
+        		if(f[key][edu]['cv__eduperiod'])
+        			renderFormData = renderFormData + ',' +f[key][edu]['cv__eduperiod'];
+        		renderFormData = renderFormData + '</span>';
 
-    		if(f[key]['cv__instiname'])
-    			renderFormData = renderFormData + '<br/><span>'+f[key]['cv__instiname']+'</span>';
-    		if(f[key]['cv__instidescription'])
-    			renderFormData = renderFormData + '<p>'+f[key]['cv__instidescription']+'</p>';
-    		
-    		renderFormData = renderFormData + '</div>';
-				'</div>';
+        		if(f[key][edu]['cv__instiname'])
+        			renderFormData = renderFormData + '<br/><span>'+f[key][edu]['cv__instiname']+'</span>';
+        		if(f[key][edu]['cv__instidescription'])
+        			renderFormData = renderFormData + '<p>'+f[key][edu]['cv__instidescription']+'</p>';
+        		
+        		renderFormData = renderFormData + '</div>';
+    				'</div>';
+            }
 	    }
 	    else if(key == 'Achievements') {
 	    	renderFormData = renderFormData + '<div class="section--area">'+
