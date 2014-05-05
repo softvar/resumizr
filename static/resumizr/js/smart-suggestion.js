@@ -341,7 +341,7 @@ function attachPopOvers()
 			 		var education = social_data['linkedin']['educations']['values'][key];
 			 		var education_info = {};
 			 		
-			 		education_info['education-type'] = '';
+			 		education_info['education-type'] = education['degree'] || '';
 			 		education_info['institution-name'] = education['schoolName'] || '';
 
 			 		if(('startDate' in education) && ('endDate' in education))
