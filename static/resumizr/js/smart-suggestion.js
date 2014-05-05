@@ -154,9 +154,10 @@ function attachPopOvers()
 	 	if(social_data['facebook']['email'])
 	 		suggestions['facebook_email']= social_data['facebook']['email'];
 
-	 	if(social_data['facebook']['location']['name'])
-	 		suggestions['facebook_location']= social_data['facebook']['location']['name'];
-
+	 	if(social_data['facebook']['location']) {
+		 	if(social_data['facebook']['location']['name'])
+		 		suggestions['facebook_location']= social_data['facebook']['location']['name'];
+	 	}
 
 		if(social_data['facebook']['work'])
 		{
