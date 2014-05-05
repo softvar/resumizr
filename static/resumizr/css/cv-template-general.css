@@ -28,3 +28,21 @@
     margin-left: 3px;
     font-size: 14px;
 }
+
+/** Work Ex Fields in CV **/
+.cv__jobtitle {
+    font-weight: bold;
+}
+.cv__companyname {
+    font-weight: bold;
+}
+.cv__companystart {
+    font-weight: bold;
+}
+.cv__companyend {
+    font-weight: bold;
+}
+.cv__comapnydesc {
+
+}
+/** Work Ex Fields CSS Over **/
