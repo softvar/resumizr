@@ -104,14 +104,14 @@ $(function () {
     $('.add-new-job').click(function () {
     	var newJobSection = '<hr/> <div class="cv-work-experience">' + $('.cv-work-experience').html()+'</div>'; 	
 		$('.add-new-job').before(newJobSection);
-        dynamicWorkexPopoverBinder();
+        dynamicWorkexPopoverBinder(); // from smart-suggestion/js
 
     });
 
 	$('.add-new-education').click(function (){
 		var newEduSection = '<hr/> <div class="cv-education">' + $('.cv-education').html()+'</div>';
 		$('.add-new-education').before(newEduSection);
-        dynamicEducationPopoverBinder();
+        dynamicEducationPopoverBinder(); // from smart-suggestion.js 
 	});
 
     $(document).on('click', '.save-section-title' ,function () {

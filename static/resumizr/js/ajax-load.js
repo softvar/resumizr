@@ -115,6 +115,25 @@ setTimeout(function(){
 // attaching suggestion popovers
 attachPopOvers();
 
+}).fail(function(){
+/* ajax request failed */
+bar.animate({
+  width : '100%'
+},1000);
+
+setTimeout(function(){
+    bar.fadeOut();
+    button.removeAttr('disabled');
+    button.css('margin-right','-2px');
+    button.text('request-failed');
+    button.css('background-color','red');
+
+},2000);
+
+
+
+
+
 });
 
 
