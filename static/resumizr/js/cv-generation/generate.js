@@ -71,6 +71,25 @@ $(function () {
                     formClientData[heading] = eduArray;
                 }
             }
+            if(id == '#4') {
+                var projObject = {},
+                    projArray = [];
+                $(id).find('.cv-projects').each(function (i) {
+                    $('.cv-projects:eq('+i+') .form-control').each(function (i) {
+                        if($(this).val()!=null && $(this).val()!=''){
+                            projObject[$(this).attr('name')] = $(this).val();
+                            emptySection = false; 
+                        }
+                    });
+                    if(!emptySection){
+                        projArray.push(projObject);
+                        projObject = {};
+                    }
+                });
+                if(projArray.length>0){
+                    formClientData[heading] = projArray;
+                }
+            }
             else {
                 $(id).find('.form-control').each(function () {
         			if($(this).val()!=null && $(this).val()!=''){
@@ -150,14 +169,17 @@ $(function () {
 	});
     $(document).on('click', '.fa.fa-times' ,function () {
     	var id = $('.tab-pane.active').attr('id');
-    	$('#'+ $('.tab-pane.active').attr('id')).remove();
     	console.log($('#sortable section li[href="#'+id+'"').parent().prev().html());
-    	if($('#sortable li[href="#'+id+'"').prev()) {
-	    	$('#sortable li[href="#'+id+'"').prev().click();
+        console.log($('#sortable li[href="#2"]'));
+        $('#sortable li[href="#2"]').click();
+        if($('#sortable li[href="#'+id+']"').prev()) {
+	    	$('#sortable li[href="#'+id+']"').prev().click();
 	    }
 	    else
 	    	$('#sortable li[href="#1"]').click();
-	    $('#sortable li[href="#'+id+'"').parent().remove();
+
+        $('#'+ $('.tab-pane.active').attr('id')).remove();
+	    $('#sortable li[href="#'+id+']"').parent().remove();
     });
 
 
@@ -262,6 +284,29 @@ function buildoPreviewCv(f) {
     				'</div>';
             }
 	    }
+        else if(key == 'Projects') {
+            renderFormData = renderFormData + '<div class="section--area">'+
+                '<div class="grey-box rectangle">';
+            if(f[key])
+                renderFormData = renderFormData +'<span>'+key+'</span></div>';
+            
+            for (var proj in f[key]) {
+                renderFormData = renderFormData + '<div class="data--info">';
+                if(f[key][proj]['cv__coursename'])
+                    renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key][proj]['cv__coursename'];
+                if(f[key][proj]['cv__eduperiod'])
+                    renderFormData = renderFormData + ',' +f[key][proj]['cv__eduperiod'];
+                renderFormData = renderFormData + '</span>';
+
+                if(f[key][proj]['cv__instiname'])
+                    renderFormData = renderFormData + '<br/><span>'+f[key][proj]['cv__instiname']+'</span>';
+                if(f[key][proj]['cv__instidescription'])
+                    renderFormData = renderFormData + '<p>'+f[key][proj]['cv__instidescription']+'</p>';
+                
+                renderFormData = renderFormData + '</div>';
+                    '</div>';
+            }
+        }
 	    else if(key == 'Achievements') {
 	    	renderFormData = renderFormData + '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
