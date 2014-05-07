@@ -17,13 +17,21 @@ function SubmitFormField($scope, $element) {
 }
 
 $(function () {
-		
+
 	var globalSectionId = 10; // please see it carefully @psych0der
 	$( "#sortable" ).sortable({
       placeholder: "ui-state-highlight"
     });
     $( "#sortable" ).disableSelection();
-    
+    $('textarea.form-control').wysihtml5({
+      "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+      "emphasis": true, //Italics, bold, etc. Default true
+      "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+      "html": true, //Button which allows you to edit the generated HTML. Default false
+      "link": false, //Button to insert a link. Default true
+      "image": false, //Button to insert an image. Default true,
+      "color": true //Button to change color of font
+    });
     $('#preview').click(function () {
     	var formClientData = {};
 
@@ -41,7 +49,7 @@ $(function () {
                         if($(this).val()!=null && $(this).val()!=''){
                             //alert(i + $(this).val());
                             workExObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false; 
+                            emptySection = false;
                         }
                     });
                     if(!emptySection){
@@ -61,7 +69,7 @@ $(function () {
                     $('.cv-education:eq('+i+') .form-control').each(function (i) {
                         if($(this).val()!=null && $(this).val()!=''){
                             eduObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false; 
+                            emptySection = false;
                         }
                     });
                     if(!emptySection){
@@ -80,7 +88,7 @@ $(function () {
                     $('.cv-projects:eq('+i+') .form-control').each(function (i) {
                         if($(this).val()!=null && $(this).val()!=''){
                             projObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false; 
+                            emptySection = false;
                         }
                     });
                     if(!emptySection){
@@ -96,13 +104,13 @@ $(function () {
                 $(id).find('.form-control').each(function () {
         			if($(this).val()!=null && $(this).val()!=''){
         				object[$(this).attr('name')] = $(this).val();
-        				emptySection = false; 
-        			}  
+        				emptySection = false;
+        			}
     		    });
                 if(!emptySection){
                     formClientData[heading] = object;
                 }
-            }   
+            }
 
     	});
     	console.log(formClientData);
@@ -121,9 +129,9 @@ $(function () {
 		  $( this ).addClass( "done" );
 		});
     });
-    
+
     $('.add-new-job').click(function () {
-    	var newJobSection = '<hr/> <div class="cv-work-experience">' + $('.cv-work-experience').html()+'</div>'; 	
+    	var newJobSection = '<hr/> <div class="cv-work-experience">' + $('.cv-work-experience').html()+'</div>';
 		$('.add-new-job').before(newJobSection);
         dynamicWorkexPopoverBinder(); // from smart-suggestion/js
 
@@ -132,13 +140,13 @@ $(function () {
 	$('.add-new-education').click(function (){
 		var newEduSection = '<hr/> <div class="cv-education">' + $('.cv-education').html()+'</div>';
 		$('.add-new-education').before(newEduSection);
-        dynamicEducationPopoverBinder(); // from smart-suggestion.js 
+        dynamicEducationPopoverBinder(); // from smart-suggestion.js
 	});
 
     $('.add-new-project').click(function (){
         var newEduSection = '<hr/> <div class="cv-projects">' + $('.cv-projects').html()+'</div>';
         $('.add-new-project').before(newEduSection);
-        dynamicProjectsPopoverBinder(); // from smart-suggestion.js 
+        dynamicProjectsPopoverBinder(); // from smart-suggestion.js
     });
 
     $(document).on('click', '.save-section-title' ,function () {
@@ -201,19 +209,19 @@ $(function () {
 	    	'<textarea class="form-control" name="content" placeholder="Enter Content"></textarea>'+
 	    '</div>'+
 	  '</div>'+
-  
+
 '</div>';
-	
+
 function buildoPreviewCv(f) {
 	// view cv in modal view container
 	var renderFormData = '<div class="build-resume-service">';
 
     $('#myModalPreview').modal('show');
 
-    
+
     for (var key in f) {
     	//console.log(key);
-    
+
 	    if(key == 'Basic information') {
 	    	renderFormData = '<div class="about-self-details">'+
     			'<div class="client--name">';
@@ -236,7 +244,7 @@ function buildoPreviewCv(f) {
 	    else if(key == 'Work Experience') {
 	    	renderFormData = renderFormData + '<div class="section--area">' +
     			'<div class="grey-box rectangle">'+
-        		'<span>'+ key +'</span>' +  
+        		'<span>'+ key +'</span>' +
 			    '</div>';
 
             for (var work in f[key]) {
@@ -256,11 +264,11 @@ function buildoPreviewCv(f) {
                 if(f[key][work]['cv__companystart'] && f[key][work]['cv__companyend']){
                     renderFormData = renderFormData + '<span class="cv__companystart">'+f[key][work]['cv__companystart'] +'</span>' +
                     '<span class="cv__companyend">'+f[key][work]['cv__companyend'] +'</span>';
-                }                
+                }
                 renderFormData = renderFormData + '</div>' + '</div>';
             	if(f[key][work]['cv__companydesc'])
             		renderFormData = renderFormData + '<p>'+f[key][work]['cv__companydesc']+'</p>';
-        		
+
         		renderFormData = renderFormData + '</div>'+
     				'</div>';
             }
@@ -270,7 +278,7 @@ function buildoPreviewCv(f) {
     			'<div class="grey-box rectangle">';
         	if(f[key])
         		renderFormData = renderFormData +'<span>'+key+'</span></div>';
-    		
+
             for (var edu in f[key]) {
         		renderFormData = renderFormData + '<div class="data--info">';
             	if(f[key][edu]['cv__coursename'])
@@ -283,7 +291,7 @@ function buildoPreviewCv(f) {
         			renderFormData = renderFormData + '<br/><span>'+f[key][edu]['cv__instiname']+'</span>';
         		if(f[key][edu]['cv__instidescription'])
         			renderFormData = renderFormData + '<p>'+f[key][edu]['cv__instidescription']+'</p>';
-        		
+
         		renderFormData = renderFormData + '</div>';
     				'</div>';
             }
@@ -293,7 +301,7 @@ function buildoPreviewCv(f) {
                 '<div class="grey-box rectangle">';
             if(f[key])
                 renderFormData = renderFormData +'<span>'+key+'</span></div>';
-            
+
             for (var proj in f[key]) {
                 renderFormData = renderFormData + '<div class="data--info">';
                 if(f[key][proj]['cv__projecttitle'])
@@ -308,7 +316,7 @@ function buildoPreviewCv(f) {
                     renderFormData = renderFormData + '<p>'+f[key][proj]['cv__projectend']+'</p>';
                 if(f[key][proj]['cv__projectdesc'])
                     renderFormData = renderFormData + '<p>'+f[key][proj]['cv__projectdesc']+'</p>';
-                
+
                 renderFormData = renderFormData + '</div>';
                     '</div>';
             }
@@ -318,7 +326,7 @@ function buildoPreviewCv(f) {
     			'<div class="grey-box rectangle">';
         	if(f[key])
         		renderFormData = renderFormData +'<span>'+key+'</span>';
-    		
+
     		renderFormData = renderFormData + '</div>'+
     			'<div class="data--info">';
         	if(f[key]['cv__achievemnet'])
@@ -331,7 +339,7 @@ function buildoPreviewCv(f) {
     			'<div class="grey-box rectangle">';
         	if(f[key])
         		renderFormData = renderFormData +'<span>'+key+'</span>';
-    		
+
     		renderFormData = renderFormData + '</div>'+
     			'<div class="data--info">';
         	if(f[key]['cv__fielddata'])
@@ -339,7 +347,7 @@ function buildoPreviewCv(f) {
     		renderFormData = renderFormData + '</div>'+
 				'</div>';
 	    }
-	    
+
 	}
 	renderFormData = renderFormData + '</div>'
     $('.preview-generated-cv').html(renderFormData);
@@ -361,10 +369,10 @@ function buildoPreviewCv(f) {
 				'<br />'+
 				'<button class="btn btn-primary add--entry">Add Entry</button>'+
 			'</div>';
-				
-			
+
+
 				$('.tab-content').append(sectionAddData);
-				
+
 
 	}
 
@@ -372,7 +380,7 @@ function buildoPreviewCv(f) {
 		$('.btn-success.submit-form').before(newSection);
 	});
 	$(document).on('click', '.btn.add--entry', function () {
-		
+
 	});
 	$('.add--section').click(function () {
 		var newSection = '<section class="card"><li style="display:inline-block;" class="sortable-tab--field" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
@@ -383,4 +391,3 @@ function buildoPreviewCv(f) {
 	});
 
 });
-
