@@ -179,17 +179,15 @@ $(function () {
 	});
     $(document).on('click', '.fa.fa-times' ,function () {
     	var id = $('.tab-pane.active').attr('id');
-    	console.log($('#sortable section li[href="#'+id+'"').parent().prev().html());
-        console.log($('#sortable li[href="#2"]'));
-        $('#sortable li[href="#2"]').click();
-        if($('#sortable li[href="#'+id+']"').prev()) {
-	    	$('#sortable li[href="#'+id+']"').prev().click();
+        if($('li[href="#'+id+'"]').parent().prev()[0]) {
+	    	$('li[href="#'+id+'"]').parent().prev().children()[0].click();
 	    }
 	    else
-	    	$('#sortable li[href="#1"]').click();
+	       $('li[href="#1"]').click();
 
-        $('#'+ $('.tab-pane.active').attr('id')).remove();
-	    $('#sortable li[href="#'+id+']"').parent().remove();
+        //$('#'+ $('.tab-pane.active').attr('id')).remove();
+	    $('li[href="#'+id+'"]').parent().remove();
+        $('#'+id).remove();
     });
 
 
