@@ -18,7 +18,7 @@ function SubmitFormField($scope, $element) {
 
 $(function () {
 		
-	var globalSectionId = 5;
+	var globalSectionId = 10; // please see it carefully @psych0der
 	$( "#sortable" ).sortable({
       placeholder: "ui-state-highlight"
     });
@@ -39,11 +39,13 @@ $(function () {
                 $(id).find('.cv-work-experience').each(function (i) {
                     $('.cv-work-experience:eq('+i+') .form-control').each(function (i) {
                         if($(this).val()!=null && $(this).val()!=''){
+                            //alert(i + $(this).val());
                             workExObject[$(this).attr('name')] = $(this).val();
                             emptySection = false; 
                         }
                     });
                     if(!emptySection){
+                        //alert('lol');
                         workExArray.push(workExObject);
                         workExObject = {};
                     }
@@ -52,7 +54,7 @@ $(function () {
                     formClientData[heading] = workExArray;
                 }
             }
-            if(id == '#3') {
+            else if(id == '#3') {
                 var eduObject = {},
                     eduArray = [];
                 $(id).find('.cv-education').each(function (i) {
@@ -71,7 +73,7 @@ $(function () {
                     formClientData[heading] = eduArray;
                 }
             }
-            if(id == '#4') {
+            else if(id == '#4') {
                 var projObject = {},
                     projArray = [];
                 $(id).find('.cv-projects').each(function (i) {
@@ -210,7 +212,7 @@ function buildoPreviewCv(f) {
 
     
     for (var key in f) {
-    	console.log(key);
+    	//console.log(key);
     
 	    if(key == 'Basic information') {
 	    	renderFormData = '<div class="about-self-details">'+
@@ -241,7 +243,9 @@ function buildoPreviewCv(f) {
     			renderFormData = renderFormData + '<div class="data--info">'+
     			    '<div class="row">'+
     			       '<div class="col-md-4" >';
-    			if(f[key][work]['cv__jobtitle'])
+                /*console.log(f[key][work]);
+                console.log(f[key][work]['cv__jobtitle']);
+    			*/if(f[key][work]['cv__jobtitle'])
     				renderFormData = renderFormData + '<span class="cv__jobtitle">'+f[key][work]['cv__jobtitle']+'</span>';
     			renderFormData = renderFormData + '</div>'+
                 '<div class="col-md-4" style="text-align:center;">';
@@ -252,8 +256,8 @@ function buildoPreviewCv(f) {
                 if(f[key][work]['cv__companystart'] && f[key][work]['cv__companyend']){
                     renderFormData = renderFormData + '<span class="cv__companystart">'+f[key][work]['cv__companystart'] +'</span>' +
                     '<span class="cv__companyend">'+f[key][work]['cv__companyend'] +'</span>';
-                }                renderFormData = renderFormData + '</div>' +
-            	'</div>';
+                }                
+                renderFormData = renderFormData + '</div>' + '</div>';
             	if(f[key][work]['cv__companydesc'])
             		renderFormData = renderFormData + '<p>'+f[key][work]['cv__companydesc']+'</p>';
         		
@@ -292,16 +296,18 @@ function buildoPreviewCv(f) {
             
             for (var proj in f[key]) {
                 renderFormData = renderFormData + '<div class="data--info">';
-                if(f[key][proj]['cv__coursename'])
-                    renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key][proj]['cv__coursename'];
-                if(f[key][proj]['cv__eduperiod'])
-                    renderFormData = renderFormData + ',' +f[key][proj]['cv__eduperiod'];
+                if(f[key][proj]['cv__projecttitle'])
+                    renderFormData = renderFormData +'<span style="font-weight:bold;">'+f[key][proj]['cv__projecttitle'];
+                if(f[key][proj]['cv__projecturl'])
+                    renderFormData = renderFormData + ',' +f[key][proj]['cv__projecturl'];
                 renderFormData = renderFormData + '</span>';
 
-                if(f[key][proj]['cv__instiname'])
-                    renderFormData = renderFormData + '<br/><span>'+f[key][proj]['cv__instiname']+'</span>';
-                if(f[key][proj]['cv__instidescription'])
-                    renderFormData = renderFormData + '<p>'+f[key][proj]['cv__instidescription']+'</p>';
+                if(f[key][proj]['cv__projectstart'])
+                    renderFormData = renderFormData + '<br/><span>'+f[key][proj]['cv__projectstart']+'</span>';
+                if(f[key][proj]['cv__projectend'])
+                    renderFormData = renderFormData + '<p>'+f[key][proj]['cv__projectend']+'</p>';
+                if(f[key][proj]['cv__projectdesc'])
+                    renderFormData = renderFormData + '<p>'+f[key][proj]['cv__projectdesc']+'</p>';
                 
                 renderFormData = renderFormData + '</div>';
                     '</div>';
