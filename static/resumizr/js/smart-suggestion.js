@@ -22,15 +22,18 @@ var providers = ['facebook','linkedin','github'];
 
 var single_fields = ['name','email','website','location'];
 
+
 /* array of fields attached with each suggestion */
-var workex_fields = ['job-description','company-name','job-title','end-date','start-date'];  
-var education_fields = ['education-type','institution-name','education-period' ,'education-description'];
-var projects_fields = ['project-title','project-url','project-start-date','project-end-date','project-description'];
+var complex_fields = {};
+complex_fields['workex'] = ['job-description','company-name','job-title','end-date','start-date'];  
+complex_fields['education'] = ['education-type','institution-name','education-period' ,'education-description'];
+complex_fields['projects'] = ['project-title','project-url','project-start-date','project-end-date','project-description'];
 
 /* fields for which popovers will be defined */
-var workex_popoverFields = ['job-title','company-name'];  
-var education_popoverFields = ['education-type','institution-name'];
-var projects_popoverFields = ['project-title','project-url'];
+var popoverFields = {};
+popoverFields['workex'] = ['job-title','company-name'];  
+popoverFields['education'] = ['education-type','institution-name'];
+popoverFields['projects'] = ['project-title','project-url'];
 
 
 
@@ -48,8 +51,12 @@ single_fields.forEach(function(field){
 
 });
 
-/* attaching click event listerner for workex suggestion fields */
-workex_popoverFields.forEach(function(field){
+var categories = ['workex','education','projects'];
+
+/* attaching event listeners for categories */
+categories.forEach(function(category){
+
+	popoverFields[category].forEach(function(field){
 
 	$("body").on("click", '.'+field+'Suggestion', function(event){  
 	     
@@ -61,72 +68,81 @@ workex_popoverFields.forEach(function(field){
 		container = target.parents().eq(3); // getting 4th level parent of target element
     	
 
-    	workex_fields.forEach(function(sibling){
+    	complex_fields[category].forEach(function(sibling){
 
-    		container.find('.'+sibling+':first').val(suggestions[provider+'_workex'][key][sibling]); // seting text of sibbling fields in div
-    	});
-   
-
-	});
-
-});
-
-
-/* attaching click event listerner for education suggestion fields */
-education_popoverFields.forEach(function(field){
-
-	$("body").on("click", '.'+field+'Suggestion', function(event){  
-	     
-		var provider = $(this).data('provider');
-		var key = $(this).data('ref-no');
-		
-		var target = $(event.target).parents().eq(3).children('.'+field); // target input box
-		
-		container = target.parents().eq(3); // getting 4th level parent of target element
-    	
-
-    	education_fields.forEach(function(sibling){
-
-    		container.find('.'+sibling+':first').val(suggestions[provider+'_education'][key][sibling]); // seting text of sibbling fields in div
-    	});
-   
+    		container.find('.'+sibling+':first').val(suggestions[provider+'_'+category][key][sibling]); // seting text of sibbling fields in div
+    	});   
 
 	});
 
 });
 
 
-/* attaching click event listerner for projects suggestion fields */
-projects_popoverFields.forEach(function(field){
-
-	$("body").on("click", '.'+field+'Suggestion', function(event){  
-	     
-		var provider = $(this).data('provider');
-		var key = $(this).data('ref-no');
-		console.log('--'+key+'---'+provider);
-		var target = $(event.target).parents().eq(3).children('.'+field); // target input box
-		
-		container = target.parents().eq(3); // getting 4th level parent of target element
-    	console.log(container.attr('class'));
-
-    	projects_fields.forEach(function(sibling){
-
-    		container.find('.'+sibling+':first').val(suggestions[provider+'_projects'][key][sibling]); // seting text of sibbling fields in div
-    	});
-   
-
-	});
-
 });
-
-
-
 
 
 });
 
 
-/* popover settings for work expeirence segment */
+/* popover settings for complex segment */
+
+
+
+function popoverSettings(category,field)
+{
+	return {
+ 	placement : 'auto',
+ 	title :field+' suggestions',
+ 	html : true,
+ 	trigger : 'focus',
+ 	content : function(){
+ 		
+ 		
+ 			var list = '';
+ 			providers.forEach(function(provider)
+ 			{
+ 				
+ 				// if suggestion is availbale from social provider
+ 				if (suggestions[provider+'_'+category] && (suggestions[provider+'_'+category] != ''))
+ 				{	
+ 					//console.log(suggestions[provider+'_workex']);
+ 					
+ 					for(key in suggestions[provider+'_'+category])
+ 					{
+ 						var suggestion = suggestions[provider+'_'+category][key];
+ 						
+ 						if(suggestion[field]!='')
+ 						{						
+ 							if(field =='company-name')
+ 						 		list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						 	else 
+ 						 		list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+' ('+suggestion['company-name']+')'+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						 }
+
+ 					}
+ 					
+ 				}
+
+ 			});
+
+	 		if(list != '')
+	 		{
+	 			list='<ul class="suggestion-list">'+list+'</ul>';
+	 			return list;
+	 		}
+	 		else
+	 			return 'No sugestions available';
+ 	}
+
+ }
+
+};
+
+
+
+
+
+
 function workex_popoverSettings(field) {
 return {
  	placement : 'auto',
@@ -571,10 +587,10 @@ function dynamicWorkexPopoverBinder()
 {
 	/* suggestion for job experience */
 
-	workex_popoverFields.forEach(function(field){
+	popoverFields['workex'].forEach(function(field){
 
 		$('.'+field).popover('destroy'); 
-		$('.'+field).popover(workex_popoverSettings(field));
+		$('.'+field).popover(popoverSettings('workex',field));
 
 	});
 
@@ -586,9 +602,9 @@ function dynamicEducationPopoverBinder()
 
 	/* suggestion for education */
 
-	education_popoverFields.forEach(function(field){
+	popoverFields['education'].forEach(function(field){
 		$('.'+field).popover('destroy'); 
-		$('.'+field).popover(education_popoverSettings(field));
+		$('.'+field).popover(popoverSettings('education',field));
 
 	});
 
@@ -601,9 +617,9 @@ function dynamicProjectsPopoverBinder()
 	
 	/* suggestion for projects */
 
-	projects_popoverFields.forEach(function(field){
+	popoverFields['projects'].forEach(function(field){
 		$('.'+field).popover('destroy'); 
-		$('.'+field).popover(projects_popoverSettings(field));
+		$('.'+field).popover(popoverSettings('projects',field));
 
 	});
 
