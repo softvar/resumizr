@@ -114,6 +114,12 @@ $(function () {
         dynamicEducationPopoverBinder(); // from smart-suggestion.js 
 	});
 
+    $('.add-new-project').click(function (){
+        var newEduSection = '<hr/> <div class="cv-projects">' + $('.cv-projects').html()+'</div>';
+        $('.add-new-project').before(newEduSection);
+        dynamicProjectsPopoverBinder(); // from smart-suggestion.js 
+    });
+
     $(document).on('click', '.save-section-title' ,function () {
     	console.log($('.tab-pane.active').attr('id'));
     	var text = $('.prompt-section-title').val();

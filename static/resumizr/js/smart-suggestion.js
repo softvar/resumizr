@@ -22,11 +22,15 @@ var providers = ['facebook','linkedin','github'];
 
 var single_fields = ['name','email','website','location'];
 
-var workex_fields = ['job-description','company-name','job-title','end-date','start-date'];  // array of fields attached with each suggestion
+/* array of fields attached with each suggestion */
+var workex_fields = ['job-description','company-name','job-title','end-date','start-date'];  
 var education_fields = ['education-type','institution-name','education-period' ,'education-description'];
+var projects_fields = ['project-title','project-url','project-start-date','project-end-date','project-description'];
 
-var workex_popoverFields = ['job-title','company-name'];  // fields for which popovers will be defined
+/* fields for which popovers will be defined */
+var workex_popoverFields = ['job-title','company-name'];  
 var education_popoverFields = ['education-type','institution-name'];
+var projects_popoverFields = ['project-title','project-url'];
 
 
 
@@ -84,6 +88,30 @@ education_popoverFields.forEach(function(field){
     	education_fields.forEach(function(sibling){
 
     		container.find('.'+sibling+':first').val(suggestions[provider+'_education'][key][sibling]); // seting text of sibbling fields in div
+    	});
+   
+
+	});
+
+});
+
+
+/* attaching click event listerner for projects suggestion fields */
+projects_popoverFields.forEach(function(field){
+
+	$("body").on("click", '.'+field+'Suggestion', function(event){  
+	     
+		var provider = $(this).data('provider');
+		var key = $(this).data('ref-no');
+		console.log('--'+key+'---'+provider);
+		var target = $(event.target).parents().eq(3).children('.'+field); // target input box
+		
+		container = target.parents().eq(3); // getting 4th level parent of target element
+    	console.log(container.attr('class'));
+
+    	projects_fields.forEach(function(sibling){
+
+    		container.find('.'+sibling+':first').val(suggestions[provider+'_projects'][key][sibling]); // seting text of sibbling fields in div
     	});
    
 
@@ -193,6 +221,51 @@ return {
  }
 };
 
+/* popover settings for projects segment */
+function projects_popoverSettings(field) {
+return {
+ 	placement : 'auto',
+ 	title :field+' suggestions',
+ 	html : true,
+ 	trigger : 'focus',
+ 	content : function(){
+ 		
+ 		
+ 			var list = '';
+ 			providers.forEach(function(provider)
+ 			{
+ 				
+ 				// if suggestion is availbale from social provider
+ 				if (suggestions[provider+'_projects'] && (suggestions[provider+'_projects'] != ''))
+ 				{	
+ 					//console.log(suggestions[provider+'_workex']);
+ 					
+ 					for(key in suggestions[provider+'_projects'])
+ 					{
+ 						var suggestion = suggestions[provider+'_projects'][key];
+ 						
+ 						if(suggestion[field] !='')
+ 							list+='<li class="'+field+'Suggestion" data-ref-no="'+key.toString()+'" data-provider="'+provider+'">'+suggestion[field]+'</span><span class="provider"><i>&nbsp;-'+provider+'</i></span></li>';
+ 						
+
+ 					}
+ 					
+ 				}
+
+ 			});
+
+	 		if(list != '')
+	 		{
+	 			list='<ul class="suggestion-list">'+list+'</ul>';
+	 			return list;
+	 		}
+	 		else
+	 			return 'No sugestions available';
+ 	}
+
+ }
+};
+
 
 
 
@@ -229,6 +302,9 @@ function attachPopOvers()
 
 	 suggestions['facebook_education'] = [];
 	 suggestions['linkedin_education'] = [];
+
+	 suggestions['linkedin_projects'] =[];
+	 suggestions['github_projects'] = [];
 	 
 
 
@@ -359,11 +435,34 @@ function attachPopOvers()
 				}
 	 	
 				console.log(suggestions['linkedin_education']);
+	 	} 
+
+	 	if(social_data['linkedin']['projects'] && (social_data['linkedin']['projects']['_total']>0))
+	 	{
+	 		
+	 		for (var key in social_data['linkedin']['projects']['values']) 
+	 		{
+
+			 		var projects = social_data['linkedin']['projects']['values'][key];
+			 		var projects_info = {};
+			 		
+			 		projects_info['project-title'] = projects['name'] || '';
+			 		projects_info['project-url'] = projects['url'] || '';
+
+			 		projects_info['project-start-date'] = '';
+			 		projects_info['project-end-date'] = '';
+			 		projects_info['project-description'] = projects['description'] || '';
+			 		
+			 		suggestions['linkedin_projects'].push(projects_info);   		  		
+			}
+	 	
+				
 	 	}
+	}	 	
 	 	
 		
 		
-	}
+	
 
 	if(social_data['github'])
 	{
@@ -380,7 +479,43 @@ function attachPopOvers()
 		if(social_data['github']['location'])
 			suggestions['github_location'] = social_data['github']['location'];
 
+		if(social_data['github']['repos'])
+		{
 
+			for (var key in social_data['github']['repos']) 
+	 		{
+
+			 		var projects = social_data['github']['repos'][key];
+			 		
+			 		if( projects['fork'] == false)
+			 		{					
+			 			var projects_info = {};
+			 					 		
+				 		projects_info['project-title'] = projects['name'] || '';
+				 		projects_info['project-url'] = projects['url'] || '';
+				 		projects_info['project-description'] = projects['description'] || '';
+
+				 		var start_d = new Date(projects['created_at']);
+				 		var end_d = new Date(projects['pushed_at']);
+
+				 		projects_info['project-start-date'] = month[start_d.getMonth()]+', '+start_d.getFullYear();
+				 		projects_info['project-end-date'] = month[end_d.getMonth()]+', '+end_d.getFullYear();
+
+
+				 		
+				 		suggestions['github_projects'].push(projects_info);  
+			 					 	
+
+			 		}
+
+
+
+			}
+
+
+
+
+		}
 	}
 
 	window.suggestions = suggestions ; // assigning local data to global variable
@@ -427,6 +562,7 @@ function attachPopOvers()
 	
 	dynamicWorkexPopoverBinder();
 	dynamicEducationPopoverBinder();
+	dynamicProjectsPopoverBinder();
 	
 
 }
@@ -456,6 +592,20 @@ function dynamicEducationPopoverBinder()
 
 	});
 
+
+
+}
+
+function dynamicProjectsPopoverBinder()
+{
+	
+	/* suggestion for projects */
+
+	projects_popoverFields.forEach(function(field){
+		$('.'+field).popover('destroy'); 
+		$('.'+field).popover(projects_popoverSettings(field));
+
+	});
 
 
 }
