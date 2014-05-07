@@ -2,9 +2,9 @@
 <body>
 <!-- ajax progress bar -->
 <div class="progress-bar"></div>
-<button type="button" class="btn btn-lg btn-primary refresh" id="refresh">Refresh Genius</button> 
+<button type="button" class="btn btn-lg btn-primary refresh" id="refresh">Refresh Genius</button>
 
-	<div class="container"> 
+	<div class="container">
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -35,7 +35,7 @@
 		        <hr>
 		        <div class="preview-generated-cv"></div>
 		      </div>
-		      
+
 		    </div>
 		  </div>
 		</div>
@@ -63,18 +63,18 @@
 				</div>
 					<span style="margin-left: 20px; color:#9accea">
 					</span>
-					
+
 					<div class="row">
-						
+
 						<div class="col-md-6">
 						<div class="card">
 							<label class="label--text sub-heading">Full Name</label>
 
-						    <input type="text" class="form-control mod-text-box" placeholder="Eg: Varun Malhotra" id="name" name="cv__fullname"/>   
+						    <input type="text" class="form-control mod-text-box" placeholder="Eg: Varun Malhotra" id="name" name="cv__fullname"/>
 
 						</div>
 						</div>
-						
+
 						<div class="col-md-6">
 							<div class="card">
 							<label class="label--text sub-heading">Email Address</label>
@@ -86,7 +86,7 @@
 					</div>
 
 					<br/>
-					
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="card">
@@ -101,7 +101,7 @@
 							<input type="email" class="form-control mod-text-box" placeholder="Eg: http://yourname.info" name="cv__website" id="website"/>
 							</div>
 
-					
+
 						</div>
 					</div>
 
@@ -181,7 +181,7 @@
 								<label class="label--text sub-heading">Type</label>
 							    <input type="text" class="form-control mod-text-box education-type" placeholder="Eg: B.Tech" name="cv__coursename"/>
 							    </div>
-							    
+
 							</div>
 							<div class="col-md-6">
 								<div class="card">
@@ -212,7 +212,7 @@
 					</div>
 					<button class="btn btn-primary add-new-education">Add Entry</button>
 				</div>
-				
+
 				<div class="tab-pane" id="4">
 					<label class="label--text heading">Projects</label>
 					<span style="margin-left: 20px; color:#9accea">
@@ -265,7 +265,7 @@
 
 				<div class="tab-pane" id="5">
 					<label class="label--text heading">Skills</label>
-					
+
 					<span style="margin-left: 20px; color:#9accea">
 					</span>
 					<hr/>
@@ -276,7 +276,7 @@
 					<br/>
 					<hr/>
 				</div>
-				
+
 
 
 
@@ -306,7 +306,7 @@
 		</div>
 
 
-		
+
 			<button type="submit" id="preview" class="btn">Preview</button>
 		</form>
 		<button id="save" class="btn btn-success save--form">Save Form</button>
@@ -330,7 +330,7 @@
 
 		<br/ >
 		<h2>Start Creating Now</h2>
-		
+
 		<br />
 			<div class="ui fluid form segment" ng-controller="SubmitFormField">
 			<form class="form-horizontal" id="createForm" action = "/generate/cvform/" ng-submit="checkField()" method="post">
@@ -348,15 +348,15 @@
 				    	<textarea class="form-control" name="content" placeholder="Enter Content"></textarea>
 				    </div>
 				  </div>
-		
+
 			  <input type="submit" value="Submit" class="btn btn-success submit-form" />
 		</form>
 			</div>
-			
+
 		{{headingStatus}}
 		{{contentStatus}}
 
-		
-	
+
+
 	</body>
 </html>
