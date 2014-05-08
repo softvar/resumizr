@@ -37,7 +37,7 @@
     vertical-align:middle;
 
 }
-  
+
 
 .progress-bar {
   position: fixed;
@@ -67,7 +67,8 @@
 
 .card {
   padding:1.5rem;
-  box-shadow:0 1px 2px #aaa;
+  border: 1px solid #CCC;
+  box-shadow: 2px 5px 5px #DDD;
   background:white;
   margin:0 1rem 1rem;
   border-radius:3px;
@@ -75,6 +76,14 @@
   transform-origin:top left;
 }
 
+.card:active {
+  border: 1px solid #CCC;
+  box-shadow: 10px 10px 5px #DDD;
+  /* Rotate div */
+  transform:rotate(-7deg);
+  -ms-transform:rotate(-7deg); /* IE 9 */
+  -webkit-transform:rotate(-7deg); /* Opera, Chrome, and Safari */
+}
 
 ul.gNow {
   width: 450px;
