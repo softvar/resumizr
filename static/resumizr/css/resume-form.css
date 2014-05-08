@@ -65,7 +65,7 @@
 /* card UI */
 
 
-.card {
+.card, .field-card {
   padding:1.5rem;
   border: 1px solid #CCC;
   box-shadow: 2px 5px 5px #DDD;
@@ -76,7 +76,7 @@
   transform-origin:top left;
 }
 
-.card:active {
+.field-card:active {
   border: 1px solid #CCC;
   box-shadow: 10px 10px 5px #DDD;
   /* Rotate div */
