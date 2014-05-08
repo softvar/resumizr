@@ -184,8 +184,6 @@ $(function () {
 	    }
 	    else
 	       $('li[href="#1"]').click();
-
-        //$('#'+ $('.tab-pane.active').attr('id')).remove();
 	    $('li[href="#'+id+'"]').parent().remove();
         $('#'+id).remove();
     });
@@ -381,7 +379,7 @@ function buildoPreviewCv(f) {
 
 	});
 	$('.add--section').click(function () {
-		var newSection = '<section class="card"><li style="display:inline-block;" class="sortable-tab--field" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
+		var newSection = '<section class="field-card"><li style="display:inline-block;" class="sortable-tab--field" href="#'+ globalSectionId +'" data-toggle="tab"><i style="color:gray;" class="fa fa-th-list"></i> New Section</li></section>';
 		$('#sortable').append(newSection);
 		addSectionDetail(globalSectionId);
 		$('li.sortable-tab--field').last().click();
