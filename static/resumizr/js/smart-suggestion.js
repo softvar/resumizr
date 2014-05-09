@@ -59,7 +59,11 @@ categories.forEach(function(category){
 	popoverFields[category].forEach(function(field){
 
 	$("body").on("click", '.'+field+'Suggestion', function(event){  
-	     
+	    var numWysiEditor = $('.html5-editor-toggle');
+		  for(var i=0;i<numWysiEditor.length;i++) {
+		    numWysiEditor[i].click();
+		  }
+
 		var provider = $(this).data('provider');
 		var key = $(this).data('ref-no');
 		
@@ -72,6 +76,10 @@ categories.forEach(function(category){
 
     		container.find('.'+sibling+':first').val(suggestions[provider+'_'+category][key][sibling]); // seting text of sibbling fields in div
     	});   
+
+    	for(var i=0;i<numWysiEditor.length;i++) {
+		    numWysiEditor[i].click();
+		  }
 
 	});
 
