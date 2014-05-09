@@ -143,12 +143,16 @@ ul.gNow li {
 .tab-header {
 border-bottom: thin solid #ccc;
 }
-
+.cv-form-fill{
+  border: 1px solid #DEDEDE;
+  height: 800px;
+}
 .mod-text-box {
   border-radius : 0px;
   border : solid thin #bbb;
   height : 50px;
-  color:#539D00;
+  color: #333;
+  /*color:#539D00;*/
 }
 
 ::-webkit-input-placeholder {
