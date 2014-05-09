@@ -30,92 +30,17 @@ $(function () {
       "html": true, //Button which allows you to edit the generated HTML. Default false
       "link": false, //Button to insert a link. Default true
       "image": false, //Button to insert an image. Default true,
-      "color": true //Button to change color of font
+      "color": true, //Button to change color of font
+      "events": {
+        "load": function() { 
+            console.log("Loaded!");
+        },
+      }
     });
     $('#preview').click(function () {
-    	var formClientData = {};
-
-    	$('.sortable-tab--field').each(function () {
-    		var data='', object = {},
-    		    id = $(this).attr('href'),
-    			emptySection = true,
-    			heading = $(id).find('.label--text.heading').text();
-    		//console.log(id);
-            if(id == '#2') {
-                var workExObject = {},
-                    workExArray = [];
-                $(id).find('.cv-work-experience').each(function (i) {
-                    $('.cv-work-experience:eq('+i+') .form-control').each(function (i) {
-                        if($(this).val()!=null && $(this).val()!=''){
-                            //alert(i + $(this).val());
-                            workExObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false;
-                        }
-                    });
-                    if(!emptySection){
-                        //alert('lol');
-                        workExArray.push(workExObject);
-                        workExObject = {};
-                    }
-                });
-                if(workExArray.length>0){
-                    formClientData[heading] = workExArray;
-                }
-            }
-            else if(id == '#3') {
-                var eduObject = {},
-                    eduArray = [];
-                $(id).find('.cv-education').each(function (i) {
-                    $('.cv-education:eq('+i+') .form-control').each(function (i) {
-                        if($(this).val()!=null && $(this).val()!=''){
-                            eduObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false;
-                        }
-                    });
-                    if(!emptySection){
-                        eduArray.push(eduObject);
-                        eduObject = {};
-                    }
-                });
-                if(eduArray.length>0){
-                    formClientData[heading] = eduArray;
-                }
-            }
-            else if(id == '#4') {
-                var projObject = {},
-                    projArray = [];
-                $(id).find('.cv-projects').each(function (i) {
-                    $('.cv-projects:eq('+i+') .form-control').each(function (i) {
-                        if($(this).val()!=null && $(this).val()!=''){
-                            projObject[$(this).attr('name')] = $(this).val();
-                            emptySection = false;
-                        }
-                    });
-                    if(!emptySection){
-                        projArray.push(projObject);
-                        projObject = {};
-                    }
-                });
-                if(projArray.length>0){
-                    formClientData[heading] = projArray;
-                }
-            }
-            else {
-                $(id).find('.form-control').each(function () {
-        			if($(this).val()!=null && $(this).val()!=''){
-        				object[$(this).attr('name')] = $(this).val();
-        				emptySection = false;
-        			}
-    		    });
-                if(!emptySection){
-                    formClientData[heading] = object;
-                }
-            }
-
-    	});
-    	console.log(formClientData);
+    	var data = generateCvJson();
     	//formClientData = JSON.stringify(formClientData);
-    	buildoPreviewCv(formClientData);
+    	buildoPreviewCv(data);
 
     });
 
@@ -207,6 +132,90 @@ $(function () {
 	  '</div>'+
 
 '</div>';
+function generateCvJson () {
+    var formClientData = {};
+
+    $('.sortable-tab--field').each(function () {
+        var data='', object = {},
+            id = $(this).attr('href'),
+            emptySection = true,
+            heading = $(id).find('.label--text.heading').text();
+        //console.log(id);
+        if(id == '#2') {
+            var workExObject = {},
+                workExArray = [];
+            $(id).find('.cv-work-experience').each(function (i) {
+                $('.cv-work-experience:eq('+i+') .form-control').each(function (i) {
+                    if($(this).val()!=null && $(this).val()!=''){
+                        //alert(i + $(this).val());
+                        workExObject[$(this).attr('name')] = $(this).val();
+                        emptySection = false;
+                    }
+                });
+                if(!emptySection){
+                    //alert('lol');
+                    workExArray.push(workExObject);
+                    workExObject = {};
+                }
+            });
+            if(workExArray.length>0){
+                formClientData[heading] = workExArray;
+            }
+        }
+        else if(id == '#3') {
+            var eduObject = {},
+                eduArray = [];
+            $(id).find('.cv-education').each(function (i) {
+                $('.cv-education:eq('+i+') .form-control').each(function (i) {
+                    if($(this).val()!=null && $(this).val()!=''){
+                        eduObject[$(this).attr('name')] = $(this).val();
+                        emptySection = false;
+                    }
+                });
+                if(!emptySection){
+                    eduArray.push(eduObject);
+                    eduObject = {};
+                }
+            });
+            if(eduArray.length>0){
+                formClientData[heading] = eduArray;
+            }
+        }
+        else if(id == '#4') {
+            var projObject = {},
+                projArray = [];
+            $(id).find('.cv-projects').each(function (i) {
+                $('.cv-projects:eq('+i+') .form-control').each(function (i) {
+                    if($(this).val()!=null && $(this).val()!=''){
+                        projObject[$(this).attr('name')] = $(this).val();
+                        emptySection = false;
+                    }
+                });
+                if(!emptySection){
+                    projArray.push(projObject);
+                    projObject = {};
+                }
+            });
+            if(projArray.length>0){
+                formClientData[heading] = projArray;
+            }
+        }
+        else {
+            $(id).find('.form-control').each(function () {
+                if($(this).val()!=null && $(this).val()!=''){
+                    object[$(this).attr('name')] = $(this).val();
+                    emptySection = false;
+                }
+            });
+            if(!emptySection){
+                formClientData[heading] = object;
+            }
+        }
+
+    });
+    console.log(formClientData);
+    return formClientData;
+}
 
 function buildoPreviewCv(f) {
 	// view cv in modal view container
@@ -218,7 +227,7 @@ function buildoPreviewCv(f) {
     for (var key in f) {
     	//console.log(key);
 
-	    if(key == 'Basic information') {
+	    if(key == 'Basic Information') {
 	    	renderFormData = '<div class="about-self-details">'+
     			'<div class="client--name">';
 	    	if(f[key]['cv__fullname'])
@@ -239,9 +248,9 @@ function buildoPreviewCv(f) {
 
 	    else if(key == 'Work Experience') {
 	    	renderFormData = renderFormData + '<div class="section--area">' +
-    			'<div class="grey-box rectangle">'+
-        		'<span>'+ key +'</span>' +
-			    '</div>';
+    			'<div class="grey-box rectangle">';
+        	if(f[key])
+                    renderFormData = renderFormData +'<span>'+key+'</span></div>';
 
             for (var work in f[key]) {
     			renderFormData = renderFormData + '<div class="data--info">'+
