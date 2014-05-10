@@ -265,15 +265,28 @@
 
 				<div class="tab-pane" id="5">
 					<label class="label--text heading">Skills</label>
-
-					<span style="margin-left: 20px; color:#9accea">
-					</span>
-					<hr/>
-					<div class="card">
-						<label class="label--text sub-heading"></label>
-						<div class="form-control mod-text-box skills-list"  name="skills-list"></div>
+					<div class="alert alert-warning alert-dismissable" style="display:none;">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					  <strong>Warning!</strong> You have created maximum of 10 Skill Sets. Please delete or reuse already created tags to continue.
 					</div>
-					<br/>
+					
+					<hr/>
+					<div class="cv-skill-set">
+						<div class="card">
+							<div class="row">
+								<div class="col-md-3">
+									<label class="sub-section-heading">Skill Type:</label>
+									<input type="text" class="form-control skill-type" placeholder="Eg: Languages"/>
+								</div>
+								<div class="col-md-9">	
+									<label class="sub-section-heading">Add Skills:</label>
+									<input type="text" value="Amsterdam,Washington" data-role="tagsinput" class="form-control tagInputs typeahead"/>	
+								
+								</div>
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-primary add-new-skill-set">Add New Skill Set</button>
 					<hr/>
 				</div>
 
