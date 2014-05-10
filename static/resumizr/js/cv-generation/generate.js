@@ -141,14 +141,15 @@ $(function () {
 
     $('.add-new-skill-set').click(function (){
         if(globalSkillClassId<10) {
-            var placeholderArray = ['Frameworks','Databases','Web Languages','Platforms','Others']
+            var placeholderArray = ['Frameworks','Databases','Web Languages','Platforms','OS','Management','Others']
             var newSkillSet = '\
                 <div class="cv-skill-set">\
                     <div class="card">\
+                        <a><i style="color:#c0392b; margin-right:5px; float:right;" class="fa fa-times fa-2x skill-tag" title="Delete"></i></a>\
                         <div class="row">\
                             <div class="col-md-3">\
                                 <label class="sub-section-heading">Skill Type:</label>\
-                                <input type="text" class="form-control skill-type" placeholder="Eg: '+placeholderArray[globalSkillClassId%5]+'"/>\
+                                <input type="text" class="form-control skill-type" placeholder="Eg: '+placeholderArray[globalSkillClassId%placeholderArray.length/**/]+'"/>\
                             </div>\
                             <div class="col-md-9">\
                                 <label class="sub-section-heading">Add Skills:</label>';
@@ -211,7 +212,7 @@ $(function () {
     	console.log('c');
 	  	$('.tab-pane.active .label--text.heading').css({'color':$(this).val()});
 	});
-    $(document).on('click', '.fa.fa-times' ,function () {
+    $(document).on('click', '.fa.fa-times.section-delete' ,function () {
     	var id = $('.tab-pane.active').attr('id');
         if($('li[href="#'+id+'"]').parent().prev()[0]) {
 	    	$('li[href="#'+id+'"]').parent().prev().children()[0].click();
@@ -221,7 +222,12 @@ $(function () {
 	    $('li[href="#'+id+'"]').parent().remove();
         $('#'+id).remove();
     });
-
+    $(document).on('click', '.fa.fa-times.skill-tag' ,function () {
+        $(this).parents().eq(2).remove();
+    });
+    $(document).on('click', '.fa.fa-times.parent--delete' ,function () {
+        $(this).parent().remove();
+    });
 
 	var newEntry = '<div class="">'
 		+
@@ -473,7 +479,7 @@ function buildoPreviewCv(f) {
 				'<label class="label--text heading">New Section</label>'+
 				'<span style="margin-left: 20px; color:#9accea">'+
 					'<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>'+
-					'<a><i style="color:#c0392b; margin-right:5px; position:right;" class="fa fa-times fa-2x" title="Delete"></i></a>'+
+					'<a><i style="color:#c0392b; margin-right:5px; position:right;" class="fa fa-times section-delete fa-2x" title="Delete"></i></a>'+
 				'</span>'+
 				'<hr/>'+
 				'<div class="card">\
