@@ -1,3 +1,9 @@
+/*
+ * Add default skills to be displayed when no suggestions 
+ * from social data is fetched. If social data(skills) is present,
+ * then it would automatically be appended to this below list
+ */
+
 var defaultSkills = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
       'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
       'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
@@ -7,28 +13,6 @@ var defaultSkills = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
       'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
       'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
       'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-    ], skillsName;
+    ], 
 
-var substringMatcher = function(strs) {
-      return function findMatches(q, cb) {
-        var matches, substringRegex;
-     
-        // an array that will be populated with substring matches
-        matches = [];
-     
-        // regex used to determine if a string contains the substring `q`
-        substrRegex = new RegExp(q, 'i');
-     
-        // iterate through the pool of strings and for any string that
-        // contains the substring `q`, add it to the `matches` array
-        $.each(strs, function(i, str) {
-          if (substrRegex.test(str)) {
-            // the typeahead jQuery plugin expects suggestions to a
-            // JavaScript object, refer to typeahead docs for more info
-            matches.push({ value: str });
-          }
-        });
-     
-        cb(matches);
-      };
-    };
+    skillsName;
