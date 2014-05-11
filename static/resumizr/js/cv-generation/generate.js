@@ -146,14 +146,16 @@ $(function () {
                 <div class="cv-skill-set">\
                     <div class="card">\
                         <a><i style="color:#c0392b; margin-right:5px; float:right;" class="fa fa-times fa-2x skill-tag" title="Delete"></i></a>\
+                        <label class="sub-section-heading">Fill out the Details</label>\
+                        <hr/>\
                         <div class="row">\
                             <div class="col-md-3">\
                                 <label class="sub-section-heading">Skill Type:</label>\
-                                <input type="text" class="form-control skill-type" placeholder="Eg: '+placeholderArray[globalSkillClassId%placeholderArray.length/**/]+'"/>\
+                                <input type="text" class="form-control skill-type" name="cv__skill_type" placeholder="Eg: '+placeholderArray[globalSkillClassId%placeholderArray.length/**/]+'"/>\
                             </div>\
                             <div class="col-md-9">\
                                 <label class="sub-section-heading">Add Skills:</label>';
-            newSkillSet += '<input type="text" value="Amsterdam,Washington" data-role="tagsinput" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
+            newSkillSet += '<input type="text" value="Amsterdam,Washington" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
                 '           </div>\
                         </div>\
                     </div>\
@@ -174,7 +176,7 @@ $(function () {
             }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
               this.tagsinput('add', datum.value);
               this.tagsinput('input').typeahead('');
-            }, $('.tagInputs')));
+            }, $('.tagInputs'+globalSkillClassId)));
             globalSkillClassId++;
             $('.alert.alert-warning.alert-dismissable').css('display','none');
         }
@@ -187,11 +189,14 @@ $(function () {
     $(document).on('click', '.save-section-title' ,function () {
     	console.log($('.tab-pane.active').attr('id'));
     	var text = $('.prompt-section-title').val();
-    	$('.tab-pane.active .label--text.heading').text(text);
-    	// change sortable li's
-    	text = '<i style="color:gray;" class="fa fa-th-list"></i>  ' + text;
-    	$('#sortable li[href="#'+$('.tab-pane.active').attr('id')+'"').html(text);
-    	$('#myModal').modal('hide');
+    	
+        if(text!='') {
+            $('.tab-pane.active .label--text.heading').text(text);
+        	// change sortable li's
+        	text = '<i style="color:gray;" class="fa fa-th-list"></i>  ' + text;
+        	$('#sortable li[href="#'+$('.tab-pane.active').attr('id')+'"').html(text);
+        	$('#myModal').modal('hide');
+        }
     });
     $(document).on('click', '.save-font-size' ,function () {
     	var text = $('.prompt-section-title').val() + 'px';
@@ -200,6 +205,7 @@ $(function () {
 
     $(document).on('click', '.fa.fa-pencil' ,function () {
     	$('.modal-footer button:nth-child(2)').attr('class', 'btn btn-primary save-section-title');
+        $('.prompt-section-title').val('');
     });
 
     $(document).on('click', '.fa.fa-text-height' ,function () {
@@ -255,6 +261,7 @@ function generateCvJson () {
             id = $(this).attr('href'),
             emptySection = true,
             heading = $(id).find('.label--text.heading').text();
+            headId = id + '|@|' + heading;
         //console.log(id);
         if(id == '#2') {
             var workExObject = {},
@@ -274,7 +281,7 @@ function generateCvJson () {
                 }
             });
             if(workExArray.length>0){
-                formClientData[heading] = workExArray;
+                formClientData[headId] = workExArray;
             }
         }
         else if(id == '#3') {
@@ -293,7 +300,7 @@ function generateCvJson () {
                 }
             });
             if(eduArray.length>0){
-                formClientData[heading] = eduArray;
+                formClientData[headId] = eduArray;
             }
         }
         else if(id == '#4') {
@@ -312,7 +319,26 @@ function generateCvJson () {
                 }
             });
             if(projArray.length>0){
-                formClientData[heading] = projArray;
+                formClientData[headId] = projArray;
+            }
+        }
+        else if(id == '#5') {
+            var skillObject = {},
+                skillArray = [];
+            $(id).find('.cv-skill-set').each(function (i) {
+                $('.cv-skill-set:eq('+i+') .form-control').each(function (i) {
+                    if($(this).val()!=null && $(this).val()!=''){
+                        skillObject[$(this).attr('name')] = $(this).val();
+                        emptySection = false;
+                    }
+                });
+                if(!emptySection){
+                    skillArray.push(skillObject);
+                    skillObject = {};
+                }
+            });
+            if(skillArray.length>0){
+                formClientData[headId] = skillArray;
             }
         }
         else {
@@ -323,7 +349,7 @@ function generateCvJson () {
                 }
             });
             if(!emptySection){
-                formClientData[heading] = object;
+                formClientData[headId] = object;
             }
         }
 
@@ -342,30 +368,29 @@ function buildoPreviewCv(f) {
     for (var key in f) {
     	//console.log(key);
 
-	    if(key == 'Basic Information') {
+	    if(key.split('|@|')[0] == '#1') { // Basic Information
 	    	renderFormData = '<div class="about-self-details">'+
     			'<div class="client--name">';
 	    	if(f[key]['cv__fullname'])
-		    	renderFormData += String(f['Basic information']['cv__fullname']);
+		    	renderFormData += String(f[key]['cv__fullname']);
 	   		renderFormData +='</div>'+
 	   		'<div class="client-personal-details">';
 	    	if(f[key]['cv__address'])
-		        renderFormData += '<p>Address: '+f['Basic information']['cv__address']+'</p>';
+		        renderFormData += '<p>Address: '+f[key]['cv__address']+'</p>';
 		    if(f[key]['cv__contact'])
-		        renderFormData += '<p>Contact: '+f['Basic information']['cv__contact']+'</p>';
+		        renderFormData += '<p>Contact: '+f[key]['cv__contact']+'</p>';
 		    if(f[key]['cv__email'])
-		        renderFormData += '<p>Email: <a href="#">'+f['Basic information']['cv__email']+'</a></p>';
+		        renderFormData += '<p>Email: <a href="#">'+f[key]['cv__email']+'</a></p>';
 		    if(f[key]['cv__website'])
-		        renderFormData += '<p>Website: <a href="#">'+f['Basic information']['cv__website']+'</a></p>';
+		        renderFormData += '<p>Website: <a href="#">'+f[key]['cv__website']+'</a></p>';
 	    	renderFormData += + '</div>'+
 				'</div><hr>';
 	    }
-
-	    else if(key == 'Work Experience') {
+	    else if(key.split('|@|')[0] == '#2') { // Work Ex
 	    	renderFormData += '<div class="section--area">' +
     			'<div class="grey-box rectangle">';
         	if(f[key])
-                    renderFormData +='<span>'+key+'</span></div>';
+                    renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
 
             for (var work in f[key]) {
     			renderFormData += '<div class="data--info">'+
@@ -393,11 +418,11 @@ function buildoPreviewCv(f) {
     				'</div>';
             }
 	    }
-	    else if(key == 'Education') {
+	    else if(key.split('|@|')[0] == '#3') { // Education
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key+'</span></div>';
+        		renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
 
             for (var edu in f[key]) {
         		renderFormData += '<div class="data--info">';
@@ -416,11 +441,11 @@ function buildoPreviewCv(f) {
     				'</div>';
             }
 	    }
-        else if(key == 'Projects') {
+        else if(key.split('|@|')[0] == '#4') { // Projects
             renderFormData += '<div class="section--area">'+
                 '<div class="grey-box rectangle">';
             if(f[key])
-                renderFormData +='<span>'+key+'</span></div>';
+                renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
 
             for (var proj in f[key]) {
                 renderFormData += '<div class="data--info">';
@@ -441,11 +466,28 @@ function buildoPreviewCv(f) {
                     '</div>';
             }
         }
-	    else if(key == 'Achievements') {
+        else if(key.split('|@|')[0] == '#5') { // Skilss
+            renderFormData += '<div class="section--area">'+
+                '<div class="grey-box rectangle">';
+            if(f[key])
+                renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
+
+            for(var skill in f[key]) {
+                renderFormData += '<div class="data--info">';
+                if(f[key][skill]['cv__skill_type'])
+                    renderFormData += '<span style="font-weight:bold;">'+ f[key][skill]['cv__skill_type'] +': </span>';
+                if(f[key][skill]['cv__skill_tags'])
+                    renderFormData += '<span>'+ f[key][skill]['cv__skill_tags'] +'</span>';
+
+                renderFormData += '</div>';
+                    '</div>';
+            }
+        }
+	    else if(key.split('|@|')[0] == '#6') { // Achievements
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key+'</span>';
+        		renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
 
     		renderFormData += '</div>'+
     			'<div class="data--info">';
@@ -458,7 +500,7 @@ function buildoPreviewCv(f) {
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key+'</span>';
+        		renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
 
     		renderFormData += '</div>'+
     			'<div class="data--info">';
