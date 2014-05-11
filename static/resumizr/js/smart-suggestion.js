@@ -266,24 +266,16 @@ function attachPopOvers()
 			}
 			suggestions['linkedin_skills'] = skillSetArray;
 
-        skillsName = suggestions['linkedin_skills'];
-
+        skillsName = skillsName.concat(skillSetArray);
         $('[class^="form-control tagInputs"]').tagsinput('destroy');
-	        $('[class^="form-control tagInputs"]').tagsinput('input');
-	        $('[class^="form-control tagInputs"]').tagsinput('input').typeahead({
-		      hint: true,
-		      highlight: true,
-		      minLength: 1,
-		      tagClass: 'label label-warning'
-		    },
-		    {
-		      name: 'states',
-		      displayKey: 'value',
-		      source: substringMatcher(skillsName)
-		    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-		      this.tagsinput('add', datum.value);
-		      this.tagsinput('input').typeahead('');
-	    	}, $('[class^="form-control tagInputs"]')));
+	    $('[class^="form-control tagInputs"]').tagsinput('input');
+        $('[class^="form-control tagInputs"]').tagsinput('input').typeahead({
+		  local: skillsName 
+		}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+		  this.tagsinput('add', datum.value);
+		  this.tagsinput('input').typeahead('setQuery', '');
+		}, $('[class^="form-control tagInputs"]')));
+        
 		}
 		else {
 	        skillsName = defaultSkills;
