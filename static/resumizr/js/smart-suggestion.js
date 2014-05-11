@@ -259,6 +259,35 @@ function attachPopOvers()
 
 	if(social_data['linkedin'])
 	{
+		if(social_data['linkedin']['skills'] && (social_data['linkedin']['skills']['_total']>0)) {
+			var skillSetArray = [];
+			for(var i=0; i<social_data['linkedin']['skills']['_total']; i++) {
+				skillSetArray.push(social_data['linkedin']['skills']['values'][i]['skill']['name']);	
+			}
+			suggestions['linkedin_skills'] = skillSetArray;
+
+        skillsName = suggestions['linkedin_skills'];
+
+        $('[class^="form-control tagInputs"]').tagsinput('destroy');
+	        $('[class^="form-control tagInputs"]').tagsinput('input');
+	        $('[class^="form-control tagInputs"]').tagsinput('input').typeahead({
+		      hint: true,
+		      highlight: true,
+		      minLength: 1,
+		      tagClass: 'label label-warning'
+		    },
+		    {
+		      name: 'states',
+		      displayKey: 'value',
+		      source: substringMatcher(skillsName)
+		    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+		      this.tagsinput('add', datum.value);
+		      this.tagsinput('input').typeahead('');
+	    	}, $('[class^="form-control tagInputs"]')));
+		}
+		else {
+	        skillsName = defaultSkills;
+	    }
 
 		if(social_data['linkedin']['firstName'] && social_data['linkedin']['lastName'])
 			suggestions['linkedin_name'] = social_data['linkedin']['firstName']+' '+social_data['linkedin']['lastName'];
@@ -339,9 +368,6 @@ function attachPopOvers()
 				
 	 	}
 	}	 	
-	 	
-		
-		
 	
 
 	if(social_data['github'])
