@@ -77,10 +77,7 @@ return $.ajax({
 
 
 
-
-
-$('#refresh').click(function(){
-
+function loadSocialData() {
   bar.css('display','inline-block');
   bar.css('width', '5%');
   bar.css('background-color','#09ab44');
@@ -89,56 +86,53 @@ $('#refresh').click(function(){
   button.animate({
     'margin-right':'-100px',
 
-},500);
+  },500);
 
-$.when(
+  $.when(
+    // fetching social data
+    ajaxDataRequest('facebook') , ajaxDataRequest('linkedin') , ajaxDataRequest('github')
+  ).then(function(){
 
+  bar.animate({
+    width : '100%'
+  },1000);
 
-// fetching social data
+  setTimeout(function(){
+      bar.fadeOut();
+      button.removeAttr('disabled');
+      button.css('margin-right','-2px');
 
-ajaxDataRequest('facebook') , ajaxDataRequest('linkedin') , ajaxDataRequest('github')
-
-).then(function(){
-
-bar.animate({
-  width : '100%'
-},1000);
-
-setTimeout(function(){
-    bar.fadeOut();
-    button.removeAttr('disabled');
-    button.css('margin-right','-2px');
-
-},2000);
+  },2000);
 
 
-// attaching suggestion popovers
-attachPopOvers();
+  // attaching suggestion popovers
+  attachPopOvers();
 
-}).fail(function(){
-/* ajax request failed */
-bar.animate({
-  width : '100%'
-},1000);
+  }).fail(function(){
+    /* ajax request failed */
+    bar.animate({
+      width : '100%'
+  },1000);
 
-setTimeout(function(){
-    bar.fadeOut();
-    button.removeAttr('disabled');
-    button.css('margin-right','-2px');
-    button.text('request-failed');
-    button.css('background-color','red');
+  setTimeout(function(){
+      bar.fadeOut();
+      button.removeAttr('disabled');
+      button.css('margin-right','-2px');
+      button.text('request-failed');
+      button.css('background-color','red');
 
-},2000);
+  },2000);
 
+  });
+}
 
+// Call the function onload
+loadSocialData();
 
-
-
-});
-
-
-
-});
+// Call the refreshing social data on button click
+  $('#refresh').click(function(){
+    loadSocialData();
+  });
 
 });
 
