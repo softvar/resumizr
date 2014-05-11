@@ -17,6 +17,9 @@ function SubmitFormField($scope, $element) {
 }
 
 $(function () {
+    String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
 
 	var globalSectionId = 10, // please see it carefully @psych0der
         globalSkillClassId = 1;
@@ -39,34 +42,9 @@ $(function () {
       }
     });
 
-    $('#tagInputs').tagsinput('items');
-    
-    // Adding custom typeahead support using http://twitter.github.io/typeahead.js
-    /*$('#tagInputs').tagsinput('input').typeahead({
-      prefetch: 
-    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-      alert('lol');
-      this.tagsinput('add', datum.value);
-      this.tagsinput('input').typeahead('setQuery', '');
-    }, $('#tagInputs')));*/
-
-
     skillsName = defaultSkills;
- 
-    $('.tagInputs').tagsinput('input').typeahead({
-      hint: true,
-      highlight: true,
-      minLength: 1,
-      tagClass: 'label label-warning'
-    },
-    {
-      name: 'states',
-      displayKey: 'value',
-      source: substringMatcher(skillsName)
-    }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-      this.tagsinput('add', datum.value);
-      this.tagsinput('input').typeahead('');
-    }, $('.tagInputs')));
+ //substringMatcher(skillsName)
+    tagAutoComplete('.tagInputs');
     //$(".tagInputs").tagsManager();
     
     $('#preview').click(function () {
@@ -122,7 +100,7 @@ $(function () {
                             </div>\
                             <div class="col-md-9">\
                                 <label class="sub-section-heading">Add Skills:</label>';
-            newSkillSet += '<input type="text" value="Amsterdam,Washington" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
+            newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
                 '           </div>\
                         </div>\
                     </div>\
@@ -130,20 +108,14 @@ $(function () {
             
             $('.add-new-skill-set').before(newSkillSet);
             $('.tagInputs'+globalSkillClassId).tagsinput('input');
-            $('.tagInputs'+globalSkillClassId).tagsinput('input').typeahead({
-              hint: true,
-              highlight: true,
-              minLength: 1
-            },
-            {
-              name: 'states',
-              displayKey: 'value',
-              tagClass: 'label label-warning',
-              source: substringMatcher(skillsName)
+            /*$('.tagInputs'+globalSkillClassId).tagsinput('input').typeahead({
+              prefetch: '../../static/resumizr/js/cities.json'
             }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
               this.tagsinput('add', datum.value);
-              this.tagsinput('input').typeahead('');
-            }, $('.tagInputs'+globalSkillClassId)));
+              this.tagsinput('input').typeahead('setQuery', '');
+            }, $('.tagInputs'+globalSkillClassId)));*/
+            tagAutoComplete('.tagInputs'+globalSkillClassId);
+            
             globalSkillClassId++;
             $('.alert.alert-warning.alert-dismissable').css('display','none');
         }
@@ -220,6 +192,23 @@ $(function () {
 	  '</div>'+
 
 '</div>';
+
+function tagAutoComplete (selector) {
+    var tag ;
+    
+    if(skillsName.length>0) 
+        tag = $(selector).tagsinput('input').typeahead({
+                  local: skillsName 
+                });
+/*    else
+        tag = $(selector).tagsinput('input').typeahead({
+                  prefetch: '../../static/resumizr/js/cities.json' 
+                });*/
+    tag.bind('typeahead:selected', $.proxy(function (obj, datum) {  
+      this.tagsinput('add', datum.value);
+      this.tagsinput('input').typeahead('setQuery', '');
+    }, $(selector)));
+}
 function generateCvJson () {
     var formClientData = {};
 
@@ -339,25 +328,25 @@ function buildoPreviewCv(f) {
 	    	renderFormData = '<div class="about-self-details">'+
     			'<div class="client--name">';
 	    	if(f[key]['cv__fullname'])
-		    	renderFormData += String(f[key]['cv__fullname']);
+		    	renderFormData += f[key]['cv__fullname'].capitalize();
 	   		renderFormData +='</div>'+
 	   		'<div class="client-personal-details">';
 	    	if(f[key]['cv__address'])
-		        renderFormData += '<p>Address: '+f[key]['cv__address']+'</p>';
+		        renderFormData += '<p>Address: '+f[key]['cv__address'].capitalize()+'</p>';
 		    if(f[key]['cv__contact'])
 		        renderFormData += '<p>Contact: '+f[key]['cv__contact']+'</p>';
 		    if(f[key]['cv__email'])
 		        renderFormData += '<p>Email: <a href="#">'+f[key]['cv__email']+'</a></p>';
 		    if(f[key]['cv__website'])
 		        renderFormData += '<p>Website: <a href="#">'+f[key]['cv__website']+'</a></p>';
-	    	renderFormData += + '</div>'+
+	    	renderFormData += '</div>'+
 				'</div><hr>';
 	    }
 	    else if(key.split('|@|')[0] == '#2') { // Work Ex
 	    	renderFormData += '<div class="section--area">' +
     			'<div class="grey-box rectangle">';
         	if(f[key])
-                    renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
+                    renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div>';
 
             for (var work in f[key]) {
     			renderFormData += '<div class="data--info">'+
@@ -366,11 +355,11 @@ function buildoPreviewCv(f) {
                 /*console.log(f[key][work]);
                 console.log(f[key][work]['cv__jobtitle']);
     			*/if(f[key][work]['cv__jobtitle'])
-    				renderFormData += '<span class="cv__jobtitle">'+f[key][work]['cv__jobtitle']+'</span>';
+    				renderFormData += '<span class="cv__jobtitle">'+f[key][work]['cv__jobtitle'].capitalize()+'</span>';
     			renderFormData += '</div>'+
                 '<div class="col-md-4" style="text-align:center;">';
                 if(f[key][work]['cv__companyname'])
-                	renderFormData += '<span class="cv__companyname">'+f[key][work]['cv__companyname']+'</span>';
+                	renderFormData += '<span class="cv__companyname">'+f[key][work]['cv__companyname'].capitalize()+'</span>';
                 renderFormData +='</div>'+
               		'<div class="col-md-4" style="text-align:right;padding-right:50px;" >';
                 if(f[key][work]['cv__companystart'] && f[key][work]['cv__companyend']){
@@ -379,7 +368,7 @@ function buildoPreviewCv(f) {
                 }
                 renderFormData += '</div>' + '</div>';
             	if(f[key][work]['cv__companydesc'])
-            		renderFormData += '<p>'+f[key][work]['cv__companydesc']+'</p>';
+            		renderFormData += '<p>'+f[key][work]['cv__companydesc'].capitalize()+'</p>';
 
         		renderFormData += '</div>'+
     				'</div>';
@@ -389,20 +378,20 @@ function buildoPreviewCv(f) {
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
+        		renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div>';
 
             for (var edu in f[key]) {
         		renderFormData += '<div class="data--info">';
             	if(f[key][edu]['cv__coursename'])
-            		renderFormData +='<span style="font-weight:bold;">'+f[key][edu]['cv__coursename'];
+            		renderFormData +='<span style="font-weight:bold;">'+f[key][edu]['cv__coursename'].capitalize();
         		if(f[key][edu]['cv__eduperiod'])
         			renderFormData += ',' +f[key][edu]['cv__eduperiod'];
         		renderFormData += '</span>';
 
         		if(f[key][edu]['cv__instiname'])
-        			renderFormData += '<br/><span>'+f[key][edu]['cv__instiname']+'</span>';
+        			renderFormData += '<br/><span>'+f[key][edu]['cv__instiname'].capitalize()+'</span>';
         		if(f[key][edu]['cv__instidescription'])
-        			renderFormData += '<p>'+f[key][edu]['cv__instidescription']+'</p>';
+        			renderFormData += '<p>'+f[key][edu]['cv__instidescription'].capitalize()+'</p>';
 
         		renderFormData += '</div>';
     				'</div>';
@@ -412,12 +401,12 @@ function buildoPreviewCv(f) {
             renderFormData += '<div class="section--area">'+
                 '<div class="grey-box rectangle">';
             if(f[key])
-                renderFormData +='<span>'+key.split('|@|')[1]+'</span></div>';
+                renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div>';
 
             for (var proj in f[key]) {
                 renderFormData += '<div class="data--info">';
                 if(f[key][proj]['cv__projecttitle'])
-                    renderFormData +='<span style="font-weight:bold;">'+f[key][proj]['cv__projecttitle'];
+                    renderFormData +='<span style="font-weight:bold;">'+f[key][proj]['cv__projecttitle'].capitalize();
                 if(f[key][proj]['cv__projecturl'])
                     renderFormData += ',' +f[key][proj]['cv__projecturl'];
                 renderFormData += '</span>';
@@ -427,22 +416,22 @@ function buildoPreviewCv(f) {
                 if(f[key][proj]['cv__projectend'])
                     renderFormData += '<p>'+f[key][proj]['cv__projectend']+'</p>';
                 if(f[key][proj]['cv__projectdesc'])
-                    renderFormData += '<p>'+f[key][proj]['cv__projectdesc']+'</p>';
+                    renderFormData += '<p>'+f[key][proj]['cv__projectdesc'].capitalize()+'</p>';
 
                 renderFormData += '</div>';
                     '</div>';
             }
         }
-        else if(key.split('|@|')[0] == '#5') { // Skilss
+        else if(key.split('|@|')[0] == '#5') { // Skills
             renderFormData += '<div class="section--area">'+
                 '<div class="grey-box rectangle">';
             if(f[key])
-                renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
+                renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span>';
 
             for(var skill in f[key]) {
                 renderFormData += '<div class="data--info">';
                 if(f[key][skill]['cv__skill_type'])
-                    renderFormData += '<span style="font-weight:bold;">'+ f[key][skill]['cv__skill_type'] +': </span>';
+                    renderFormData += '<span style="font-weight:bold;">'+ f[key][skill]['cv__skill_type'].capitalize() +': </span>';
                 if(f[key][skill]['cv__skill_tags'])
                     renderFormData += '<span>'+ f[key][skill]['cv__skill_tags'] +'</span>';
 
@@ -454,7 +443,7 @@ function buildoPreviewCv(f) {
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
+        		renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span>';
 
     		renderFormData += '</div>'+
     			'<div class="data--info">';
@@ -467,7 +456,7 @@ function buildoPreviewCv(f) {
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
         	if(f[key])
-        		renderFormData +='<span>'+key.split('|@|')[1]+'</span>';
+        		renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span>';
 
     		renderFormData += '</div>'+
     			'<div class="data--info">';
