@@ -44,12 +44,13 @@
 		<div class="row">
 		  <div class="col-md-3" >
 		  	<ul id="sortable">
-		  	  <section class="field-card"><li class="sortable-tab--field" href="#1" data-toggle="tab"><i style="color:gray" class="fa fa-user"></i> Basic Information</li></section>
-			   <section class="field-card"><li class="sortable-tab--field" href="#2" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Work Experience</li></section>
-			   <section class="field-card"><li class="sortable-tab--field" href="#3" data-toggle="tab"><i style="color:gray" class="fa fa-book"></i> Education</li></section>
-			   <section class="field-card"><li class="sortable-tab--field" href="#4" data-toggle="tab"><i style="color:gray" class="fa fa-check-square-o"></i> Projects</li></section>
-			   <section class="field-card"><li class="sortable-tab--field" href="#5" data-toggle="tab"><i style="color:gray" class="fa fa-star"></i> Skills</li></section>
-			   <section class="field-card"><li class="sortable-tab--field" href="#6" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
+		  	   <section class="field-card"><li class="sortable-tab--field" href="#1" data-toggle="tab"><i style="color:gray" class="fa fa-user"></i> Basic Information</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#2" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Career Objective</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#3" data-toggle="tab"><i style="color:gray" class="fa fa-suitcase"></i> Work Experience</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#4" data-toggle="tab"><i style="color:gray" class="fa fa-book"></i> Education</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#5" data-toggle="tab"><i style="color:gray" class="fa fa-check-square-o"></i> Projects</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#6" data-toggle="tab"><i style="color:gray" class="fa fa-star"></i> Skills</li></section>
+			   <section class="field-card"><li class="sortable-tab--field" href="#7" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
 			</ul>
 			<button class="btn btn-info add--section">Create a new Section</button>
 		  </div>
@@ -120,6 +121,18 @@
 
 				</div>
 				<div class="tab-pane" id="2">
+					<label class="label--text heading">Career Objective</label>
+					<span style="margin-left: 20px; color:#9accea">
+						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
+					</span>
+					<div class="card">
+						<label class="label--text sub-heading">What you admire?</label>
+						<textarea class="form-control mod-text-box" rows="3" name="cv__careerobj"></textarea>
+					</div>
+					<br/>
+					<hr/>
+				</div>
+				<div class="tab-pane" id="3">
 					<label class="label--text heading">Work Experience</label>
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
@@ -170,7 +183,7 @@
 					</div>
 					<button class="btn btn-primary add-new-job">Add Entry</button>
 				</div>
-				<div class="tab-pane" id="3">
+				<div class="tab-pane" id="4">
 					<label class="label--text heading">Education</label>
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
@@ -217,7 +230,7 @@
 					<button class="btn btn-primary add-new-education">Add Entry</button>
 				</div>
 
-				<div class="tab-pane" id="4">
+				<div class="tab-pane" id="5">
 					<label class="label--text heading">Projects</label>
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
@@ -270,7 +283,7 @@
 				<button class="btn btn-primary add-new-project">Add Entry</button>
 				</div>
 
-				<div class="tab-pane" id="5">
+				<div class="tab-pane" id="6">
 					<label class="label--text heading">Skills</label>
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
@@ -294,7 +307,7 @@
 								<div class="col-md-9">	
 									<label class="sub-section-heading">Add Skills:</label>
 									<br/>
-									<input type="text" value="Amsterdam,Washington" data-role="tagsinput" class="form-control tagInputs typeahead" name="cv__skill_tags"/>	
+									<input type="text" data-role="tagsinput" class="form-control tagInputs typeahead" name="cv__skill_tags"/>	
 								
 								</div>
 							</div>
@@ -304,22 +317,10 @@
 					
 				</div>
 
-
-
-
-
-
-
-				<div class="tab-pane" id="6">
+				<div class="tab-pane" id="7">
 					<label class="label--text heading">Achievements</label>
 					<span style="margin-left: 20px; color:#9accea">
-						<!-- temporarily disabled
-						<a href=""><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
-						<a href=""><i class="fa fa-text-height" title="Font-size"></i>&nbsp;</a>
-						<a href=""><i class="fa fa-font" title="Color"></i></a>
-						<input type="color" class="fontSel" />
-						<a href=""><i style="color:#ed7b7b;float:right" class="fa fa-times fa-2x" title="Delete"></i></a>
-						-->
+						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 					</span>
 					<div class="card">
 						<label class="label--text sub-heading">Description</label>
