@@ -1,0 +1,44 @@
+ .main {
+      float: left;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+#resumizr__name {
+    color: #1ba4ef;
+    font-size: 30px;
+    padding: 5px;
+    margin-left: 20px;
+    padding-top: 15px;
+}
+
+.page1 {
+    background: #F7F7F7;
+}
+.page2{
+    background: #D4D4D4;
+}
+.page3{
+    background: #E9F1F6;
+}
+.navigation {
+    background: #272727;
+    height: 15%;
+    width: 100%;
+}
+.navigation li {
+    list-style: none;
+    display: inline-block;
+    margin-left: 60px;
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 20px;
+    text-decoration: none;
+
+}
+.nav-links li a{
+    color: #D4D4D4;
+}
+.nav-links li a:hover{
+    color: #fff;
+}
