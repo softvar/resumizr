@@ -205,6 +205,10 @@ def generateForm(request):
         return render(request, 'cv/generateform.html',{})
 
 
+def landing_page(request):
+    return render(request, 'landing_page/index.html',{})    
+
+
 # helper functions
 
 
