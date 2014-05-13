@@ -1,0 +1,55 @@
+{% include "landing_page/header.html" with title="Resumizr | HOME" %}
+<body>
+<div class="main">
+    <section class="page1">
+        <header class="navigation">
+            <div class="row">
+                <div class="col-md-6">
+                    <span id="resumizr__name">Resumizr</span>
+                </div>
+                <div class="col-md-6" >
+                    <div class="nav-links" style="height:60px;">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">About</a>
+                        </li>
+                        <li>
+                            <a href="#">Doc</a>
+                        </li>
+                        <li>
+                            <a href="#">Contact</a>
+                        </li>
+                    </div>
+                </div>
+        </header>
+        <div style="background:#D4D4D4;">lpl</div>
+    </section>
+    <section class="page2">
+        lol
+    </section>
+    <section class="page3">
+        lol
+    </section>
+</div>
+<script type="text/javascript">
+    $(function(){
+
+        $(".main").onepage_scroll({
+           sectionContainer: "section",
+           easing: "linear",
+           animationTime: 500,
+           pagination: true,
+           updateURL: false,
+           beforeMove: function(index) {},
+           afterMove: function(index) {},
+           loop: false,
+           keyboard: true,  
+           responsiveFallback: 600
+        });
+        
+    })
+</script>
+</body>
+</html>
