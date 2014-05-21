@@ -65,7 +65,7 @@
 /* card UI */
 
 
-.card, .field-card {
+.card, .card:focus, .field-card {
   padding:1.5rem;
   border: 1px solid #CCC;
   box-shadow: 2px 5px 5px #DDD;
@@ -84,6 +84,12 @@
   -ms-transform:rotate(-7deg); /* IE 9 */
   -webkit-transform:rotate(-7deg); /* Opera, Chrome, and Safari */
 }
+
+.card:focus {
+  border : thin solid #0b6bd5;
+}
+
+
 
 ul.gNow {
   width: 450px;
@@ -190,7 +196,7 @@ border-bottom: thin solid #ccc;
 .popover-content {
     font-size: 1.1em;
     border-radius : 0px;
-    margin-left: -40px;
+    margin-left: -30px;
 }
 
 .suggestion-list {

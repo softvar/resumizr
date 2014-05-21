@@ -47,6 +47,7 @@ single_fields.forEach(function(field){
 
 	$("body").on("click", '.'+field+'Suggestion', function(){  
 	     $('#'+field).val($(this).children('span:first').text()); // setting value of name input
+	     $('#'+field).keyup(); // for calling validation
 	});
 
 });
@@ -74,7 +75,7 @@ categories.forEach(function(category){
 
     	complex_fields[category].forEach(function(sibling){
 
-    		container.find('.'+sibling+':first').val(suggestions[provider+'_'+category][key][sibling]); // seting text of sibbling fields in div
+    		container.find('.'+sibling+':first').val(suggestions[provider+'_'+category][key][sibling]).keyup(); // seting text of sibbling fields in div; keyup called for triggering validation
     	});   
 
     	for(var i=0;i<numWysiEditor.length;i++) {
@@ -99,7 +100,7 @@ categories.forEach(function(category){
 function popoverSettings(category,field)
 {
 	return {
- 	placement : 'auto',
+ 	placement : 'bottom',
  	title :field+' suggestions',
  	html : true,
  	trigger : 'focus',
@@ -424,7 +425,7 @@ function attachPopOvers()
 
 		$('#'+field).popover('destroy'); 
 		$('#'+field).popover({
-	 	placement : 'auto',
+	 	placement : 'bottom',
 	 	title :field+' suggestions',
 	 	html : true,
 	 	trigger : 'focus',

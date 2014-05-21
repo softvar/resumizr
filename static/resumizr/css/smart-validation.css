@@ -1,0 +1,49 @@
+.mod-form-error {
+
+	border:thin solid #c40a15 ;
+	box-shadow : 0px 0px 5px 0px #c40a15 ;
+
+}
+
+.mod-form-warning {
+	border : thin solid #b49a00;
+	box-shadow: 0px 0px 5px 0px #b49a00;
+}
+
+.mod-form-correct {
+	border:thin solid #539d00;
+	box-shadow: 0px 0px 5px 0px #539d00;
+}
+
+.status {
+	float:right;
+	margin-top:-10px;
+	margin-right:-10px;
+}
+
+
+.card-focus-error , .card-focus-error:focus{
+	border:thin solid #c40a15 ;
+	margin-left:2px;
+}
+
+.resume-form-error li{
+	font-familty : 'Open Sans', 'sans-serif';
+	color : #c40a15;
+	padding: 5px;
+}
+
+.resume-form-warning li {
+	font-familty : 'Open Sans', 'sans-serif';
+	color : #b49a00;
+	padding: 5px;
+}
+
+.popover-title-error{
+  border-radius : 0px;
+  background-color: #c40a15;
+  color:#fff;
+  border-color: #c40a15;
+  font-size:1.3em;
+   
+}
