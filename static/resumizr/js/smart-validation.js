@@ -35,7 +35,11 @@ Validatr.prototype.validate = function() {
 
 		return function()
 		{
-			
+			name = key;
+
+			if('name' in that.config[key])
+				name = that.config[key]['name'];
+
 			/* removing previous errors */
 	        $(selector).siblings('.resume-form-error ,.resume-form-warning').remove();
 
@@ -63,11 +67,11 @@ Validatr.prototype.validate = function() {
 							that.warnings[key].push(that.config[key]['warnings']['unavailable']);
 
 						else
-							that.warnings[key].push('consider entering '+key);
+							that.warnings[key].push('consider entering '+name);
 					}
 
 					else
-						that.warnings[key].push('consider entering '+key);
+						that.warnings[key].push('consider entering '+name);
 				}
 
 				else
@@ -79,11 +83,11 @@ Validatr.prototype.validate = function() {
 							that.errors[key].push(that.config[key]['errors']);
 
 						else
-							that.errors[key].push(key+' field is empty');
+							that.errors[key].push(name+' field is empty');
 					}
 
 					else
-						that.errors[key].push(key+' field is empty');
+						that.errors[key].push(name+' field is empty');
 
 					
 
@@ -106,12 +110,12 @@ Validatr.prototype.validate = function() {
 									that.errors[key].push(that.config[key]['errors']['incorrect']);
 								
 								else 
-									that.errors[key].push('Please provide correct '+key);
+									that.errors[key].push('Please provide correct '+name);
 
 							}
 
 							else 
-								that.errors[key].push('Incorrect value of '+key);							
+								that.errors[key].push('Incorrect value of '+name);							
 							
 					}
 
@@ -241,6 +245,126 @@ var validatr_seed = {
 		optional : true ,
 		regex : "^(\\+[1-9]{1,3}-)?[0-9]{10}$"
 	},
+
+	job_title : {
+		name : 'job title',
+		class : 'job-title',
+		custom_validator : function(selector,errors,warnings){
+
+			if( !(new RegExp("^[a-zA-Z0-9\\-, ]+$").test($(selector).val())))
+					errors.push('This doesn\'t look like valid job title  ');							
+							
+			else {
+				
+				if ($(selector).val().split(' ').length > 3) {
+					warnings.push('This job title seems too long! Double check !!');
+				}
+			}
+
+		}
+	},
+
+	company_name : {
+		name : 'company name',
+		class : 'company-name',
+		regex : "^[a-zA-Z\\-, ]+$"
+	},
+
+	start_date : {
+		name : 'start date',
+		class : 'start-date',
+		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		errors : {
+			'incorrect' : 'Please enter date in format : 14th May,2014.  \n Day is optional'
+		}
+	},
+
+	end_date : {
+		name : 'end date',
+		class : 'end-date',
+		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		errors : {
+			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional'
+		}
+	},
+
+	education_type : {
+		name : 'education type',
+		class : 'education-type',
+		regex : "^[a-zA-Z\\.\\- ]+$",
+		errors : {
+			'incorrect' : 'Please valid education type. Ex High School or B.Tech'
+		}
+
+	},
+
+	institution_name : {
+		name : 'institution name',
+		class : 'institution-name',
+		regex : "^[a-zA-Z\\.\\- ]+$",
+		errors : {
+			'incorrect' : 'Please enter valid institution name'
+		}
+	},
+
+	education_period : {
+		name : 'education period',
+		class : 'education-period',
+		regex : "^(19|20)\\d{2}\\-(19|20)\\d{2}",
+		errors : {
+			'incorrect' : 'Please enter period in correct format. \n For example 1992-2009'
+		}
+	},
+
+	project_title : {
+		name : 'project title',
+		class : 'project-title',
+		custom_validator : function(selector,errors,warnings){
+
+			if( !(new RegExp("^[a-zA-Z0-9\\-, ]+$").test($(selector).val())))
+					errors.push('This doesn\'t look like valid job title  ');							
+							
+			else {
+				
+				if ($(selector).val().split(' ').length > 5) 
+					warnings.push('This project title seems too long! Double check !!');
+				
+			}
+
+		}
+	},
+
+	project_url : {
+		name : 'project url',
+		class : 'project-url',
+		optional : true,
+		regex : "((http|https|ftp):\\/\\/)?[\\w-]+\\.[\\w-]+([\\w-\\. \\\\?%&=]*)?",
+		errors : {
+			'incorrect' : 'Please provide correct  url'
+		},
+		warnings :{
+			'unavailable' : 'Consider entering prject url. It may add to your credibility and increase the impact'
+		}
+	},
+
+	project_start_date : {
+		name : 'project start date',
+		class : 'project-start-date',
+		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		errors : {
+			'incorrect' : 'Please enter date in format : 14th May,2014.  \n Day is optional'
+		}
+	},
+
+	project_end_date : {
+		name : 'project end date',
+		class : 'project-end-date',
+		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		errors : {
+			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional'
+		}
+	},
+
 
 
 };
