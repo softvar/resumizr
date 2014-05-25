@@ -29,12 +29,14 @@ Validatr.prototype.validate = function() {
 		var that = this; // creating alias of this (Validatr) object
 
 
-		$(selector).on('keyup , blur',(function(key,selector){
+		$(document).on('keyup , blur',selector,(function(key){
 
 			
 
-		return function()
+		return function(event)
 		{
+			
+			selector = event.target; // assigning target of event to selector , to make it function for multiple elements
 			name = key;
 
 			if('name' in that.config[key])
@@ -44,7 +46,7 @@ Validatr.prototype.validate = function() {
 	        $(selector).siblings('.resume-form-error ,.resume-form-warning').remove();
 
 	        $(selector).removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error');
-			$(selector).siblings('.status').children('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-cirlce');
+			$(selector).siblings('.status').children('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
 
 			// resetting errors and warnings
 			that.errors[key] = [];
@@ -131,6 +133,7 @@ Validatr.prototype.validate = function() {
 
 			}
 
+			console.log(that.errors);
 
 			/* check for error */
 			if(that.errors[key].length > 0)
@@ -190,7 +193,7 @@ Validatr.prototype.validate = function() {
 
 		}
 
-	})(key,selector));  // end of callback
+	})(key));  // end of callback
 				
 	}
 
@@ -200,6 +203,12 @@ Validatr.prototype.validate = function() {
 
 
 $(document).ready(function(){
+
+
+var date_regex = "^((\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2})|(p|P)resent$";
+
+
+
 
 /* key of this object is used as name of the field. However , it will be identified by either class or id given in object */
 var validatr_seed = {
@@ -273,18 +282,18 @@ var validatr_seed = {
 	start_date : {
 		name : 'start date',
 		class : 'start-date',
-		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		regex : date_regex,
 		errors : {
-			'incorrect' : 'Please enter date in format : 14th May,2014.  \n Day is optional'
+			'incorrect' : 'Please enter date in format : 14th May,2014.\n Day is optional. Or enter present'
 		}
 	},
 
 	end_date : {
 		name : 'end date',
 		class : 'end-date',
-		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		regex : date_regex,
 		errors : {
-			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional'
+			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional. or enter present'
 		}
 	},
 
@@ -350,18 +359,18 @@ var validatr_seed = {
 	project_start_date : {
 		name : 'project start date',
 		class : 'project-start-date',
-		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		regex : date_regex,
 		errors : {
-			'incorrect' : 'Please enter date in format : 14th May,2014.  \n Day is optional'
+			'incorrect' : 'Please enter date in format : 14th May,2014.\n Day is optional. Or enter "present"'
 		}
 	},
 
 	project_end_date : {
 		name : 'project end date',
 		class : 'project-end-date',
-		regex : "^(\\d{1,3}(st|th|nd)? )?(Jan|January|Feb|February|Mar|March|Apr|April|May|June|July|Aug|August|Sept|September|Sep|Oct|October|Nov|November|Dec|December),? ?(19|20)\\d{2}$",
+		regex : date_regex,
 		errors : {
-			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional'
+			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional. Or enter "present"'
 		}
 	},
 
