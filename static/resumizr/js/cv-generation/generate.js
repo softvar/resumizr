@@ -79,7 +79,7 @@ $(function () {
         newJobSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
         newJobSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
         newJobSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
-        newJobSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox').remove();
+        newJobSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
         newJobSection.find('.job-description').wysihtml5({
               "bodyClassName" : "wysihtml5-supported,wy-job-description", // for assigning class to body
               "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
@@ -91,27 +91,68 @@ $(function () {
               "color": true, //Button to change color of font
               "events": {
                 "load": function() { 
-                    console.log("Loaded!");
+                    newJobSection.find('.wysihtml5-sandbox').show();
                 }
               }
             });
-
-
         $('.add-new-job').before(newJobSection);
-        $('.wysihtml5-sandbox:last').show();
         dynamicWorkexPopoverBinder(); // from smart-suggestion/js
 
     });
 
 	$('.add-new-education').click(function (){
-		var newEduSection = '<hr/> <div class="cv-education">' + $('.cv-education').html()+'</div>';
-		$('.add-new-education').before(newEduSection);
+		var newEduSection = '<div class="cv-education">' + $('.cv-education').html()+'</div>';
+		newEduSection = $(newEduSection);
+
+        newEduSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
+        newEduSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+        newEduSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
+        newEduSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
+        newEduSection.find('.education-description').wysihtml5({
+              "bodyClassName" : "wysihtml5-supported,wy-education-description", // for assigning class to body
+              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+              "emphasis": true, //Italics, bold, etc. Default true
+              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+              "html": true, //Button which allows you to edit the generated HTML. Default false
+              "link": false, //Button to insert a link. Default true
+              "image": false, //Button to insert an image. Default true,
+              "color": true, //Button to change color of font
+              "events": {
+                "load": function() { 
+                    newEduSection.find('.wysihtml5-sandbox').show();
+                }
+              }
+            });
+
+        $('.add-new-education').before(newEduSection);
         dynamicEducationPopoverBinder(); // from smart-suggestion.js
 	});
 
     $('.add-new-project').click(function (){
-        var newEduSection = '<hr/> <div class="cv-projects">' + $('.cv-projects').html()+'</div>';
-        $('.add-new-project').before(newEduSection);
+        var newProjSection = '<div class="cv-projects">' + $('.cv-projects').html()+'</div>';
+        newProjSection = $(newProjSection);
+
+        newProjSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
+        newProjSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+        newProjSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
+        newProjSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
+        newProjSection.find('.project-description').wysihtml5({
+              "bodyClassName" : "wysihtml5-supported,wy-project-description", // for assigning class to body
+              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+              "emphasis": true, //Italics, bold, etc. Default true
+              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+              "html": true, //Button which allows you to edit the generated HTML. Default false
+              "link": false, //Button to insert a link. Default true
+              "image": false, //Button to insert an image. Default true,
+              "color": true, //Button to change color of font
+              "events": {
+                "load": function() { 
+                    newProjSection.find('.wysihtml5-sandbox').show();
+                }
+              }
+            });
+
+        $('.add-new-project').before(newProjSection);
         dynamicProjectsPopoverBinder(); // from smart-suggestion.js
     });
 
