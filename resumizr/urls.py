@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^app/$','api.views.app',name='app'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^generate/cvform/$','api.views.generateForm', name='generateform'),
+    url(r'^write/cv_to_pdf/$','pdfconvertor.views.writepdf', name='writepdf'),
     url(r'^preview/cv/$','api.views.previewCv', name='preview'),
     url(r'^landing_page/','api.views.landing_page', name='landing_page'),
 
