@@ -12,12 +12,22 @@ function Validatr(config)
 Validatr.prototype.validate = function() {
 
 	console.log('validating');
+	/* returning errors and warnings in global namespace */
+	window.Resumizrerrors = this.errors;
+	window.Resumizrwarnings = this.warnings;
+
 	for (key in this.config)
 	{
 		
 		/* creating list of errors and warnings */
-		this.errors[key] = [];
-		this.warnings[key] = [];
+		if(! (key in this.errors))
+			this.errors[key] = [];
+		else 
+			console.log('unable to created');
+		if(! (key in this.warnings))
+			this.warnings[key] = [];
+		else
+			console.log('unable .. warning');
 
 		var selector = ''; // used to select element using jquery selector
 
@@ -42,15 +52,30 @@ Validatr.prototype.validate = function() {
 			if('name' in that.config[key])
 				name = that.config[key]['name'];
 
+			/* determining index of the container */
+			var container = $(selector).parents().eq(3);
+			var children = container.parent().children('div');
+			var index = 0;
+
+		    for (var i= 0; i<children.length; i++) {
+		        var child= children[i];
+		        if (child != container[0])
+		            index+=1;
+		        else
+		        	break;
+		    }
+
+		  
+
+		  	that.errors[key][index] = []; // deleting errors
+			that.warnings[key][index] = []; // deleting warnings
+
 			/* removing previous errors */
 	        $(selector).siblings('.resume-form-error ,.resume-form-warning').remove();
 
 	        $(selector).removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error');
 			$(selector).siblings('.status').children('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
 
-			// resetting errors and warnings
-			that.errors[key] = [];
-			that.warnings[key] = [];
 
 	        if($(selector).val()==='')
 			{
@@ -66,14 +91,14 @@ Validatr.prototype.validate = function() {
 					if('warnings' in that.config[key])
 					{
 						if('unavailable' in that.config[key]['warnings'])
-							that.warnings[key].push(that.config[key]['warnings']['unavailable']);
+							that.warnings[key][index].push(that.config[key]['warnings']['unavailable']);
 
 						else
-							that.warnings[key].push('consider entering '+name);
+							that.warnings[key][index].push('consider entering '+name);
 					}
 
 					else
-						that.warnings[key].push('consider entering '+name);
+						that.warnings[key][index].push('consider entering '+name);
 				}
 
 				else
@@ -82,14 +107,14 @@ Validatr.prototype.validate = function() {
 					if('errors' in that.config[key])
 					{
 						if('unavailable' in that.config[key]['errors'])
-							that.errors[key].push(that.config[key]['errors']);
+							that.errors[key][index].push(that.config[key]['errors']);
 
 						else
-							that.errors[key].push(name+' field is empty');
+							that.errors[key][index].push(name+' field is empty');
 					}
 
 					else
-						that.errors[key].push(name+' field is empty');
+						that.errors[key][index].push(name+' field is empty');
 
 					
 
@@ -109,17 +134,19 @@ Validatr.prototype.validate = function() {
 							if('errors' in that.config[key])
 							{
 								if('incorrect' in that.config[key]['errors'])
-									that.errors[key].push(that.config[key]['errors']['incorrect']);
+									that.errors[key][index].push(that.config[key]['errors']['incorrect']);
 								
 								else 
-									that.errors[key].push('Please provide correct '+name);
+									that.errors[key][index].push('Please provide correct '+name);
 
 							}
 
 							else 
-								that.errors[key].push('Incorrect value of '+name);							
+								that.errors[key][index].push('Incorrect value of '+name);							
 							
 					}
+
+					
 
 				}
 
@@ -127,16 +154,16 @@ Validatr.prototype.validate = function() {
 				{
 
 					// calling custom validation function; passing errors and warnings array of target element
-					that.config[key]['custom_validator'](selector,that.errors[key],that.warnings[key])
+					that.config[key]['custom_validator'](selector,that.errors[key][index],that.warnings[key][index])
 
 				}
 
 			}
 
-			console.log(that.errors);
+			//console.log(that.errors);
 
 			/* check for error */
-			if(that.errors[key].length > 0)
+			if(that.errors[key][index].length > 0)
 			{
 	
 				$(selector).addClass('mod-form-error');
@@ -144,7 +171,7 @@ Validatr.prototype.validate = function() {
 				
 			 		
 				var list = '';
-				that.errors[key].forEach(function(error)
+				that.errors[key][index].forEach(function(error)
 				{
 					
 					list+='<li class="error">'+error+'</li>';
@@ -160,7 +187,7 @@ Validatr.prototype.validate = function() {
 			}
 
 			/* check for warnings */
-			else if(that.warnings[key].length > 0)
+			else if(that.warnings[key][index].length > 0)
 			{
 			
 				$(selector).addClass('mod-form-warning');
@@ -168,10 +195,10 @@ Validatr.prototype.validate = function() {
 				
 			 		
 				var list = '';
-				that.warnings[key].forEach(function(error)
+				that.warnings[key][index].forEach(function(warning)
 				{
 					
-					list+='<li class="warning">'+error+'</li>';
+					list+='<li class="warning">'+warning+'</li>';
 
 				});
 				if(list != '')
@@ -184,7 +211,7 @@ Validatr.prototype.validate = function() {
 			}
 
 			else {
-
+				
 				$(selector).addClass('mod-form-correct');
 				$(selector).siblings('.status').children('.status-icon').addClass('fa-check-circle').css('color','#539d00');
 
@@ -268,6 +295,7 @@ var validatr_seed = {
 				if ($(selector).val().split(' ').length > 3) {
 					warnings.push('This job title seems too long! Double check !!');
 				}
+
 			}
 
 		}
@@ -337,6 +365,8 @@ var validatr_seed = {
 				
 				if ($(selector).val().split(' ').length > 5) 
 					warnings.push('This project title seems too long! Double check !!');
+
+				
 				
 			}
 
