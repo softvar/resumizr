@@ -15,6 +15,8 @@ from api.models import ResumizrUserData
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import simplejson
 
 import json
 
@@ -204,6 +206,24 @@ def generateForm(request):
     else:
         return render(request, 'cv/generateform.html',{})
 
+# @login_required
+# @csrf_exempt
+# def writepdf(request):
+#     json_data = simplejson.loads(request.body)
+#     try:
+#       data = json_data['css']
+#       print data
+#     except KeyError:
+#       HttpResponseServerError("Malformed data!")
+
+#     if request.method == 'POST':
+#         print 'POST'
+#         c = {'lol':request.POST}
+#         return HttpResponse(request.body,mimetype='application/json')
+#         return render(request, request.body ,c)
+#     else:
+#         print 'data'
+#         return render(request, 'landing_page/index.html', {})
 
 def landing_page(request):
     return render(request, 'landing_page/index.html',{})    
@@ -283,6 +303,7 @@ def fetch_social_data(request , backend) :
 
 
 @login_required
+@csrf_exempt
 def save_data(request):
     if request.method == "POST" and request.is_ajax():
         request.user.resumizr_data.resume_data['resume'] = json.loads(request.body)
