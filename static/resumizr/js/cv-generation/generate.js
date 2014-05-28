@@ -62,14 +62,38 @@ $(function () {
     });
 
     $('.save--form').click(function () {
-    	//var jsonFormData = buildoPreviewCv();
+    	var jsonFormData = generateCvJson();
     	// save to DB
     	$.ajax({
-		  url: "http://myapp.com:8000s/users/save-data",
-		  context: document.body
+		  url: "http://myapp.com:8000/users/save-data",
+		  data: JSON.stringify(jsonFormData),
+          contentType: "application/json",
+          type: 'POST'
 		}).done(function() {
+            alert('haha');
 		  $( this ).addClass( "done" );
 		});
+    });
+
+    $('.cv-write').click(function () {
+        var jsonFormData = generateCvJson(), cvHtml;
+        cvHtml = '<html><body class="container">';
+        cvHtml += buildoPreviewCv(jsonFormData);
+        cvHtml += '</body></html>';
+        css = 'professional';
+        var data = {'html': cvHtml, 'css': css}
+        console.log(data);
+        // save to DB
+        $.ajax({
+          url: "http://myapp.com:8000/write/cv_to_pdf/",
+          type: 'POST',
+          data: JSON.stringify(data),
+          contentType: "application/json"
+        }).done(function(data) {
+            /*alert('lol');*/
+            console.log(data);
+          $( this ).addClass( "done" );
+        });
     });
 
     $('.add-new-job').click(function () {
@@ -456,7 +480,7 @@ function buildoPreviewCv(f) {
             	if(f[key][work]['cv__companydesc'])
             		renderFormData += '<p>'+f[key][work]['cv__companydesc'].capitalize()+'</p>';
 
-        		renderFormData += '</div>'+
+        		renderFormData += '<br/></div>'+
     				'</div>';
             }
 	    }
@@ -555,6 +579,7 @@ function buildoPreviewCv(f) {
 	}
 	renderFormData += '</div>'
     $('.preview-generated-cv').html(renderFormData);
+    return renderFormData;
 
 }
 	function addSectionDetail(globalId) {
