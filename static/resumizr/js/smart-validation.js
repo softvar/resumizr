@@ -224,6 +224,35 @@ Validatr.prototype.validate = function() {
 				
 	}
 
+	// validation for tagsinput
+	$(document).on('itemRemoved , itemAdded','.skill-tags',function(){
+	var totalSkills = 0;
+	var selector = '#6'; // selector for status of skills
+	$(selector).find('.resume-form-error ,.resume-form-warning').remove();
+
+	$(selector).find('.status').children('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+
+
+	$( ".skill-tags" ).each(function( index ) {
+  		console.log( index + ": " + $( this ).text() );
+  		totalSkills+= $(this).tagsinput('items').length;
+	});
+
+	if (totalSkills >= 5)
+	{
+		$(selector).find('.status').children('.status-icon').addClass('fa-check-circle').css('color','#539d00');
+	}
+
+	else
+	{
+		$(selector).find('.status').children('.status-icon').addClass('fa-times-circle').css('color','#c40a15');
+		list='<ul class="resume-form-error"><li class="error"> Please enter atleast 5 skills </li></ul>';
+		$(selector).find('.skill-errors').append(list);
+					
+	}
+
+
+	});
 }
 
 

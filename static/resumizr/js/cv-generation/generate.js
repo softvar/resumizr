@@ -172,7 +172,7 @@ $(function () {
                             </div>\
                             <div class="col-md-9">\
                                 <label class="sub-section-heading">Add Skills:</label>';
-            newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
+            newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control skill-tags tagInputs'+globalSkillClassId+' typeahead"/>' +
                 '           </div>\
                         </div>\
                     </div>\
