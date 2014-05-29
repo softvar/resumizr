@@ -404,6 +404,12 @@ var validatr_seed = {
 		}
 	},
 
+	career_objective : {
+
+		name : 'career-objective',
+		class : 'career-objective.wysihtml5-editor'
+	}
+
 
 
 };

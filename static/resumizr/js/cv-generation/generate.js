@@ -243,6 +243,38 @@ $(function () {
         $(this).parents().eq(2).remove();
     });
     $(document).on('click', '.fa.fa-times.parent--delete' ,function () {
+        
+    var container = $(this).parent();
+
+    var children = container.parent().children('div');
+            var index = 0;
+
+            for (var i= 0; i<children.length; i++) {
+                var child= children[i];
+                if (child != container[0])
+                    index+=1;
+                else
+                    break;
+            }
+
+    for(key in window.Resumizrerrors)
+    {
+        if (index in window.Resumizrerrors[key])
+        {
+            window.Resumizrerrors[key][index] = []; // setting errors to the corresponding errors and warning to 0
+        }
+    }
+
+    for(key in window.Resumizrwarnings)
+    {
+        if (index in window.Resumizrwarnings[key])
+        {
+            window.Resumizrwarnings[key][index] = []; // setting errors to the corresponding errors and warning to 0
+        }
+    }
+
+
+
         $(this).parent().remove();
     });
 
