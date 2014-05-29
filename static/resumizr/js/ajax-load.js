@@ -30,9 +30,9 @@ function ajaxDataRequest(provider,force)
 {
 
 if(force == true)
-  url = '../../users/refresh-social-data/';
+  url = '../../../users/refresh-social-data/';
 else
-  url = '../../users/social-data/';
+  url = '../../../users/social-data/';
 
 
 return $.ajax({

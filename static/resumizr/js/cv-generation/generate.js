@@ -29,7 +29,7 @@ $(function () {
 
     $( "#sortable" ).disableSelection();
 
-    var descriptions = ['career-objective','job-description','education-description','project-description'];
+    var descriptions = ['career-objective','job-description','education-description','project-description', 'achievements', 'more-fields'];
     descriptions.forEach(function(desc){ 
 
             $('.'+desc).wysihtml5({
@@ -62,19 +62,29 @@ $(function () {
     });
 
     $('.save--form').click(function () {
-    	var jsonFormData = generateCvJson();
+    	var jsonFormData = generateCvJson(),
+            loc = window.location.pathname;
+            pathname = loc.split('/');
+            resumeNum = pathname[pathname.length - 2];
     	// save to DB
     	$.ajax({
-		  url: "http://myapp.com:8000/users/save-data",
+		  url: "http://myapp.com:8000/users/save-data/"+resumeNum+"/",
 		  data: JSON.stringify(jsonFormData),
           contentType: "application/json",
           type: 'POST'
 		}).done(function() {
-            alert('haha');
-		  $( this ).addClass( "done" );
+            alert('Form Saved !! :)');
 		});
     });
 
+/* Load Saved form */
+    $('.prefill--form').click(function () {
+        loadSavedForm();
+    });
+    loadSavedForm();
+/****/
+
+    
     $('.cv-write').click(function () {
         var jsonFormData = generateCvJson(), cvHtml;
         cvHtml = '<html><body class="container">';
@@ -119,6 +129,7 @@ $(function () {
                 }
               }
             });
+
         $('.add-new-job').before(newJobSection);
         dynamicWorkexPopoverBinder(); // from smart-suggestion/js
 
@@ -288,6 +299,113 @@ $(function () {
 	  '</div>'+
 
 '</div>';
+
+function loadSavedForm () {
+    var jsonFormData = generateCvJson(),
+        loc = window.location.pathname;
+        pathname = loc.split('/');
+        resumeNum = pathname[pathname.length - 2];
+    // save to DB
+    $.ajax({
+      url: "http://myapp.com:8000/users/get-data/"+resumeNum+"/",
+      contentType: "application/json",
+      type: 'GET'
+    }).done(function(data) {
+        console.log(data);
+        if(data['ERROR'] != undefined){
+            alert(data['ERROR']);
+            return;
+        }
+        for (var key in data) {
+            //console.log(key);
+            var i =0;
+            for (var subkey in data[key]) {
+                //console.log(data[key][subkey])
+                if (typeof data[key][subkey] == 'object') {
+
+                    if (data[key].length>1 && i!=0) {
+                        if (key.split('|@|')[0] == '#3') {// workex
+                            var newJobSection = '<div class="cv-work-experience">' + $('.cv-work-experience:first').html()+'</div>';
+                            newJobSection = $(newJobSection);
+                            $('.add-new-job').before(newJobSection);
+                        }
+                        else if (key.split('|@|')[0] == '#4') {// education
+                            var newEduSection = '<div class="cv-education">' + $('.cv-education').html()+'</div>';
+                            newEduSection = $(newEduSection);
+                            $('.add-new-education').before(newEduSection);
+                        }
+                        else if (key.split('|@|')[0] == '#5') {// projects
+                            var newProjSection = '<div class="cv-projects">' + $('.cv-projects').html()+'</div>';
+                            newProjSection = $(newProjSection);
+                            $('.add-new-project').before(newProjSection);
+                        }
+                        else if (key.split('|@|')[0] == '#6') {// skills
+                            var skillSetId = 0;
+                            if(skillSetId<10) {
+                                var placeholderArray = ['Frameworks','Databases','Web Languages','Platforms','OS','Management','Others']
+                                var newSkillSet = '\
+                                    <div class="cv-skill-set">\
+                                        <div class="card">\
+                                            <a><i style="color:#c0392b; margin-right:5px; float:right;" class="fa fa-times fa-2x skill-tag" title="Delete"></i></a>\
+                                            <label class="sub-section-heading">Fill out the Details</label>\
+                                            <hr/>\
+                                            <div class="row">\
+                                                <div class="col-md-3">\
+                                                    <label class="sub-section-heading">Skill Type:</label>\
+                                                    <input type="text" class="form-control skill-type" name="cv__skill_type" placeholder="Eg: '+placeholderArray[skillSetId%placeholderArray.length/**/]+'"/>\
+                                                </div>\
+                                                <div class="col-md-9">\
+                                                    <label class="sub-section-heading">Add Skills:</label>';
+                                newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+skillSetId+' typeahead"/>' +
+                                    '           </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>';
+                                
+                                $('.add-new-skill-set').before(newSkillSet);
+                                $('.tagInputs'+skillSetId).tagsinput('input');
+                                /*$('.tagInputs'+globalSkillClassId).tagsinput('input').typeahead({
+                                  prefetch: '../../static/resumizr/js/cities.json'
+                                }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+                                  this.tagsinput('add', datum.value);
+                                  this.tagsinput('input').typeahead('setQuery', '');
+                                }, $('.tagInputs'+globalSkillClassId)));*/
+                                tagAutoComplete('.tagInputs'+skillSetId);
+                                
+                                skillSetId++;
+                                $('.alert.alert-warning.alert-dismissable').css('display','none');
+                            }
+                            else {
+                                $('.alert.alert-warning.alert-dismissable').css('display','block');
+                            }
+                        }
+                    }
+
+                    for (var subsubkey in data[key][subkey]) {
+                        //alert(data[key][subkey][subsubkey]);
+                        if (key.split('|@|')[0] == '#6') //skills
+                            if(subsubkey == 'cv__skill_tags')
+                               $('input[name="'+subsubkey+'"]:eq('+i+')').tagsinput('add', data[key][subkey][subsubkey]);
+                            else
+                               $('input[name="'+subsubkey+'"]:eq('+i+')').val(data[key][subkey][subsubkey]); 
+                        else {
+                            $('input[name="'+subsubkey+'"]:eq('+i+')').val(data[key][subkey][subsubkey]);
+                            $('input[name="'+subsubkey+'"]:eq('+i+')').blur();
+                        }
+                    }  
+
+                }
+                else {
+                    //alert(data[key][subkey]);
+                    $('input[name="'+subkey+'"]').val(data[key][subkey]);
+                    $('input[name="'+subkey+'"]').blur();
+                }
+                i++;
+            }
+        }
+    alert('Automatically Saved Form Loaded!');
+    });
+}
 
 function tagAutoComplete (selector) {
     var tag ;
@@ -593,7 +711,7 @@ function buildoPreviewCv(f) {
 				'<hr/>'+
 				'<div class="card">\
 					<label class="label--text sub-heading">Detail</label>\
-					<textarea class="form-control mod-text-box" rows="3" name="cv__fielddata"></textarea>\
+					<textarea class="form-control mod-text-box more-fields" rows="3" name="cv__fielddata"></textarea>\
 				</div>'+
 				'<br />'+
 				'<button class="btn btn-primary add--entry">Add Entry</button>'+
@@ -601,6 +719,21 @@ function buildoPreviewCv(f) {
 
 
 				$('.tab-content').append(sectionAddData);
+                $('.more-fields').wysihtml5({
+              "bodyClassName" : "wysihtml5-supported,wy-more-fields", // for assigning class to body
+              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+              "emphasis": true, //Italics, bold, etc. Default true
+              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+              "html": true, //Button which allows you to edit the generated HTML. Default false
+              "link": false, //Button to insert a link. Default true
+              "image": false, //Button to insert an image. Default true,
+              "color": true, //Button to change color of font
+              "events": {
+                "load": function() { 
+                    console.log("Loaded!");
+                }
+              }
+            });
 
 
 	}
