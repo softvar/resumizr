@@ -183,7 +183,7 @@ def previewCv(request):
         return render(request, 'custom_404.html', '')
 
 @login_required
-def generateForm(request):
+def generateForm(request, resumeNum):
     ''' resume form rendere '''
     if request.method == 'POST':
         sectionHeading = request.POST.getlist("heading","")
@@ -304,9 +304,10 @@ def fetch_social_data(request , backend) :
 
 @login_required
 @csrf_exempt
-def save_data(request):
+def save_data(request, resumeId):
     if request.method == "POST" and request.is_ajax():
-        request.user.resumizr_data.resume_data['resume'] = json.loads(request.body)
+        #request.user.resumizr_data.resume_data['resume'] = {}
+        request.user.resumizr_data.resume_data['resume'][resumeId] = json.loads(request.body)
         request.user.resumizr_data.save()
         return HttpResponse("OK")
     else:
@@ -315,11 +316,12 @@ def save_data(request):
 
 
 @login_required
-def get_resume_data(request):
+def get_resume_data(request, resumeId):
     try :
-        return HttpResponse(json.dumps(request.user.resumizr_data.resume_data['resume']),mimetype='application/json')
+        return HttpResponse(json.dumps(request.user.resumizr_data.resume_data['resume'][resumeId]),mimetype='application/json')
     except :
-        return HttpResponse('Error : No resumse data found')
+        print 'loha'
+        return HttpResponse(json.dumps({'ERROR':'No such resumse data found'}),mimetype='application/json')
 
 
 
