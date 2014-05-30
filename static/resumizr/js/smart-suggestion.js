@@ -59,7 +59,14 @@ categories.forEach(function(category){
 
 	popoverFields[category].forEach(function(field){
 
+
 	$("body").on("click", '.'+field+'Suggestion', function(event){  
+
+		/* toggling wysiwyg editor */
+		var numWysiEditor = $('.html5-editor-toggle');
+		for(var i=0;i<numWysiEditor.length;i++) {
+			numWysiEditor[i].click();
+		}  
 	    
 		var provider = $(this).data('provider');
 		var key = $(this).data('ref-no');
@@ -76,10 +83,10 @@ categories.forEach(function(category){
 
 		});
 
-		/*var numWysiEditor = $('.html5-editor-toggle');
+		// retoggling wysiwyg editors
 		for(var i=0;i<numWysiEditor.length;i++) {
 			numWysiEditor[i].click();
-		}  */ 
+		}  
 
 	});
 
