@@ -342,7 +342,7 @@ var validatr_seed = {
 	company_name : {
 		name : 'company name',
 		class : 'company-name',
-		regex : "^[a-zA-Z\\-, ]+$"
+		regex : "^[a-zA-Z\\-, \\w]+$"
 	},
 
 	start_date : {
@@ -366,9 +366,9 @@ var validatr_seed = {
 	education_type : {
 		name : 'education type',
 		class : 'education-type',
-		regex : "^[a-zA-Z\\.\\- ]+$",
+		regex : "^[a-zA-Z\\.\\- \\(\\)]+$",
 		errors : {
-			'incorrect' : 'Please valid education type. Ex High School or B.Tech'
+			'incorrect' : 'Please enter valid education type. Ex High School or B.Tech'
 		}
 
 	},
@@ -376,7 +376,7 @@ var validatr_seed = {
 	institution_name : {
 		name : 'institution name',
 		class : 'institution-name',
-		regex : "^[a-zA-Z\\.\\- ]+$",
+		regex : "^[a-zA-Z\\.\\- \\(\\)]+$",
 		errors : {
 			'incorrect' : 'Please enter valid institution name'
 		}
