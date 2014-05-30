@@ -342,7 +342,7 @@ var validatr_seed = {
 	company_name : {
 		name : 'company name',
 		class : 'company-name',
-		regex : "^[a-zA-Z\\-, \\w]+$"
+		regex : "^[a-zA-Z\\-, \\w\\.\\(\\)]+$"
 	},
 
 	start_date : {

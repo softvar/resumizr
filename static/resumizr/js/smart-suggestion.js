@@ -76,10 +76,10 @@ categories.forEach(function(category){
 
 		});
 
-		var numWysiEditor = $('.html5-editor-toggle');
+		/*var numWysiEditor = $('.html5-editor-toggle');
 		for(var i=0;i<numWysiEditor.length;i++) {
 			numWysiEditor[i].click();
-		}   
+		}  */ 
 
 	});
 
