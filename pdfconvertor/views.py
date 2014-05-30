@@ -25,7 +25,7 @@ def writepdf(request):
                 
                 with open('api/resume-pre-templates/design-professional', 'r') as content:
                     cssData += content.read()
-                HTML(string=json_data['html']).write_pdf('http://myapp.com:8000/lol.pdf',stylesheets=[CSS(string=cssData)])
+                HTML(string=json_data['html']).write_pdf('lol.pdf',stylesheets=[CSS(string=cssData)])
         except KeyError:
           HttpResponseServerError("Malformed data!")
         

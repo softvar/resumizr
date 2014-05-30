@@ -19,6 +19,10 @@ urlpatterns = patterns('',
     url(r'^users/save-data/(?P<resumeId>\d+)/$','api.views.save_data'),
     url(r'^users/get-data/(?P<resumeId>\d+)/$','api.views.get_resume_data'),
 
+    url(r'^user/get-all-cv/$','dashboard.views.get_all_resumes'),
+    url(r'^user/dashboard/$','dashboard.views.show_dashboard'),
+
+
     # test api
     url(r'^fb-graph-test/$','api.views.fb_graph_test'),
     url(r'^github-api-test/$','api.views.github_api_test'),

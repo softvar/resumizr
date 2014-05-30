@@ -525,6 +525,10 @@ function generateCvJson () {
         }
 
     });
+    var t = new Date(),
+        present =  t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+
+    formClientData['UpdatedOn'] = present;
     console.log(formClientData);
     return formClientData;
 }
@@ -680,9 +684,10 @@ function buildoPreviewCv(f) {
     		renderFormData += '</div>'+
 				'</div>';
 	    }
-	    else {
+	    else if(key!='UpdatedOn'){
 	    	renderFormData += '<div class="section--area">'+
     			'<div class="grey-box rectangle">';
+            console.log('lol'+key);
         	if(f[key])
         		renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span>';
 
