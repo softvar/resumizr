@@ -257,22 +257,26 @@ $(function () {
                     break;
             }
 
-    for(key in window.Resumizrerrors)
-    {
+    container.find('.form-control').each(function(){
+
+        var key = $(this).data('key');
+
+      if(typeof key!= 'undefined')
+      {
+    
         if (index in window.Resumizrerrors[key])
         {
             window.Resumizrerrors[key][index] = []; // setting errors to the corresponding errors and warning to 0
         }
-    }
 
-    for(key in window.Resumizrwarnings)
-    {
         if (index in window.Resumizrwarnings[key])
         {
             window.Resumizrwarnings[key][index] = []; // setting errors to the corresponding errors and warning to 0
         }
     }
+    });
 
+    $('.skill-tags:first').trigger('itemAdded'); // triggering event to refresh validatoion status skills
 
 
         $(this).parent().remove();

@@ -225,7 +225,14 @@ Validatr.prototype.validate = function() {
 	}
 
 	// validation for tagsinput
+	if(! ('skill-tags' in this.errors))
+			this.errors['skill-tags'] = [];
+	var that = this;
+
 	$(document).on('itemRemoved , itemAdded','.skill-tags',function(){
+	
+	that.errors['skill-tags'][0] = [];
+
 	var totalSkills = 0;
 	var selector = '#6'; // selector for status of skills
 	$(selector).find('.resume-form-error ,.resume-form-warning').remove();
@@ -234,17 +241,19 @@ Validatr.prototype.validate = function() {
 
 
 	$( ".skill-tags" ).each(function( index ) {
-  		console.log( index + ": " + $( this ).text() );
+  		
   		totalSkills+= $(this).tagsinput('items').length;
 	});
 
 	if (totalSkills >= 5)
 	{
 		$(selector).find('.status').children('.status-icon').addClass('fa-check-circle').css('color','#539d00');
+		that.errors['skill-tags'][0] = [];
 	}
 
 	else
 	{
+		that.errors['skill-tags'][0].push('Please enter atleast 5 skills');
 		$(selector).find('.status').children('.status-icon').addClass('fa-times-circle').css('color','#c40a15');
 		list='<ul class="resume-form-error"><li class="error"> Please enter atleast 5 skills </li></ul>';
 		$(selector).find('.skill-errors').append(list);
