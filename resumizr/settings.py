@@ -150,8 +150,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangotoolbox',
     'django_mongodb_engine',
-    'django.contrib.admin',
     'api',
+    'django.contrib.admin',
     'social.apps.django_app.default'
    
     # Uncomment the next line to enable admin documentation:
