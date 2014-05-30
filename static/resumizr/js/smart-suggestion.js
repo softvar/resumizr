@@ -271,9 +271,9 @@ function attachPopOvers()
 			suggestions['linkedin_skills'] = skillSetArray;
 
         skillsName = skillsName.concat(skillSetArray);
-        $('[class^="form-control tagInputs"]').tagsinput('destroy');
-	    $('[class^="form-control tagInputs"]').tagsinput('input');
-        $('[class^="form-control tagInputs"]').tagsinput('input').typeahead({
+        $('[class^="form-control  tagInputs"]').tagsinput('destroy');
+	    $('[class^="form-control  tagInputs"]').tagsinput('input');
+        $('[class^="form-control skill-tags tagInputs"]').tagsinput('input').typeahead({
 		  local: skillsName 
 		}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
 		  this.tagsinput('add', datum.value);

@@ -1,3 +1,7 @@
+#pdfs
+
+*.pdf
+
 *.py[cod]
 
 # C extensions

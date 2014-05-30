@@ -150,10 +150,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangotoolbox',
     'django_mongodb_engine',
-    'django.contrib.admin',
     'api',
     'pdfconvertor',
-    'social.apps.django_app.default'
+    'django.contrib.admin',
+    'social.apps.django_app.default',
    
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

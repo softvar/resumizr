@@ -224,6 +224,44 @@ Validatr.prototype.validate = function() {
 				
 	}
 
+	// validation for tagsinput
+	if(! ('skill-tags' in this.errors))
+			this.errors['skill-tags'] = [];
+	var that = this;
+
+	$(document).on('itemRemoved , itemAdded','.skill-tags',function(){
+	
+	that.errors['skill-tags'][0] = [];
+
+	var totalSkills = 0;
+	var selector = '#6'; // selector for status of skills
+	$(selector).find('.resume-form-error ,.resume-form-warning').remove();
+
+	$(selector).find('.status').children('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+
+
+	$( ".skill-tags" ).each(function( index ) {
+  		
+  		totalSkills+= $(this).tagsinput('items').length;
+	});
+
+	if (totalSkills >= 5)
+	{
+		$(selector).find('.status').children('.status-icon').addClass('fa-check-circle').css('color','#539d00');
+		that.errors['skill-tags'][0] = [];
+	}
+
+	else
+	{
+		that.errors['skill-tags'][0].push('Please enter atleast 5 skills');
+		$(selector).find('.status').children('.status-icon').addClass('fa-times-circle').css('color','#c40a15');
+		list='<ul class="resume-form-error"><li class="error"> Please enter atleast 5 skills </li></ul>';
+		$(selector).find('.skill-errors').append(list);
+					
+	}
+
+
+	});
 }
 
 
@@ -304,7 +342,7 @@ var validatr_seed = {
 	company_name : {
 		name : 'company name',
 		class : 'company-name',
-		regex : "^[a-zA-Z\\-, ]+$"
+		regex : "^[a-zA-Z\\-, \\w]+$"
 	},
 
 	start_date : {
@@ -328,9 +366,9 @@ var validatr_seed = {
 	education_type : {
 		name : 'education type',
 		class : 'education-type',
-		regex : "^[a-zA-Z\\.\\- ]+$",
+		regex : "^[a-zA-Z\\.\\- \\(\\)]+$",
 		errors : {
-			'incorrect' : 'Please valid education type. Ex High School or B.Tech'
+			'incorrect' : 'Please enter valid education type. Ex High School or B.Tech'
 		}
 
 	},
@@ -338,7 +376,7 @@ var validatr_seed = {
 	institution_name : {
 		name : 'institution name',
 		class : 'institution-name',
-		regex : "^[a-zA-Z\\.\\- ]+$",
+		regex : "^[a-zA-Z\\.\\- \\(\\)]+$",
 		errors : {
 			'incorrect' : 'Please enter valid institution name'
 		}
@@ -403,6 +441,12 @@ var validatr_seed = {
 			'incorrect' : 'Please enter date in format : 14th May,2014. \n Day is optional. Or enter "present"'
 		}
 	},
+
+	career_objective : {
+
+		name : 'career-objective',
+		class : 'career-objective.wysihtml5-editor'
+	}
 
 
 

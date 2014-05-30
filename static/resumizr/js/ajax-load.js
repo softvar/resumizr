@@ -75,6 +75,7 @@ return $.ajax({
           error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
             bar.css('background-color','red');
+            toastr.options['positionClass'] = 'toast-top-right';
            toastr.error('Unable to connect to Server', 'Error fetching '+provider+' data');
       }
 
@@ -115,6 +116,10 @@ function loadSocialData(force) {
       bar.fadeOut();
       button.removeAttr('disabled');
       button.css('margin-right','-2px');
+      toastr.options['positionClass'] = 'toast-top-full-width';
+      toastr.success('Remote data loaded successfully ', 'Success');
+
+
 
   },2000);
 

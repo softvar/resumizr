@@ -62,11 +62,99 @@ $(function () {
     });
 
     $('.save--form').click(function () {
+<<<<<<< HEAD
     	var jsonFormData = generateCvJson(),
             loc = window.location.pathname;
             pathname = loc.split('/');
             resumeNum = pathname[pathname.length - 2];
     	// save to DB
+=======
+    	// triggering validation on each form field
+        $('.form-control').blur();
+        $('.skill-tags:first').trigger('itemAdded');
+        var totalErrors = 0;
+        var totalWarnings = 0;
+        var errors = window.Resumizrerrors;
+        var warnings = window.Resumizrwarnings;
+        for (var key in errors)
+        {   
+            for (var p in errors[key]) {
+                if (errors[key].hasOwnProperty(p)) {
+                
+                    totalErrors+=errors[key][p].length;
+                }
+            }
+                            
+        }
+
+        for (var key in warnings)
+        {   
+            for (var p in warnings[key]) {
+                if (warnings[key].hasOwnProperty(p)) {
+                
+                    totalWarnings+=warnings[key][p].length;
+                }
+            }
+                            
+        }
+    
+
+        if(totalErrors > 0)
+        {
+        
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "positionClass": "toast-top-full-width",
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+
+        var alert = "You have "+totalErrors+" errors";
+
+        if(totalWarnings > 0)
+            alert+=" and "+totalWarnings+" warnings";
+
+        toastr['error'](alert+". Please fix them before subiting the resume.", "Error");
+        return;
+
+        }
+        else{
+            if(totalWarnings > 0)
+            {
+                toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-full-width",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                }
+    
+            var alert = "You have "+totalWarnings+" warnings";  
+            toastr['warning'](alert+". Consider fixing them.", "Alert");
+            return;              
+
+            }
+
+        }
+
+
+
+>>>>>>> 410550c3ca103e2ea5c0160b25afe23a0f4b8f70
     	$.ajax({
 		  url: "http://myapp.com:8000/users/save-data/"+resumeNum+"/",
 		  data: JSON.stringify(jsonFormData),
@@ -207,7 +295,7 @@ $(function () {
                             </div>\
                             <div class="col-md-9">\
                                 <label class="sub-section-heading">Add Skills:</label>';
-            newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control tagInputs'+globalSkillClassId+' typeahead"/>' +
+            newSkillSet += '<input type="text" data-role="tagsinput" name="cv__skill_tags" class="form-control skill-tags tagInputs'+globalSkillClassId+' typeahead"/>' +
                 '           </div>\
                         </div>\
                     </div>\
@@ -278,6 +366,42 @@ $(function () {
         $(this).parents().eq(2).remove();
     });
     $(document).on('click', '.fa.fa-times.parent--delete' ,function () {
+        
+    var container = $(this).parent();
+
+    var children = container.parent().children('div');
+            var index = 0;
+
+            for (var i= 0; i<children.length; i++) {
+                var child= children[i];
+                if (child != container[0])
+                    index+=1;
+                else
+                    break;
+            }
+
+    container.find('.form-control').each(function(){
+
+        var key = $(this).data('key');
+
+      if(typeof key!= 'undefined')
+      {
+    
+        if (index in window.Resumizrerrors[key])
+        {
+            window.Resumizrerrors[key][index] = []; // setting errors to the corresponding errors and warning to 0
+        }
+
+        if (index in window.Resumizrwarnings[key])
+        {
+            window.Resumizrwarnings[key][index] = []; // setting errors to the corresponding errors and warning to 0
+        }
+    }
+    });
+
+    $('.skill-tags:first').trigger('itemAdded'); // triggering event to refresh validatoion status skills
+
+
         $(this).parent().remove();
     });
 
