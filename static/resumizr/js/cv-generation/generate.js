@@ -62,13 +62,13 @@ $(function () {
     });
 
     $('.save--form').click(function () {
-<<<<<<< HEAD
+
     	var jsonFormData = generateCvJson(),
             loc = window.location.pathname;
             pathname = loc.split('/');
             resumeNum = pathname[pathname.length - 2];
     	// save to DB
-=======
+
     	// triggering validation on each form field
         $('.form-control').blur();
         $('.skill-tags:first').trigger('itemAdded');
@@ -117,12 +117,12 @@ $(function () {
           "hideMethod": "fadeOut"
         }
 
-        var alert = "You have "+totalErrors+" errors";
+        var notif = "You have "+totalErrors+" errors";
 
         if(totalWarnings > 0)
-            alert+=" and "+totalWarnings+" warnings";
+            notif+=" and "+totalWarnings+" warnings";
 
-        toastr['error'](alert+". Please fix them before subiting the resume.", "Error");
+        toastr['error'](notif+". Please fix them before subiting the resume.", "Error");
         return;
 
         }
@@ -144,17 +144,14 @@ $(function () {
                   "hideMethod": "fadeOut"
                 }
     
-            var alert = "You have "+totalWarnings+" warnings";  
-            toastr['warning'](alert+". Consider fixing them.", "Alert");
-            return;              
+            var notif = "You have "+totalWarnings+" warnings";  
+            toastr['warning'](notif+". Consider fixing them.", "Alert");
+                         
 
             }
 
         }
 
-
-
->>>>>>> 410550c3ca103e2ea5c0160b25afe23a0f4b8f70
     	$.ajax({
 		  url: "http://myapp.com:8000/users/save-data/"+resumeNum+"/",
 		  data: JSON.stringify(jsonFormData),
@@ -162,6 +159,8 @@ $(function () {
           type: 'POST'
 		}).done(function() {
             alert('Form Saved !! :)');
+            toastr.options['positionClass'] = 'toast-top-full-width';
+            toastr.success('Resume Form Saved Successfully', 'Saved');
 		});
     });
 
@@ -438,8 +437,11 @@ function loadSavedForm () {
         console.log(data);
         if(data['ERROR'] != undefined){
             alert(data['ERROR']);
+            toastr.options['positionClass'] = 'toast-top-full-width';
+            toastr.error('Unable to load Resume', 'Error');
             return;
         }
+
         for (var key in data) {
             //console.log(key);
             var i =0;
@@ -527,7 +529,9 @@ function loadSavedForm () {
                 i++;
             }
         }
-    alert('Automatically Saved Form Loaded!');
+    //alert('Automatically Saved Form Loaded!');
+    toastr.options['positionClass'] = 'toast-top-full-width';
+    toastr.success('Resume Form Loaded Successfully', 'Load');
     });
 }
 
