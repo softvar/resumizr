@@ -14,14 +14,19 @@ $(function () {
                             '<tr>'+
                                 '<th>#</th>'+
                                 '<th>Last Updated On</th>'+
+                                '<th>No. of Edits</th>'+
                                 '<th>Edit Link</th>'+
                             '</tr>';
             for( var key in data) {
-                
+                totalUpdates = data[key].length-1;
+                lastUpdate = data[key][totalUpdates]
+                lastUpdate = lastUpdate.split(' ');
+
                 fetchedCvData += ''+
                     '<tr>'+
                         '<td>'+key+'</td>'+
-                        '<td>'+data[key]+'</td>'+
+                        '<td><em>Date: </em>'+lastUpdate[0]+'<em> Time: </em>'+lastUpdate[1]+', <em>IST</em></td>'+
+                        '<td>'+totalUpdates+'</td>'+
                         '<td>'+'<a class="btn btn-warning" href = "../../generate/cvform/' + key + '" target="_blank">Edit</a>'+'</td>'+
                     '</tr>';
                 

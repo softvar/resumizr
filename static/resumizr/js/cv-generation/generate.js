@@ -129,7 +129,7 @@ $(function () {
             notif+=" and "+totalWarnings+" warnings";
 
         toastr['error'](notif+". Please fix them before subiting the resume.", "Error");
-        return;
+        //return;
 
         }
         else{
@@ -157,17 +157,39 @@ $(function () {
             }
 
         }
-
-    	$.ajax({
-		  url: "http://myapp.com:8000/users/save-data/"+resumeNum+"/",
-		  data: JSON.stringify(jsonFormData),
+        $.ajax({
+          url: "http://myapp.com:8000/user/get-all-cv/",
           contentType: "application/json",
-          type: 'POST'
-		}).done(function() {
-            alert('Form Saved !! :)');
-            toastr.options['positionClass'] = 'toast-top-full-width';
-            toastr.success('Resume Form Saved Successfully', 'Saved');
-		});
+          type: 'GET'
+        }).done(function(data) {
+            console.log(data);
+            var loc = window.location.pathname;
+                pathname = loc.split('/');
+                resumeNum = pathname[pathname.length - 2];
+            for(var key in data){
+                if (key==resumeNum) {
+                    console.log(data[key]);
+                    var t = new Date(),
+                        present =  t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+                    data[key].push(present);
+                    console.log(data[key])
+                    jsonFormData['UpdatedOn'] = data[key];
+                }
+            }
+            console.log(jsonFormData);
+            $.ajax({
+              url: "http://myapp.com:8000/users/save-data/"+resumeNum+"/",
+              data: JSON.stringify(jsonFormData),
+              contentType: "application/json",
+              type: 'POST'
+            }).done(function() {
+                alert('Form Saved !! :)');
+                toastr.options['positionClass'] = 'toast-top-full-width';
+                toastr.success('Resume Form Saved Successfully', 'Saved');
+            });
+        });
+
+    	
     });
 
 /* Load Saved form */
@@ -742,12 +764,10 @@ function generateCvJson () {
         }
 
     });
-    var t = new Date(),
-        present =  t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
 
-    formClientData['UpdatedOn'] = present;
-    console.log(formClientData);
     return formClientData;
+
+
 }
 
 function buildoPreviewCv(f) {
