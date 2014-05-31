@@ -51,7 +51,12 @@ $(function () {
 
     skillsName = defaultSkills;
  //substringMatcher(skillsName)
-    tagAutoComplete('.tagInputs');
+ setTimeout(function () {
+    if(autocompleteSocial == false){
+        tagAutoComplete('.tagInputs');
+    }
+ },2000);
+    
     //$(".tagInputs").tagsManager();
     
     $('#preview').click(function () {
@@ -436,9 +441,8 @@ function loadSavedForm () {
     }).done(function(data) {
         console.log(data);
         if(data['ERROR'] != undefined){
-            alert(data['ERROR']);
             toastr.options['positionClass'] = 'toast-top-full-width';
-            toastr.error('Unable to load Resume', 'Error');
+            toastr.error('No such Resume Data Available', 'Error');
             return;
         }
 

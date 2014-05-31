@@ -15,4 +15,5 @@ var defaultSkills = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
       'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
     ], 
 
-    skillsName;
+    skillsName,
+    autocompleteSocial = false;

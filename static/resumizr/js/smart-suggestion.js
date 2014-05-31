@@ -274,12 +274,12 @@ function attachPopOvers()
         $('[class^="form-control  tagInputs"]').tagsinput('destroy');
 	    $('[class^="form-control  tagInputs"]').tagsinput('input');
         $('[class^="form-control skill-tags tagInputs"]').tagsinput('input').typeahead({
-		  local: skillsName 
+		  local: skillsName
 		}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
 		  this.tagsinput('add', datum.value);
-		  this.tagsinput('input').typeahead('setQuery', '');
+		  //this.tagsinput('input').typeahead('setQuery', '');
 		}, $('[class^="form-control tagInputs"]')));
-        
+        autocompleteSocial = true;
 		}
 		else {
 	        skillsName = defaultSkills;
