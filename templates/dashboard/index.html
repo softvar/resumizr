@@ -5,6 +5,7 @@
     {% load staticfiles %}
 
     <link rel="stylesheet" href="{% static 'resumizr/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/main.css' %}">
     <link href="{% static  'resumizr/css/font-awesome.min.css' %}" rel="stylesheet">
 
     <script src="{% static 'resumizr/js/jquery.min.js' %}"></script>
@@ -12,11 +13,60 @@
 
 </head>
 <body>
+<header>
+    <nav class="navbar navbar-default" role="navigation">
+   <div class="navbar-header">
+      <a class="navbar-brand" href="#" style="color:#222828;font-weight:bold;font-size:20px;margin-left:20%;">Resumizr</a>
+   </div>
+   <div class="pull-right" style="margin-right:2%;">
+      <p class="navbar-text" style="color:#222828;font-weight:bold;font-size:16px;">Signed in as {{user}}</p>
+      <a href="#" class="btn btn-danger" style="margin-top:8px;">Logout</a>
+   </div>
+</nav>
+</header>
+<div class="container">
+    <label><h3>Attach Social Networking Sites</h3></label>
+    <br/>
+        <form method="post" action="" id="disconnect-form">{% csrf_token %}</form>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+          $(function () {
+              $(document).on('click', 'a.disconnect', function (e) {
+                  e.preventDefault();
+                  $('form#disconnect-form')
+                      .attr('action', $(this).attr('href'))
+                      .submit();
+              });
+          });
+        </script>
+
+
+        {% load mysplit %}
+
+        <p>Accounts Associated With this Service:</p>
+        <ul>
+          {% for assoc in backends.associated %}
+            <li>
+              {{ assoc.provider|mysplit:"-"|first|capfirst }} 
+              
+                (<a href="{% url 'social:disconnect_individual' assoc.provider assoc.id %}" class="disconnect">Disconnect</a> or<a href="/logout/">logout</a>)
+            </li>
+          {% endfor %}
+        </ul>
+
+        <p> You can Associate the following Social Accounts</p>
+
+
+        {% for provider in oauth_providers  %}
+                Connect <a href="{% url 'social:begin' provider %}">{{ provider|mysplit:"-"|first|capfirst}}</a> </br>
+        {% endfor %}
+
     <label><h3>Saved Resumes</h3></label>
     <div class="show-all-cvs">
         
     </div>
-    <a class="btn btn-primary create--new--cv">Create</a>
-
+    <a class="btn btn-primary btn-lg create--new--cv" style="margin-left:40%;">Create New Resume</a>
+</div>
 </body>
 </html>
