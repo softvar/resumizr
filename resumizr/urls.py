@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^user/get-all-cv/$','dashboard.views.get_all_resumes'),
     url(r'^user/dashboard/$','dashboard.views.show_dashboard'),
-
+    url(r'^user/create-new-cv/$','dashboard.views.create_new_resume'),
 
     # test api
     url(r'^fb-graph-test/$','api.views.fb_graph_test'),
