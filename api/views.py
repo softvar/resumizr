@@ -36,7 +36,7 @@ backends = ['twitter', 'github', 'facebook',
 def home(request):
     '''Home view, displays login mechanism'''
     if request.user.is_authenticated():
-        return redirect('app')
+        return redirect('user/dashboard')
     else:
         return redirect('login')
 
@@ -45,7 +45,7 @@ def home(request):
 def signup(request, backend, *args, **kwargs):
     ''' registeration form '''
     if request.user.is_authenticated():
-        return redirect('app')
+        return redirect('user/dashboard')
     
     if request.method == 'POST':
         form = RegisterationForm(request.POST)
@@ -91,7 +91,7 @@ def password_reset_middleware(request):
     ''' password change middlware '''
     #redirect if users is logged in
     if request.user.is_authenticated():
-        return redirect('app')
+        return redirect('user/dashboard')
     else:
         return redirect('/users/password/reset')
 
@@ -99,7 +99,7 @@ def password_reset_middleware(request):
 def login(request):
     ''' login mechanism '''
     if request.user.is_authenticated():
-        return redirect('app')
+        return redirect('user/dashboard')
     else:
         form = LoginForm()
         return render(request, 'login.html', {'oauth_providers': backends , 'form' : form})
@@ -108,7 +108,7 @@ def login(request):
 def username_login(request, backend, *args, **kwargs):
     ''' login form processing'''
     if request.user.is_authenticated():
-        return redirect('app')   
+        return redirect('user/dashboard')   
     
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -148,7 +148,8 @@ def logout(request):
 @login_required
 def app(request):
     """Login complete view, displays user data"""
-
+    if request.user.is_authenticated():
+        return redirect('../user/dashboard')
     # checking if user has resumizr_data object and creating if it doesnt exists
     try:
         request.user.resumizr_data
