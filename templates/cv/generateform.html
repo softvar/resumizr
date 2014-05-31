@@ -3,8 +3,25 @@
 <!-- ajax progress bar -->
 <div class="progress-bar"></div>
 <button type="button" class="btn btn-lg btn-primary refresh" id="refresh">Refresh Genius</button>
-
-	<div class="container">
+<header>
+    <nav class="navbar navbar-default" role="navigation" style="background:#333;">
+   <div class="navbar-header">
+      <a class="navbar-brand" href="#" style="color:#fff;font-weight:bold;font-size:20px;margin-left:20%;">Resumizr</a>
+   </div>
+   <div class="pull-right" style="margin-right:-10%;">
+      <p class="navbar-text" style="color:#fff;font-weight:bold;font-size:16px;">Signed in as <span style="color:#5ac9fc;font-style:italic;">{{user}}</span></p>
+      <a href="/user/dashboard" class="btn btn-warning" style="margin-top:8px;">Dashboard</a>
+      <a href="#" class="btn btn-danger" style="margin-top:8px;">Logout</a>
+   </div>
+</nav>
+</header>
+<div class="belowbar pull-right">
+	<button id="save" class="btn btn-success save--form">Save Form</button>
+	<input type="submit" value="Export PDF" class="btn btn-primary cv-write" />
+	<button type="submit" id="preview" class="btn btn-info">Preview</button>
+</div>
+	
+	<div class="container" style="width:99.8%;">
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -52,10 +69,10 @@
 			   <section class="field-card"><li class="sortable-tab--field" href="#6" data-toggle="tab"><i style="color:gray" class="fa fa-star"></i> Skills</li></section>
 			   <section class="field-card"><li class="sortable-tab--field" href="#7" data-toggle="tab"><i style="color:gray" class="fa fa-certificate"></i> Achievements</li></section>
 			</ul>
-			<button class="btn btn-info add--section">Create a new Section</button>
+			<button class="btn btn-lg add--section" style="margin-left:10px;width:240px;">Create a new Section</button>
 		  </div>
 
-		  <div class="col-md-9 cv-form-fill" style="width:70%;height:500px; margin-left:20px;overflow:auto">
+		  <div class="col-md-9 cv-form-fill" style="width:70%;height:500px; margin-left:20px;overflow:auto;">
 
 		  	<div class="tab-content">
 				<div class="tab-pane active" id="1">
@@ -358,15 +375,9 @@
 		  </div>
 		</div>
 
-
-
-			<button type="submit" id="preview" class="btn">Preview</button>
 		</form>
 		<br/>
-		<button id="save" class="btn btn-success save--form">Save Form</button>
-		<input type="submit" value="Export PDF" class="btn btn-success cv-write" />
-		<button class="btn btn-info prefill--form">Load Saved Form</button>
-      </div>
+		
       
 	
 		<!-- <br/ >
