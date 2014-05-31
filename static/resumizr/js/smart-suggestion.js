@@ -401,7 +401,7 @@ function attachPopOvers()
 			 			var projects_info = {};
 			 					 		
 				 		projects_info['project-title'] = projects['name'] || '';
-				 		projects_info['project-url'] = projects['url'] || '';
+				 		projects_info['project-url'] = projects['html_url'] || '';
 				 		projects_info['project-description'] = projects['description'] || '';
 
 				 		var start_d = new Date(projects['created_at']);

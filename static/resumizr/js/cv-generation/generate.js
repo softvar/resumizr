@@ -256,7 +256,7 @@ $(function () {
             notif+=" and "+totalWarnings+" warnings";
 
         toastr['error'](notif+". Please fix them before subiting the resume.", "Error");
-        return;
+        //return;
 
         }
         else{
@@ -299,7 +299,7 @@ $(function () {
           data: JSON.stringify(data),
           contentType: "application/json"
         }).done(function(data) {
-            /*alert('lol');*/
+            alert('PDF has been generated. Congrats!');
             console.log(data);
           $( this ).addClass( "done" );
         });
@@ -564,16 +564,79 @@ function loadSavedForm () {
                         if (key.split('|@|')[0] == '#3') {// workex
                             var newJobSection = '<div class="cv-work-experience">' + $('.cv-work-experience:first').html()+'</div>';
                             newJobSection = $(newJobSection);
+                            
+                            newJobSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
+                            newJobSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+                            newJobSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
+                            newJobSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
+                            
+                            newJobSection.find('.job-description').wysihtml5({
+                              "bodyClassName" : "wysihtml5-supported,wy-job-description", // for assigning class to body
+                              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+                              "emphasis": true, //Italics, bold, etc. Default true
+                              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                              "html": true, //Button which allows you to edit the generated HTML. Default false
+                              "link": false, //Button to insert a link. Default true
+                              "image": false, //Button to insert an image. Default true,
+                              "color": true, //Button to change color of font
+                              "events": {
+                                "load": function() { 
+                                    newJobSection.find('.wysihtml5-sandbox').show();
+                                }
+                              }
+                            });
                             $('.add-new-job').before(newJobSection);
+                            
+                            
                         }
                         else if (key.split('|@|')[0] == '#4') {// education
                             var newEduSection = '<div class="cv-education">' + $('.cv-education').html()+'</div>';
                             newEduSection = $(newEduSection);
+                            newEduSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
+                            newEduSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+                            newEduSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
+                            newEduSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
+                            
+                            newEduSection.find('.education-description').wysihtml5({
+                              "bodyClassName" : "wysihtml5-supported,wy-job-description", // for assigning class to body
+                              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+                              "emphasis": true, //Italics, bold, etc. Default true
+                              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                              "html": true, //Button which allows you to edit the generated HTML. Default false
+                              "link": false, //Button to insert a link. Default true
+                              "image": false, //Button to insert an image. Default true,
+                              "color": true, //Button to change color of font
+                              "events": {
+                                "load": function() { 
+                                    newEduSection.find('.wysihtml5-sandbox').show();
+                                }
+                              }
+                            });
                             $('.add-new-education').before(newEduSection);
                         }
                         else if (key.split('|@|')[0] == '#5') {// projects
                             var newProjSection = '<div class="cv-projects">' + $('.cv-projects').html()+'</div>';
                             newProjSection = $(newProjSection);
+                            newProjSection.find('.resume-form-error ,.resume-form-warning').remove(); // removing prior error fields
+                            newProjSection.find('.status-icon').removeClass('fa-check-circle').removeClass('fa-exclamation-circle').removeClass('fa-times-circle');
+                            newProjSection.find('.mod-form-error , .mod-form-correct , .mod-form-warning').removeClass('mod-form-correct').removeClass('mod-form-warning').removeClass('mod-form-error'); // removing previous error classes
+                            newProjSection.find('.wysihtml5-toolbar , .wysihtml5-sandbox , input[name="_wysihtml5_mode"]').remove();
+                            
+                            newProjSection.find('.project-description').wysihtml5({
+                              "bodyClassName" : "wysihtml5-supported,wy-job-description", // for assigning class to body
+                              "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+                              "emphasis": true, //Italics, bold, etc. Default true
+                              "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                              "html": true, //Button which allows you to edit the generated HTML. Default false
+                              "link": false, //Button to insert a link. Default true
+                              "image": false, //Button to insert an image. Default true,
+                              "color": true, //Button to change color of font
+                              "events": {
+                                "load": function() { 
+                                    newProjSection.find('.wysihtml5-sandbox').show();
+                                }
+                              }
+                            });
                             $('.add-new-project').before(newProjSection);
                         }
                         else if (key.split('|@|')[0] == '#6') {// skills
@@ -617,23 +680,53 @@ function loadSavedForm () {
                             }
                         }
                     }
-
+                    /*var numWysiEditor = $('.html5-editor-toggle');
+                    for(var i=0;i<numWysiEditor.length;i++) {
+                        numWysiEditor[i].click();
+                    } */
                     for (var subsubkey in data[key][subkey]) {
-                        //alert(data[key][subkey][subsubkey]);
-                        if (key.split('|@|')[0] == '#6') //skills
+                        //console.log(subsubkey)
+                        if (key.split('|@|')[0] == '#6') {//skills
                             if(subsubkey == 'cv__skill_tags')
                                $('input[name="'+subsubkey+'"]:eq('+i+')').tagsinput('add', data[key][subkey][subsubkey]);
                             else
                                $('input[name="'+subsubkey+'"]:eq('+i+')').val(data[key][subkey][subsubkey]); 
+                        }
                         else {
                             $('input[name="'+subsubkey+'"]:eq('+i+')').val(data[key][subkey][subsubkey]);
+                            //console.log(subsubkey)
+                            if (subsubkey == 'cv__companydesc') {
+                                $('.cv-work-experience .html5-editor-toggle:eq('+i+')')[0].click();
+                                $('.job-description:eq('+i+')').val(data[key][subkey][subsubkey]);
+                                $('.cv-work-experience .html5-editor-toggle:eq('+i+')')[0].click();
+                            }
+                            else if (subsubkey == 'cv__instidescription') {
+                                $('.cv-education .html5-editor-toggle:eq('+i+')')[0].click();
+                                $('.education-description:eq('+i+')').val(data[key][subkey][subsubkey]);
+                                $('.cv-education .html5-editor-toggle:eq('+i+')')[0].click();
+                            }
+                            else if (subsubkey == 'cv__projectdesc') {
+                                $('.cv-projects .html5-editor-toggle:eq('+i+')')[0].click();
+                                $('.project-description:eq('+i+')').val(data[key][subkey][subsubkey]);
+                                $('.cv-projects .html5-editor-toggle:eq('+i+')')[0].click();
+                            }
+                            
                             $('input[name="'+subsubkey+'"]:eq('+i+')').blur();
                         }
                     }  
 
                 }
-                else {
-                    //alert(data[key][subkey]);
+                else if(key!='UpdatedOn') {
+                    if (subkey == 'cv__achievement') {
+                        $('.cv-achievement .html5-editor-toggle:eq('+i+')')[0].click();
+                        $('.achievements').val(data[key][subkey]);
+                        $('.cv-achievement .html5-editor-toggle:eq('+i+')')[0].click();
+                    }
+                    else if (subkey == 'cv__careerobj') {
+                        $('.cv-careerobj .html5-editor-toggle:eq('+i+')')[0].click();
+                        $('.career-objective').val(data[key][subkey]);
+                        $('.cv-careerobj .html5-editor-toggle:eq('+i+')')[0].click();
+                    }
                     $('input[name="'+subkey+'"]').val(data[key][subkey]);
                     $('input[name="'+subkey+'"]').blur();
                 }
@@ -650,18 +743,18 @@ function tagAutoComplete (selector) {
     var tag ;
     $(selector).tagsinput('input',{tagClass: 'label label-warning'});
 
-    if(skillsName.length>0) 
+    /*if(skillsName.length>0) 
         tag = $(selector).tagsinput('input').typeahead({
                   local: skillsName 
                 });
-/*    else
+    else
         tag = $(selector).tagsinput('input').typeahead({
                   prefetch: '../../static/resumizr/js/cities.json' 
-                });*/
+                });
     tag.bind('typeahead:selected', $.proxy(function (obj, datum) {  
       this.tagsinput('add', datum.value);
       this.tagsinput('input').typeahead('setQuery', '');
-    }, $(selector)));
+    }, $(selector)));*/
 }
 function generateCvJson () {
     var formClientData = {};
@@ -684,6 +777,10 @@ function generateCvJson () {
                         emptySection = false;
                     }
                 });
+                var jobDesc = $('.cv-work-experience:eq('+i+') .job-description');
+                if (jobDesc.val()!=null && jobDesc.val()!='') {
+                    workExObject[$(jobDesc).attr('name')] = jobDesc.val()
+                }
                 if(!emptySection){
                     //alert('lol');
                     workExArray.push(workExObject);
@@ -704,6 +801,10 @@ function generateCvJson () {
                         emptySection = false;
                     }
                 });
+                var eduDesc = $('.cv-education-experience:eq('+i+') .education-description');
+                if (eduDesc.val()!=null && eduDesc.val()!='') {
+                    eduObject[$(eduDesc).attr('name')] = eduDesc.val()
+                }
                 if(!emptySection){
                     eduArray.push(eduObject);
                     eduObject = {};
@@ -798,7 +899,7 @@ function buildoPreviewCv(f) {
 	    	renderFormData += '</div>'+
 				'</div><hr>';
 	    }
-        else if(key.split('|@|')[0] == '#2') { // Achievements
+        else if(key.split('|@|')[0] == '#2') { // career obj
             renderFormData += '<div class="section--area">'+
                 '<div class="grey-box rectangle">';
             if(f[key])
@@ -916,8 +1017,8 @@ function buildoPreviewCv(f) {
 
     		renderFormData += '</div>'+
     			'<div class="data--info">';
-        	if(f[key]['cv__achievemnet'])
-        		renderFormData +='<p>'+f[key]['cv__achievemnet']+'</p>';
+        	if(f[key]['cv__achievement'])
+        		renderFormData +='<p>'+f[key]['cv__achievement']+'</p>';
     		renderFormData += '</div>'+
 				'</div>';
 	    }
@@ -956,7 +1057,6 @@ function buildoPreviewCv(f) {
 					<textarea class="form-control mod-text-box more-fields" rows="3" name="cv__fielddata"></textarea>\
 				</div>'+
 				'<br />'+
-				'<button class="btn btn-primary add--entry">Add Entry</button>'+
 			'</div>';
 
 

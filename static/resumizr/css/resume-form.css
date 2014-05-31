@@ -12,7 +12,7 @@
 /* Buttons */
 
 
-.flat-button, .btn {
+.flat-button{
   display: inline-block;
   height: 45px;
   width: 150px;
@@ -20,6 +20,7 @@
   padding: 5px 5px;
   font-weight: 700;
   font-size: 15px;
+  text-align: center;
   letter-spacing: 2px;
   border-radius: 4px;
   text-transform: uppercase;
@@ -61,22 +62,24 @@
   color: #5bc0de;
   background: #fff;
 }
-.fill-orange, .btn-warning {
+.fill-orange {
   color: #f0ad4e;
   border: 2px #f0ad4e solid;
 }
-.fill-orange:hover, .btn-warning:hover {
+.fill-orange:hover {
   color: whitesmoke;
   background: #f0ad4e;
+  text-decoration: none;
 }
-.fill-red, .btn-danger {
+.fill-red {
   color: #d9534f;
   border: 2px #d9534f solid;
 }
-.fill-red:hover, .btn-danger:hover {
+.fill-red:hover {
   
   color: whitesmoke;
   background: #d9534f;
+  text-decoration: none;
 }
 
 .fill-gray {
