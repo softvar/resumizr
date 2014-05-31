@@ -4,16 +4,10 @@
  * then it would automatically be appended to this below list
  */
 
-var defaultSkills = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-      'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-      'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-      'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-      'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-      'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-      'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-      'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-      'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-    ], 
+var defaultSkills = ['Electronics','HTML','HTML5','CSS','CSS3','PHP','JavaScript','Java',
+'Ruby','Python','Management','C','C++','Matlab','Erlang','BASIC','COBOL','Advanced Java',
+'Bootstrap','Angularjs','EmberJs','BackbobeJs','JQuery','ActionScript','Git','Github','Asp.Net',
+'Web Development','Developer','Science','Logic','Analytical'],
 
     skillsName,
     autocompleteSocial = false;

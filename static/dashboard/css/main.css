@@ -20,7 +20,8 @@
 }
 
 .navbar.navbar-default {
-    background:#aaa;
+    background:#333;
+    color: #fff;
 }
 
 p {

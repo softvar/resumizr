@@ -4,6 +4,10 @@
   
 }
 
+.belowbar {
+  width: 25.6%;
+}
+
 #createForm {
 				background: #222;
 			}
@@ -76,6 +80,9 @@
   transform-origin:top left;
 }
 
+.card {
+  background:rgb(249,249,249);
+}
 .field-card:active {
   border: 1px solid #CCC;
   box-shadow: 10px 10px 5px #DDD;
