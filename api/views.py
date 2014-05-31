@@ -204,7 +204,14 @@ def generateForm(request, resumeNum):
         contextRender = {'headingStatus':headingStatus,'contentStatus':contentStatus}
         return render(request, 'cv/generateform.html',contextRender)
     else:
-        return render(request, 'cv/generateform.html',{})
+        _resumeJson = request.user.resumizr_data.resume_data['resume']
+        resumeIds = []
+        for key, value in _resumeJson.iteritems():
+            resumeIds.append(key)
+        if(resumeNum not in resumeIds):
+            return render(request,'custom_404.html',{})
+        else:
+            return render(request, 'cv/generateform.html',{})
 
 # @login_required
 # @csrf_exempt
