@@ -11,8 +11,8 @@
    <div>
       <p class="navbar-text" style="color:#fff;font-weight:bold;font-size:16px;margin-left:30%;">Signed in as <span style="color:#5ac9fc;font-style:italic;">{{user}}</span></p>
       <span class="pull-right" style="margin-right:-10%;">
-      	<a href="/user/dashboard" class="btn btn-warning" style="margin-top:8px;">Dashboard</a>
-      	<a href="#" class="btn btn-danger" style="margin-top:8px;">Logout</a>
+      	<a href="/user/dashboard" class="flat-button fill-orange" style="margin-top:8px;">Dashboard</a>
+      	<a href="../../../logout" class="flat-button fill-red" style="margin-top:8px;">Logout</a>
    	  </span>
    </div>
 </nav>
@@ -150,10 +150,12 @@
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 					</span>
-					<div class="card">
-					<div class="status"><i style="font-size:18px" class=" status-icon fa"></i></div>
-						<label class="label--text sub-heading">What you admire?</label>
-						<textarea class="form-control mod-text-box career-objective" rows="3" name="cv__careerobj"></textarea>
+					<div class="cv-careerobj">
+						<div class="card">
+						<div class="status"><i style="font-size:18px" class=" status-icon fa"></i></div>
+							<label class="label--text sub-heading">What you admire?</label>
+							<textarea class="form-control mod-text-box career-objective" rows="3" name="cv__careerobj"></textarea>
+						</div>
 					</div>
 					<br/>
 					<hr/>
@@ -365,10 +367,12 @@
 					<span style="margin-left: 20px; color:#9accea">
 						<a><i class="fa fa-pencil fa-2x" data-toggle="modal" data-target="#myModal" title="Edit"></i>&nbsp;</a>
 					</span>
-					<div class="card">
-					<div class="status"><i style="font-size:18px" class=" status-icon fa"></i></div>
-						<label class="label--text sub-heading">Description</label>
-						<textarea class="form-control mod-text-box achievements" rows="3" name="cv__achievemnet"></textarea>
+					<div class="cv-achievement">
+						<div class="card">
+						<div class="status"><i style="font-size:18px" class=" status-icon fa"></i></div>
+							<label class="label--text sub-heading">Description</label>
+							<textarea class="form-control mod-text-box achievements" rows="3" name="cv__achievement"></textarea>
+						</div>
 					</div>
 					<br/>
 					<hr/>
