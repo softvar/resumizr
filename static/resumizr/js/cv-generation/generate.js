@@ -44,6 +44,7 @@ $(function () {
               "events": {
                 "load": function() { 
                     console.log("Loaded!");
+                    
                 }
               }
             });
@@ -178,6 +179,90 @@ $(function () {
 
     
     $('.cv-write').click(function () {
+
+        // triggering validation on each form field
+        $('.form-control').blur();
+        $('.skill-tags:first').trigger('itemAdded');
+        var totalErrors = 0;
+        var totalWarnings = 0;
+        var errors = window.Resumizrerrors;
+        var warnings = window.Resumizrwarnings;
+        for (var key in errors)
+        {   
+            for (var p in errors[key]) {
+                if (errors[key].hasOwnProperty(p)) {
+                
+                    totalErrors+=errors[key][p].length;
+                }
+            }
+                            
+        }
+
+        for (var key in warnings)
+        {   
+            for (var p in warnings[key]) {
+                if (warnings[key].hasOwnProperty(p)) {
+                
+                    totalWarnings+=warnings[key][p].length;
+                }
+            }
+                            
+        }
+    
+
+        if(totalErrors > 0)
+        {
+        
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "positionClass": "toast-top-full-width",
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+
+        var notif = "You have "+totalErrors+" errors";
+
+        if(totalWarnings > 0)
+            notif+=" and "+totalWarnings+" warnings";
+
+        toastr['error'](notif+". Please fix them before subiting the resume.", "Error");
+        return;
+
+        }
+        else{
+            if(totalWarnings > 0)
+            {
+                toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-full-width",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                }
+    
+            var notif = "You have "+totalWarnings+" warnings";  
+            toastr['warning'](notif+". Consider fixing them.", "Alert");
+                         
+
+            }
+
+        }
+
         var jsonFormData = generateCvJson(), cvHtml;
         cvHtml = '<html><body class="container">';
         cvHtml += buildoPreviewCv(jsonFormData);
