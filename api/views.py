@@ -211,7 +211,7 @@ def generateForm(request, resumeNum):
         if(resumeNum not in resumeIds):
             return render(request,'custom_404.html',{})
         else:
-            return render(request, 'cv/generateform.html',{})
+            return render(request, 'cv/generateform.html',{'user': request.user})
 
 # @login_required
 # @csrf_exempt
