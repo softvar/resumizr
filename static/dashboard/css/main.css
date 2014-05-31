@@ -32,3 +32,37 @@ p {
 ul > li {
     margin-left: 30px;
 }
+
+.flat-button {
+  display: inline-block;
+  height: 45px;
+  width: 150px;
+  margin: 10px 7px;
+  padding: 5px 5px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  outline: 0;
+  overflow:hidden;
+  background: none;
+  z-index: 1;
+  cursor: pointer;
+  transition:         0.08s ease-in;
+  -o-transition:      0.08s ease-in;
+  -ms-transition:     0.08s ease-in;
+  -moz-transition:    0.08s ease-in;
+  -webkit-transition: 0.08s ease-in;
+}
+
+.fill-red {
+  color: whitesmoke;
+  background: #d9534f;
+  border: 2px #d9534f solid;
+}
+.fill-red:hover {
+  color: #d9534f;
+  background: #333;
+}

@@ -5,7 +5,88 @@
 }
 
 .belowbar {
-  width: 25.6%;
+  margin-top: -10px;
+  margin-right: 45px;
+}
+
+/* Buttons */
+
+
+.flat-button, .btn {
+  display: inline-block;
+  height: 45px;
+  width: 150px;
+  margin: 10px 7px;
+  padding: 5px 5px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  outline: 0;
+  overflow:hidden;
+  background: none;
+  z-index: 1;
+  cursor: pointer;
+  transition:         0.08s ease-in;
+  -o-transition:      0.08s ease-in;
+  -ms-transition:     0.08s ease-in;
+  -moz-transition:    0.08s ease-in;
+  -webkit-transition: 0.08s ease-in;
+}
+.fill-green {
+  color: whitesmoke;
+  border: 2px #5cb85c solid;
+  background: #5cb85c;
+}
+.fill-green:hover {
+  color: #5cb85c;
+  background: #fff;
+}
+.fill-darkblue {
+  color: whitesmoke;
+  background: #428bca;
+  border: 2px #428bca solid;
+}
+.fill-darkblue:hover {
+  color: #428bca;
+  background: #fff;
+}
+.fill-lightblue {
+  color: whitesmoke;
+  background: #5bc0de;
+  border: 2px #5bc0de solid;
+}
+.fill-lightblue:hover {
+  color: #5bc0de;
+  background: #fff;
+}
+.fill-orange, .btn-warning {
+  color: #f0ad4e;
+  border: 2px #f0ad4e solid;
+}
+.fill-orange:hover, .btn-warning:hover {
+  color: whitesmoke;
+  background: #f0ad4e;
+}
+.fill-red, .btn-danger {
+  color: #d9534f;
+  border: 2px #d9534f solid;
+}
+.fill-red:hover, .btn-danger:hover {
+  
+  color: whitesmoke;
+  background: #d9534f;
+}
+
+.fill-gray {
+  color: whitesmoke;
+  background: rgb(191,191,191);
+  border: 2px rgb(191,191,191) solid;
+}
+.fill-gray:hover {
+  color: rgb(191,191,191);
+  background: #fff;
 }
 
 #createForm {
