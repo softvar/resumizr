@@ -59,6 +59,33 @@
 		  </div>
 		</div>
 
+		<!-- PDF Option Modal -->
+		<div class="modal fade" id="pdfOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+		  <div class="modal-dialog" style="width:20%;margin-top:200px;overflow:auto;">
+		    <div class="modal-content">
+		      <div class="modal-header" style="height:200px;overflow:auto;">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel" style="text-align:center;background:#eee;">Resume Formats: </h4>
+		        <hr>
+		        <div class="provide-pdf-options" style="margin-left:30px;">
+		        	 
+				    <input type="radio" name="pdf-options" id="option1" value="Professional" checked="checked"> Professional
+				    <br/>
+				    <input type="radio" name="pdf-options" id="option2" value="Chronological"> Chronological
+				    <br/>
+				    <input type="radio" name="pdf-options" id="option3" value="Basic"> Basic
+				    <br/><input type="radio" name="pdf-options" id="option4" value="Interactive"> Interactive
+				    <br/>
+		        </div>
+		      </div>
+		      	<div class="modal-footer" >
+					<button class="btn btn-success selected-pdf-option" >Generate</button>
+					<button class="btn btn-danger cancel-pdf-option"  data-dismiss="modal">Cancel</button>
+				</div>
+
+		    </div>
+		  </div>
+		</div>
 
 		<div class="row">
 		  <div class="col-md-3" >
