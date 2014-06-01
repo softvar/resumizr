@@ -63,7 +63,7 @@ $(function () {
     $('#preview').click(function () {
     	var data = generateCvJson();
     	//formClientData = JSON.stringify(formClientData);
-    	buildoPreviewCv(data);
+    	buildoPreviewCv(data,'');
 
     });
 
@@ -201,8 +201,13 @@ $(function () {
 
     
     $('.cv-write').click(function () {
-
+        $('#pdfOptions').modal('show');
         // triggering validation on each form field
+        
+    });
+
+    $('.selected-pdf-option').click(function () {
+
         $('.form-control').blur();
         $('.skill-tags:first').trigger('itemAdded');
         var totalErrors = 0;
@@ -287,9 +292,10 @@ $(function () {
 
         var jsonFormData = generateCvJson(), cvHtml;
         cvHtml = '<html><body class="container">';
-        cvHtml += buildoPreviewCv(jsonFormData);
+        cvHtml += buildoPreviewCv(jsonFormData, 'no');
         cvHtml += '</body></html>';
-        css = 'professional';
+        css = $('input[name=pdf-options]:radio:checked').val() || 'professional';
+        
         var data = {'html': cvHtml, 'css': css}
         console.log(data);
         // save to DB
@@ -299,10 +305,11 @@ $(function () {
           data: JSON.stringify(data),
           contentType: "application/json"
         }).done(function(data) {
+            $('#pdfOptions').modal('hide');
             alert('PDF has been generated. Congrats!');
             console.log(data);
-          $( this ).addClass( "done" );
-        });
+            $('#pdfOptions').modal('hide');
+        })
     });
 
     $('.add-new-job').click(function () {
@@ -871,11 +878,12 @@ function generateCvJson () {
 
 }
 
-function buildoPreviewCv(f) {
+function buildoPreviewCv(f,status) {
 	// view cv in modal view container
 	var renderFormData = '<div class="build-resume-service">';
 
-    $('#myModalPreview').modal('show');
+    if(status != 'no')
+        $('#myModalPreview').modal('show');
 
 
     for (var key in f) {
@@ -919,28 +927,27 @@ function buildoPreviewCv(f) {
                     renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div>';
 
             for (var work in f[key]) {
-    			renderFormData += '<div class="data--info">'+
-    			    '<div class="row">'+
-    			       '<div class="col-md-4" >';
+    			renderFormData += '<div class="data--info">';
+    			    
                 /*console.log(f[key][work]);
                 console.log(f[key][work]['cv__jobtitle']);
-    			*/if(f[key][work]['cv__jobtitle'])
+    			*/
+                if(f[key][work]['cv__jobtitle'])
     				renderFormData += '<span class="cv__jobtitle">'+f[key][work]['cv__jobtitle'].capitalize()+'</span>';
-    			renderFormData += '</div>'+
-                '<div class="col-md-4" style="text-align:center;">';
-                if(f[key][work]['cv__companyname'])
-                	renderFormData += '<span class="cv__companyname">'+f[key][work]['cv__companyname'].capitalize()+'</span>';
-                renderFormData +='</div>'+
-              		'<div class="col-md-4" style="text-align:right;padding-right:50px;" >';
+    			
                 if(f[key][work]['cv__companystart'] && f[key][work]['cv__companyend']){
-                    renderFormData += '<span class="cv__companystart">'+f[key][work]['cv__companystart'] +'</span>' +
-                    '<span class="cv__companyend">'+f[key][work]['cv__companyend'] +'</span>';
+                    renderFormData += '<span class="cv__companystart">, '+f[key][work]['cv__companystart'] +'</span>' +
+                    '<span class="cv__companyend"> - '+f[key][work]['cv__companyend'] +'</span>';
                 }
-                renderFormData += '</div>' + '</div>';
+                
+                if(f[key][work]['cv__companyname'])
+                	renderFormData += '<br/><span class="cv__companyname">'+f[key][work]['cv__companyname'].capitalize()+'</span>';
+                
+                
             	if(f[key][work]['cv__companydesc'])
-            		renderFormData += '<p>'+f[key][work]['cv__companydesc'].capitalize()+'</p>';
+            		renderFormData += '<p><ul><li>'+f[key][work]['cv__companydesc'].capitalize()+'</li></ul></p>';
 
-        		renderFormData += '<br/></div>'+
+        		renderFormData += '</div>'+
     				'</div>';
             }
 	    }
@@ -953,44 +960,49 @@ function buildoPreviewCv(f) {
             for (var edu in f[key]) {
         		renderFormData += '<div class="data--info">';
             	if(f[key][edu]['cv__coursename'])
-            		renderFormData +='<span style="font-weight:bold;">'+f[key][edu]['cv__coursename'].capitalize();
+            		renderFormData +='<span style="font-weight:bold;">'+f[key][edu]['cv__coursename'].capitalize() + '</span>';
         		if(f[key][edu]['cv__eduperiod'])
-        			renderFormData += ',' +f[key][edu]['cv__eduperiod'];
-        		renderFormData += '</span>';
+        			renderFormData += ', ' +f[key][edu]['cv__eduperiod'];
 
         		if(f[key][edu]['cv__instiname'])
         			renderFormData += '<br/><span>'+f[key][edu]['cv__instiname'].capitalize()+'</span>';
         		if(f[key][edu]['cv__instidescription'])
         			renderFormData += '<p>'+f[key][edu]['cv__instidescription'].capitalize()+'</p>';
 
-        		renderFormData += '</div>';
-    				'</div>';
+        		renderFormData += '<br/><br/></div>';
+
             }
+            renderFormData += '</div>'
+
 	    }
         else if(key.split('|@|')[0] == '#5') { // Projects
             renderFormData += '<div class="section--area">'+
                 '<div class="grey-box rectangle">';
             if(f[key])
-                renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div>';
+                renderFormData +='<span>'+key.split('|@|')[1].capitalize()+'</span></div><ul>';
 
             for (var proj in f[key]) {
-                renderFormData += '<div class="data--info">';
+                renderFormData += '<div class="data--info"><li>';
                 if(f[key][proj]['cv__projecttitle'])
-                    renderFormData +='<span style="font-weight:bold;">'+f[key][proj]['cv__projecttitle'].capitalize();
-                if(f[key][proj]['cv__projecturl'])
-                    renderFormData += ',' +f[key][proj]['cv__projecturl'];
+                    renderFormData +='<span style="font-weight:bold;">'+f[key][proj]['cv__projecttitle'].capitalize() + '</span>';
+                
+                renderFormData += '<span class="pull-right project-date">';
+                if(f[key][proj]['cv__projectstart'])
+                    renderFormData += '<span>'+f[key][proj]['cv__projectstart']+'</span>';
+                if(f[key][proj]['cv__projectend'])
+                    renderFormData += '<span> - '+f[key][proj]['cv__projectend']+'</span>';
                 renderFormData += '</span>';
 
-                if(f[key][proj]['cv__projectstart'])
-                    renderFormData += '<br/><span>'+f[key][proj]['cv__projectstart']+'</span>';
-                if(f[key][proj]['cv__projectend'])
-                    renderFormData += '<p>'+f[key][proj]['cv__projectend']+'</p>';
                 if(f[key][proj]['cv__projectdesc'])
                     renderFormData += '<p>'+f[key][proj]['cv__projectdesc'].capitalize()+'</p>';
+                if(f[key][proj]['cv__projecturl'])
+                    renderFormData += '<p><b>URL: </b>' +f[key][proj]['cv__projecturl'] + '</p>';
+                
 
-                renderFormData += '</div>';
-                    '</div>';
+                renderFormData += '</li></div>';
+                    
             }
+            renderFormData += '</ul></div>';
         }
         else if(key.split('|@|')[0] == '#6') { // Skills
             renderFormData += '<div class="section--area">'+

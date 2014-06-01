@@ -29,6 +29,10 @@
     font-size: 14px;
 }
 
+.data--info > li {
+    margin-left: -20px;
+}
+
 /** Work Ex Fields in CV **/
 .cv__jobtitle {
     font-weight: bold;
@@ -37,12 +41,16 @@
     font-weight: bold;
 }
 .cv__companystart {
-    font-weight: bold;
 }
 .cv__companyend {
-    font-weight: bold;
 }
 .cv__comapnydesc {
 
 }
 /** Work Ex Fields CSS Over **/
+
+/** Project */
+.project-date {
+    margin-right: 40px;
+}
+/* project Over*/
